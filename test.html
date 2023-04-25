@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #myMenu {
+            /* display: none; */
+            position: fixed;
+            top: 0;
+            width: 200px;
+            background-color: #fff;
+            z-index: 9999;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        }
+
+        #myMenu select {
+            appearance: none;
+            border: none;
+            background: transparent;
+            font-size: 18px;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            outline: none;
+        }
+
+        #myMenu select option {
+            font-weight: bold;
+        }
+
+        #myMenu select option:first-child {
+            color: #999;
+            font-weight: normal;
+        }
+
+        #myMenu select::-ms-expand {
+            display: none;
+        }
+
+        #myMenu select option:before {
+            content: "";
+            display: none;
+        }
+
+        #myMenu nav ul {
+            list-style-type: none;
+        }
+
+        #myMenu .closeBtn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            /* padding: 10px; */
+            font-size: 15px;
+            color: #180606;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        #myMenu .closeBtn:hover {
+            color: #ccc;
+        }
+
+        #myMenu .header {
+            /* border: 1px solid #999; */
+            background-color: #999;
+            height: 20px;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+
+    <div id="myMenu">
+        <div class="header">
+            <div>Open menú</div>
+            <button class="closeBtn">x</button>
+        </div>
+
+        <nav>
+            
+            <ul>
+                <li><a href="javascript:go('Add')">Add New Item ...</a></li>
+                <li><a href="javascript:go('Home')">Home</a></li>
+                <li><a href="javascript:go('About')">About</a></li>
+                <li><a href="javascript:go('Contact')">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <input type="text" />
+
+    <input type="text" />
+
+    <input type="text" />
+</body>
+<script>
+    let inputSelected = undefined;
+
+    const menuToggle = document.getElementById('menuToggle');
+    const myMenu = document.getElementById('myMenu');
+
+    const inputTexts = document.querySelectorAll('input[type="text"]');
+    inputTexts.forEach(_ => {
+        _.addEventListener('click', (e) => showMenu(e));
+    })
+
+    function go(item) {
+
+        if (inputSelected) {
+            if (item === 'Add') {
+                let newValue = inputSelected.target.value;
+
+                newMenuItem({ title: newValue, page: newValue }, myMenu.querySelector('ul'));
+                localSaveValue(newValue);
+            }
+            else
+                inputSelected.target.value = item;
+        }
+
+
+        myMenu.style.display = 'none';
+    }
+
+    function localSaveValue(value) {
+        chrome.storage.local.set({ 'menu': 'value' }, function () {
+            console.log('Data saved');
+        });
+    }
+
+    function showMenu(e) {
+
+        inputSelected = e;
+
+        myMenu.style.top = (e.clientY + 20) + 'px';
+        myMenu.style.left = (e.clientX + 20) + 'px';
+
+        myMenu.style.display = 'block';
+        // myMenu.style.display = 'none';
+    }
+
+    function newMenuItem(item, menuList) {
+        const menuItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = item.title;
+        link.addEventListener('click', function () {
+            go(item.page);
+        });
+        menuItem.appendChild(link);
+        menuList.appendChild(menuItem);
+    }
+
+
+</script>
+
+</html>
