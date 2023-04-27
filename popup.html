@@ -1,34 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
+    <title>My Extension Popup</title>
+    <script>
 
-    <title>Getting Started Extension's Popup</title>
-    <style>
-      body {
-        min-width: 357px;
-        overflow-x: hidden;
-      }
-
-      img {
-        margin: 5px;
-        border: 2px solid black;
-        vertical-align: middle;
-        width: 75px;
-        height: 75px;
-      }
-    </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
-     -->
-    <script src="popup.js"></script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var toggle = document.getElementById('toggle');
+        toggle.addEventListener('click', function() {
+          if (toggle.checked) {
+            // Perform functionality when checkbox is checked
+          } else {
+            // Perform functionality when checkbox is unchecked
+          }
+        });
+      });
+    </script>
   </head>
   <body>
-    <div id="divBienvenido">Hi, using this simple extension you are able to get fullfill form super speed, active the modality and click a input, then appear a menu with all list of values customized</div>
+    <h1>Welcome to My Extension!</h1>
+    <p>This is the popup page for my extension.</p>
+    <label>
+      <input type="checkbox" id="toggle" />
+      Enable Functionality
+    </label>
   </body>
-
 </html>
-

@@ -7,160 +7,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <style>
-        #myMenu {
-            /* display: none; */
-            position: fixed;
-            top: 0;
-            width: 200px;
-            background-color: #fff;
-            z-index: 9999;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    <link rel="stylesheet" href="style.css">
+    <script src="constants.js"></script>
+    <script src="index.js"></script>
+    <script>
 
+        let inputSelected = undefined;
+
+        let _MENU_HTML = [
+           // { title: 'Add...', page: 'Add' }
+        ];
+
+        function localSaveValue(value) {
+            _MENU_HTML.push({ title: value, page: value });
+
+            window.localStorage.setItem({ 'menu': _MENU_HTML }, function () {
+
+            });
         }
 
-        #myMenu select {
-            appearance: none;
-            border: none;
-            background: transparent;
-            font-size: 18px;
-            padding: 10px;
-            width: 100%;
-            cursor: pointer;
-            outline: none;
-        }
+        _MENU_HTML = [..._MENU_HTML, ...(window.localStorage.getItem('menu') || { menu: [] }).menu]
 
-        #myMenu select option {
-            font-weight: bold;
-        }
+        document.addEventListener('click', function (e) {
 
-        #myMenu select option:first-child {
-            color: #999;
-            font-weight: normal;
-        }
+            doCloseOrAttachEvent();
+        });
 
-        #myMenu select::-ms-expand {
-            display: none;
-        }
+        window.addEventListener('load', function (e) {
 
-        #myMenu select option:before {
-            content: "";
-            display: none;
-        }
+            addMenu();
 
-        #myMenu nav ul {
-            list-style-type: none;
-        }
-
-        #myMenu .closeBtn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            /* padding: 10px; */
-            font-size: 15px;
-            color: #180606;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        #myMenu .closeBtn:hover {
-            color: #ccc;
-        }
-
-        #myMenu .header {
-            /* border: 1px solid #999; */
-            background-color: #999;
-            height: 20px;
-        }
-
-        
-    </style>
+            const inputTexts = document.querySelectorAll('input[type="text"]');
+            inputTexts.forEach(_ => {
+                _.addEventListener('click', (e) => showMenu(e));
+            });
+        });
+    </script>
 </head>
 
 <body>
-
-    <div id="myMenu">
+    <!-- <div id="__open_menu_id" style="top: 37px; left: 237px; display: block;">
         <div class="header">
-            <div>Open menú</div>
-            <button class="closeBtn">x</button>
+            <div>OpenMenu</div><button id="closeBtn" class="closeBtn">x</button>
         </div>
-
-        <nav>
-            
-            <ul>
-                <li><a href="javascript:go('Add')">Add New Item ...</a></li>
-                <li><a href="javascript:go('Home')">Home</a></li>
-                <li><a href="javascript:go('About')">About</a></li>
-                <li><a href="javascript:go('Contact')">Contact</a></li>
-            </ul>
-        </nav>
-    </div>
-
+        <div>
+            <div>
+                <div class="remove" style="width: 10%; display: inline-block;">X</div>
+                <div class="item" style="display: inline-block;">Add...</div>
+            </div>
+        </div>
+    </div> -->
     <input type="text" />
 
     <input type="text" />
 
     <input type="text" />
 </body>
-<script>
-    let inputSelected = undefined;
-
-    const menuToggle = document.getElementById('menuToggle');
-    const myMenu = document.getElementById('myMenu');
-
-    const inputTexts = document.querySelectorAll('input[type="text"]');
-    inputTexts.forEach(_ => {
-        _.addEventListener('click', (e) => showMenu(e));
-    })
-
-    function go(item) {
-
-        if (inputSelected) {
-            if (item === 'Add') {
-                let newValue = inputSelected.target.value;
-
-                newMenuItem({ title: newValue, page: newValue }, myMenu.querySelector('ul'));
-                localSaveValue(newValue);
-            }
-            else
-                inputSelected.target.value = item;
-        }
-
-
-        myMenu.style.display = 'none';
-    }
-
-    function localSaveValue(value) {
-        chrome.storage.local.set({ 'menu': 'value' }, function () {
-            console.log('Data saved');
-        });
-    }
-
-    function showMenu(e) {
-
-        inputSelected = e;
-
-        myMenu.style.top = (e.clientY + 20) + 'px';
-        myMenu.style.left = (e.clientX + 20) + 'px';
-
-        myMenu.style.display = 'block';
-        // myMenu.style.display = 'none';
-    }
-
-    function newMenuItem(item, menuList) {
-        const menuItem = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = '#';
-        link.textContent = item.title;
-        link.addEventListener('click', function () {
-            go(item.page);
-        });
-        menuItem.appendChild(link);
-        menuList.appendChild(menuItem);
-    }
-
-
-</script>
 
 </html>
