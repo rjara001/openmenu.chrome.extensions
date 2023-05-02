@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>My Extension Popup</title>
-    <script>
 
-      document.addEventListener('DOMContentLoaded', function() {
-        var toggle = document.getElementById('toggle');
-        toggle.addEventListener('click', function() {
-          if (toggle.checked) {
-            // Perform functionality when checkbox is checked
-          } else {
-            // Perform functionality when checkbox is unchecked
-          }
-        });
-      });
-    </script>
-  </head>
-  <body>
-    <h1>Welcome to My Extension!</h1>
-    <p>This is the popup page for my extension.</p>
-    <label>
-      <input type="checkbox" id="toggle" />
-      Enable Functionality
+<head>
+  <title>Menu Extend</title>
+
+  <style>
+    body {
+      width: 400px;
+      height: 300px;
+    }
+  </style>
+  <link rel="stylesheet" href="pop.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="header">Menu Extender v1</h1>
+    <p class="instructions">Double-click on any input field to extend the menu</p>
+    <label class="toggle-label">
+      <input type="checkbox" id="toggle" class="toggle-checkbox" />
+      <span class="toggle-text">Menu Extend Active</span>
     </label>
-  </body>
+  </div>
+
+</body>
+<script src="pop.js"></script>
+
 </html>

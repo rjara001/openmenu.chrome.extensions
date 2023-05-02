@@ -82,7 +82,8 @@ function showMenu(e) {
     __open_menu.style.top = (e.clientY + 20) + 'px';
     __open_menu.style.left = (e.clientX + 20) + 'px';
 
-    __open_menu.style.display = 'block';
+    if (activeExtension)
+        __open_menu.style.display = 'block';
     // _OPENMENU_MENU_ID.style.display = 'none';
 }
 
