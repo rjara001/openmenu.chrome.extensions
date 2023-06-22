@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "version": "0.3",
+    "version": "0.32",
     "short_name": "Menu",
     "name": "MenuExtend",
     "description": "Extension allow you rapidly to add values to input text",
@@ -27,13 +27,7 @@
             ]
         }
     ],
-    "browser_action": {
-        "default_popup": {
-          "height": 600,
-          "width": 800
-        },
-        "default_icon": "icon.png"
-      },
+
     "content_scripts": [
         {
             "matches": [
@@ -42,11 +36,13 @@
                 "https://*/*"
             ],
             "js": [
+                "jquery/jquery.min.js",
                 "background.js",
                 "constants.js",
                 "store.js",
-                "index.js",
-                "content.js"
+                "content.js",
+                "index.js"
+                
             ],
             "css": [
             

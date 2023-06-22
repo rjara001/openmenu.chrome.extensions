@@ -4,10 +4,11 @@ function doCloseOrAttachEvent() {
     if (isMenuOpened() && clickOutOfBox(event.target))
         closeMenu();
     else {
-        const inputTexts = document.querySelectorAll('input[type="text"], input[type="email"], input[type="number"], input[type="password"], input[type="date"]');
+        const inputTexts = $('input[type="text"], input[type="email"], input[type="number"], input[type="password"], input[type="date"]').toArray();
+
 
         inputTexts.forEach(_ => {
-                _.addEventListener('dblclick', (e) => showMenu(e));
+            _.addEventListener('click', (e) => showMenu(e));
         });
     }
 }
@@ -31,16 +32,16 @@ function isMenuOpened() {
 }
 
 function clickOutOfBox(obj) {
-   
+
     if (obj == null)
         return true;
 
     if (obj.shadowRoot !== undefined && obj.shadowRoot !== null)
         return false;
-        
+
     if (obj.nodeName === 'INPUT')
         return false;
-    
+
     if (obj.id != _OPENMENU_MENU_ID)// && obj.id != _divVeryMatch_IMAGEN)
         return clickOutOfBox(obj.parentNode);
 
@@ -59,16 +60,29 @@ function go(item) {
     // const __open_menu = shadowRoot.getElementById(_OPENMENU_MENU_ID);
     item = (item || '').trim();
 
-    if (inputSelected) {
+    console.log(inputSelected.val());
+    
+    if (inputSelected!==undefined) {
         if (item === 'Add') {
-            let newValue = (inputSelected.target.value || '').trim();
-            if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_=>_.page===item)) {
+            let newValue = (inputSelected.val() || '').trim();
+            if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.page === item)) {
                 newMenuItem({ title: newValue, page: newValue }, shadowRoot.querySelector('.list'));
                 localSaveValue(newValue);
             }
         }
-        else
-            inputSelected.target.value = item;
+        else {
+            // inputSelected.target.value = item;
+            // inputSelected.target.focus();
+            // Set the cursor position to the end of the input element
+
+            inputSelected.focus();
+            inputSelected.val(item);
+            
+            inputSelected.trigger('keydown');
+            inputSelected.trigger('keyup');
+            inputSelected.trigger('change');
+            inputSelected.focus();
+        }
     }
 
     // __open_menu.style.display = 'none';
@@ -77,7 +91,7 @@ function go(item) {
 function showMenu(e) {
     const __open_menu = shadowRoot.getElementById(_OPENMENU_MENU_ID);
 
-    inputSelected = e;
+    inputSelected = $(e.target);
 
     __open_menu.style.top = (e.clientY + 20) + 'px';
     __open_menu.style.left = (e.clientX + 20) + 'px';
@@ -94,23 +108,23 @@ function addMenu() {
 
     var containerMenu = document.createElement("div");
 
-   // containerMenu.setAttribute("id", _OPENMENU_MENU_ID + '_container');
+    // containerMenu.setAttribute("id", _OPENMENU_MENU_ID + '_container');
 
     var parentElement = document.createElement("div");
 
     parentElement.setAttribute("id", _OPENMENU_MENU_ID);
 
     // linkElem.onload = () => {
-        const linkElem = document.createElement('style');
-        // linkElem.setAttribute('rel', 'stylesheet');
-        // linkElem.setAttribute('href', 'style-shadow.css');
-        linkElem.innerHTML = _STYLE_AS_STRING;
-        shadowRoot = containerMenu.attachShadow({ mode: 'open' });
-        shadowRoot.appendChild(linkElem);
+    const linkElem = document.createElement('style');
+    // linkElem.setAttribute('rel', 'stylesheet');
+    // linkElem.setAttribute('href', 'style-shadow.css');
+    linkElem.innerHTML = _STYLE_AS_STRING;
+    shadowRoot = containerMenu.attachShadow({ mode: 'open' });
+    shadowRoot.appendChild(linkElem);
 
-        shadowRoot.appendChild(parentElement);
-        parentElement.appendChild(createHeader());
-        parentElement.appendChild(menuList);
+    shadowRoot.appendChild(parentElement);
+    parentElement.appendChild(createHeader());
+    parentElement.appendChild(menuList);
 
     //   };
     //   document.head.appendChild(linkElem);
@@ -123,7 +137,7 @@ function addMenu() {
         newMenuItem(item, menuList);
     });
 
-    
+
 }
 
 function createHeader() {
@@ -152,7 +166,7 @@ function createCloseBtn() {
 }
 
 function newMenuItem(item, menuList) {
-    
+
     const menuItem = document.createElement('div');
 
     // Create the outermost <div> element
