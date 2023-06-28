@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    
+    tr:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    Test your set: <input type="text" value="">
+  </div>
+  <table id="myTable">
+    <tr>
+      <th>Category</th>
+      <th>Text</th>
+      <th>Date</th>
+    </tr>
+  </table>
+
+  <script>
+    chrome.storage.local.get('menu', function(result) {
+      var tableData = result.data;
+      if (tableData && tableData.length > 0) {
+        var table = document.getElementById('myTable');
+
+        for (var i = 0; i < tableData.length; i++) {
+          var row = table.insertRow(-1);
+          var categoryCell = row.insertCell(0);
+          var textCell = row.insertCell(1);
+          var dateCell = row.insertCell(2);
+          
+          categoryCell.innerHTML = tableData[i].category;
+          textCell.innerHTML = tableData[i].text;
+          dateCell.innerHTML = tableData[i].date;
+        }
+      }
+    });
+  </script>
+  
+</body>
+</html>

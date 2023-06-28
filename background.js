@@ -1,5 +1,9 @@
 
 
+chrome.action.onClicked.addListener(function(tab) {
+    chrome.tabs.create({ url: "pop_v1.html" });
+  });
+
 // chrome.storage.sync.get("toggleValue", function(data) {
 //     // If toggle value is present in storage, use it
 //     // Otherwise, use the default value
