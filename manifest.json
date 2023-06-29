@@ -40,7 +40,7 @@
                 "store.js",
                 "content.js",
                 "index.js",
-                "pop_v1.js"
+                "js/pop_v1.js"
             ],
             "css": [],
             "all_frames": true

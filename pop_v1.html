@@ -1,34 +1,64 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <style>
     table {
       border-collapse: collapse;
       width: 100%;
     }
-    
-    th, td {
+
+    th,
+    td {
       text-align: left;
       padding: 8px;
     }
-    
+
     th {
       background-color: #f2f2f2;
     }
-    
+
     tr:nth-child(even) {
       background-color: #f9f9f9;
     }
-    
+
     tr:hover {
       background-color: #ddd;
     }
+
+    form {
+      display: inline-flex;
+    }
+
+    .category {
+      display: flex;
+    }
+
+    .text {
+      display: flex;
+    }
   </style>
 </head>
+
 <body>
-  <div>
-    Test your set: <input type="text" value="">
-  </div>
+  <form>
+    <div class="category">
+      <div>Category:</div>
+      <div><select>
+          <option>Personal</option>
+          <option>Testing</option>
+          <option>Applications</option>
+        </select></div>
+    </div>
+    <div class="text">
+      <div>Text:</div>
+      <div><input type="text"></input></div>
+    </div>
+<div>
+  <button>Save</button>
+</div>
+  </form>
+
   <table id="myTable">
     <tr>
       <th>Category</th>
@@ -37,7 +67,8 @@
     </tr>
   </table>
 
-  <script src="./pop_v1.js"></script>
-  
+  <script src="./js/pop_v1.js"></script>
+
 </body>
+
 </html>

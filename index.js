@@ -61,8 +61,8 @@ function go(item) {
     item = (item || '').trim();
 
     console.log(inputSelected.val());
-    
-    if (inputSelected!==undefined) {
+
+    if (inputSelected !== undefined) {
         if (item === 'Add') {
             let newValue = (inputSelected.val() || '').trim();
             if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.text === item)) {
@@ -77,7 +77,7 @@ function go(item) {
 
             inputSelected.focus();
             inputSelected.val(item);
-            
+
             inputSelected.trigger('keydown');
             inputSelected.trigger('keyup');
             inputSelected.trigger('change');
@@ -133,11 +133,45 @@ function addMenu() {
 
     newMenuItem({ text: 'Add...', page: '' }, menuList);
 
-    _MENU_HTML.forEach(item => {
-        newMenuItem(item, menuList);
+    // _MENU_HTML.forEach(item => {
+
+    //     newMenuItem(item, menuList);
+    // });
+
+    let categories = _MENU_HTML.reduce(function (acc, item) {
+        if (!acc.includes(item.category)) {
+            acc.push(item.category);
+        }
+        return acc;
+    }, []);
+
+    categories.forEach(item => {
+
+        newMenuCategory(item, menuList);
     });
+}
+
+function newMenuCategory(category, menuList) {
+
+    const menuItem = document.createElement('div');
+
+    menuItem.textContent = category;
+    menuItem.addEventListener('click', function () {
+        // remove(menuItem);
 
 
+        while (menuList.firstChild) {
+            menuList.removeChild(menuList.firstChild);
+          }
+        // menuList.children.forEach(_=>{
+        //     _.removeChild();
+        // })
+        _MENU_HTML.filter(_=>_.category === category).forEach(_=>{
+            newMenuItem(_, menuList);
+        })
+        
+    });
+    menuList.appendChild(menuItem);
 }
 
 function createHeader() {
