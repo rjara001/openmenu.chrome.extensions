@@ -39,7 +39,8 @@
                 "constants.js",
                 "store.js",
                 "content.js",
-                "index.js"
+                "index.js",
+                "pop_v1.js"
             ],
             "css": [],
             "all_frames": true

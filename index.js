@@ -65,8 +65,8 @@ function go(item) {
     if (inputSelected!==undefined) {
         if (item === 'Add') {
             let newValue = (inputSelected.val() || '').trim();
-            if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.page === item)) {
-                newMenuItem({ title: newValue, page: newValue }, shadowRoot.querySelector('.list'));
+            if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.text === item)) {
+                newMenuItem({ text: newValue, page: '' }, shadowRoot.querySelector('.list'));
                 localSaveValue(newValue);
             }
         }
@@ -131,7 +131,7 @@ function addMenu() {
 
     document.body.appendChild(containerMenu);
 
-    newMenuItem({ title: 'Add...', page: 'Add' }, menuList);
+    newMenuItem({ text: 'Add...', page: '' }, menuList);
 
     _MENU_HTML.forEach(item => {
         newMenuItem(item, menuList);
@@ -142,11 +142,11 @@ function addMenu() {
 
 function createHeader() {
     var _div = document.createElement("div");
-    var _title = document.createElement("div");
-    _title.innerText = NAME_EXTENSION;
+    var _text = document.createElement("div");
+    _text.innerText = NAME_EXTENSION;
 
     _div.setAttribute("class", "header");
-    _div.appendChild(_title);
+    _div.appendChild(_text);
     _div.appendChild(createCloseBtn());
 
     return _div;
@@ -187,13 +187,13 @@ function newMenuItem(item, menuList) {
     // Create the "item" <div> element
     const link = document.createElement('div');
     link.className = 'item';
-    link.textContent = addEllipsis(item.title, 15);
+    link.textContent = addEllipsis(item.text, 15);
     link.addEventListener('click', function () {
-        go(item.page);
+        go(item.text);
     });
 
     // Append the "remove" and "item" <div> elements to the first nested <div> element
-    if (item.page !== 'Add')
+    if (item.text !== 'Add')
         firstDiv.appendChild(removeDiv);
     firstDiv.appendChild(link);
 

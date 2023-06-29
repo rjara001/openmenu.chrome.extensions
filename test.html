@@ -15,11 +15,11 @@
         let inputSelected = undefined;
 
         let _MENU_HTML = [
-           // { title: 'Add...', page: 'Add' }
+           // { text: 'Add...', page: 'Add' }
         ];
 
         function localSaveValue(value) {
-            _MENU_HTML.push({ title: value, page: value });
+            _MENU_HTML.push({ text: value, page: '', date: new date() });
 
             window.localStorage.setItem({ 'menu': _MENU_HTML }, function () {
 

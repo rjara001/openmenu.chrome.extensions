@@ -13,7 +13,7 @@ function waitForMENUisLoaded(callback) {
 }
 
 let _MENU_HTML = [
-    // { title: 'Add...', page: 'Add' }
+    // { text: 'Add...', page: 'Add' }
 ];
 
 chrome.storage.sync.get("toggleValue", function (data) {

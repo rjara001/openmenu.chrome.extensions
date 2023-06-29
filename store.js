@@ -1,6 +1,6 @@
 
 function localSaveValue(value) {
-    _MENU_HTML.push({ title: value, page: value });
+    _MENU_HTML.push({ text: value, page: '' });
             
     chrome.storage.local.set({ 'menu': _MENU_HTML }, function() {
         
@@ -8,7 +8,7 @@ function localSaveValue(value) {
 }
 
 function localRemoveValue(value) {
-    _MENU_HTML = _MENU_HTML.filter(_=>_.page !== value.page);
+    _MENU_HTML = _MENU_HTML.filter(_=>_.text !== value.text);
             
     chrome.storage.local.set({ 'menu': _MENU_HTML }, function() {
         
