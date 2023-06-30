@@ -11,10 +11,12 @@ chrome.storage.local.get('menu', function(result) {
         var categoryCell = row.insertCell(0);
         var textCell = row.insertCell(1);
         var dateCell = row.insertCell(2);
+        var deleteCell = row.insertCell(3); // New cell for delete button
         
         categoryCell.innerHTML = tableData[i].category;
         textCell.innerHTML = tableData[i].text==undefined?tableData[i].title:tableData[i].text;
         dateCell.innerHTML = tableData[i].date;
+        deleteCell.innerHTML = '<button class="delete-btn" data-index="' + i + '">Delete</button>';// Delete button with onclick event
 
         // Add click event listener to each row
         row.addEventListener('click', createRowClickListener(tableData[i], i));
@@ -26,6 +28,29 @@ chrome.storage.local.get('menu', function(result) {
 var currentRow;
 var currentData;
 var currentDataIndex;
+
+// Event delegation for delete button click
+document.addEventListener('click', function(event) {
+  if (event.target.classList.contains('delete-btn')) {
+    var index = event.target.getAttribute('data-index');
+    deleteItem(index);
+  }
+});
+
+// Function to delete an item
+function deleteItem(index) {
+  chrome.storage.local.get('menu', function(result) {
+    var tableData = result.menu;    
+    if (tableData && tableData.length > 0) {
+      tableData.splice(index, 1); // Remove the item from the array
+
+      chrome.storage.local.set({ menu: tableData }, function() {
+        console.log('Item deleted successfully!');
+        location.reload();
+      });
+    }
+  });
+}
 
 // Function to create a click event listener for a row
 function createRowClickListener(rowData, index) {
@@ -74,4 +99,95 @@ function saveData() {
   chrome.storage.local.set({ menu: tableData }, function() {
     console.log('Data saved successfully!');
   });
+}
+
+
+// Event delegation for delete button click
+document.addEventListener('click', function(event) {
+  if (event.target.classList.contains('delete-btn')) {
+    var index = event.target.getAttribute('data-index');
+    deleteItem(index);
+  }
+});
+
+// Export button click event
+var exportButton = document.getElementById('exportButton');
+exportButton.addEventListener('click', exportData);
+
+// Import button click event
+var importButton = document.getElementById('importButton');
+importButton.addEventListener('click', importData);
+
+// Function to export the data
+function exportData() {
+  chrome.storage.local.get('menu', function(result) {
+    var tableData = result.menu;
+    if (tableData && tableData.length > 0) {
+      var csvContent = 'Category,Text,Date\n';
+
+      for (var i = 0; i < tableData.length; i++) {
+        var row = tableData[i];
+        var csvRow = row.category + ',' + (row.text || row.title) + ',' + row.date + '\n';
+        csvContent += csvRow;
+      }
+
+      var blob = new Blob([csvContent], { type: 'text/csv' });
+      var url = URL.createObjectURL(blob);
+
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'menu_data.csv';
+      a.click();
+
+      // Clean up the object URL
+      URL.revokeObjectURL(url);
+    }
+  });
+}
+
+// Function to import the data
+function importData() {
+  var inputElement = document.getElementById('importInput');
+  inputElement.click();
+
+  inputElement.addEventListener('change', function() {
+    var file = inputElement.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function(event) {
+      var csvData = event.target.result;
+      var menuData = parseCSV(csvData);
+
+      chrome.storage.local.set({ menu: menuData }, function() {
+        console.log('Data imported successfully!');
+        location.reload();
+      });
+    };
+
+    reader.readAsText(file);
+  });
+}
+
+// Function to parse CSV data
+function parseCSV(csvData) {
+  var lines = csvData.split('\n');
+  var menuData = [];
+
+  for (var i = 1; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (line) {
+      var values = line.split(',');
+      var category = values[0].trim();
+      var text = values[1].trim();
+      var date = values[2].trim();
+      var item = {
+        category: category,
+        text: text,
+        date: date
+      };
+      menuData.push(item);
+    }
+  }
+
+  return menuData;
 }

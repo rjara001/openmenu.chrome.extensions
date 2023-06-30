@@ -66,7 +66,7 @@ function go(item, isAdd) {
         if (isAdd) {
             let newValue = (inputSelected.val() || '').trim();
             if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.text === item)) {
-                newMenuItem({ text: newValue, page: '' }, shadowRoot.querySelector('.list'));
+                newMenuItem({ text: newValue, page: '', date: new Date(), }, shadowRoot.querySelector('.list'));
                 localSaveValue(newValue);
             }
         }
@@ -245,7 +245,7 @@ function newMenuItem(item, menuList, type) {
     // Append the "remove" and "item" <div> elements to the first nested <div> element
     if (!isAdd && !isCategory)
         firstDiv.appendChild(removeDiv);
-        
+
     firstDiv.appendChild(link);
 
     // Append the first nested <div> element to the outermost <div> element
