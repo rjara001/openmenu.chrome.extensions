@@ -45,7 +45,8 @@ function createRowClickListener(rowData, index) {
 }
 // Add event listener to the "Save" button
 var saveButton = document.querySelector('button');
-saveButton.addEventListener('click', saveData);
+if (saveButton)
+  saveButton.addEventListener('click', saveData);
 
 // Function to save the updated data
 function saveData() {

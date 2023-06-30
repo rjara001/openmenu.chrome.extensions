@@ -56,14 +56,14 @@ function addEllipsis(text, maxLength) {
     }
 }
 
-function go(item) {
+function go(item, isAdd) {
     // const __open_menu = shadowRoot.getElementById(_OPENMENU_MENU_ID);
     item = (item || '').trim();
 
     console.log(inputSelected.val());
 
     if (inputSelected !== undefined) {
-        if (item === 'Add') {
+        if (isAdd) {
             let newValue = (inputSelected.val() || '').trim();
             if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.text === item)) {
                 newMenuItem({ text: newValue, page: '' }, shadowRoot.querySelector('.list'));
@@ -104,6 +104,7 @@ function showMenu(e) {
 function addMenu() {
 
     const menuList = document.createElement('div');
+
     menuList.className = 'list'
 
     var containerMenu = document.createElement("div");
@@ -131,12 +132,11 @@ function addMenu() {
 
     document.body.appendChild(containerMenu);
 
-    newMenuItem({ text: 'Add...', page: '' }, menuList);
+    loadCategories(menuList);
+}
 
-    // _MENU_HTML.forEach(item => {
-
-    //     newMenuItem(item, menuList);
-    // });
+function loadCategories(menuList) {
+    newMenuItem({ text: 'Add...', page: ''}, menuList, 'add');
 
     let categories = _MENU_HTML.reduce(function (acc, item) {
         if (!acc.includes(item.category)) {
@@ -155,23 +155,29 @@ function newMenuCategory(category, menuList) {
 
     const menuItem = document.createElement('div');
 
-    menuItem.textContent = category;
+    menuItem.textContent = '-> ' + category;
     menuItem.addEventListener('click', function () {
         // remove(menuItem);
 
 
-        while (menuList.firstChild) {
-            menuList.removeChild(menuList.firstChild);
-          }
+        cleanChildElement(menuList);
         // menuList.children.forEach(_=>{
         //     _.removeChild();
         // })
-        _MENU_HTML.filter(_=>_.category === category).forEach(_=>{
+        newMenuItem({ text: '<- ' + category }, menuList, 'category');
+        _MENU_HTML.filter(_ => _.category === category).forEach(_ => {
+
             newMenuItem(_, menuList);
         })
-        
+
     });
     menuList.appendChild(menuItem);
+}
+
+function cleanChildElement(menuList) {
+    while (menuList.firstChild) {
+        menuList.removeChild(menuList.firstChild);
+    }
 }
 
 function createHeader() {
@@ -199,7 +205,9 @@ function createCloseBtn() {
     return closeBtn;
 }
 
-function newMenuItem(item, menuList) {
+function newMenuItem(item, menuList, type) {
+    const isCategory = type === 'category'
+    const isAdd = type === 'add'
 
     const menuItem = document.createElement('div');
 
@@ -222,13 +230,22 @@ function newMenuItem(item, menuList) {
     const link = document.createElement('div');
     link.className = 'item';
     link.textContent = addEllipsis(item.text, 15);
-    link.addEventListener('click', function () {
-        go(item.text);
-    });
-
+    if (isCategory)
+        link.addEventListener('click', function () {
+            //let menuList = shadowRoot.getElementById(_OPENMENU_MENU_ID);
+            let elemnt = shadowRoot.querySelector('.list');
+            
+            cleanChildElement(elemnt);
+            loadCategories(elemnt);
+        });
+    else
+        link.addEventListener('click', function () {
+            go(item.text, isAdd);
+        });
     // Append the "remove" and "item" <div> elements to the first nested <div> element
-    if (item.text !== 'Add')
+    if (!isAdd && !isCategory)
         firstDiv.appendChild(removeDiv);
+        
     firstDiv.appendChild(link);
 
     // Append the first nested <div> element to the outermost <div> element
