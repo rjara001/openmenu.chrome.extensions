@@ -66,8 +66,9 @@ function go(item, isAdd) {
         if (isAdd) {
             let newValue = (inputSelected.val() || '').trim();
             if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.text === item)) {
-                newMenuItem({ text: newValue, page: '', date: new Date(), }, shadowRoot.querySelector('.list'));
-                localSaveValue(newValue);
+                const item = { text: newValue, page: '', date: (new Date()).toISOString() };
+                newMenuItem(item, shadowRoot.querySelector('.list'));
+                localSaveValue(item);
             }
         }
         else {
@@ -136,26 +137,28 @@ function addMenu() {
 }
 
 function loadCategories(menuList) {
-    newMenuItem({ text: 'Add...', page: ''}, menuList, 'add');
+    newMenuItem({ text: 'Add...', page: '' }, menuList, 'add');
 
-    let categories = _MENU_HTML.reduce(function (acc, item) {
-        if (!acc.includes(item.category)) {
-            acc.push(item.category);
-        }
-        return acc;
-    }, []);
+    let categories = getUniqueCategories(_MENU_HTML);
+    const categoriesFiltered = categories.filter(_ => _ !== undefined);
 
-    categories.forEach(item => {
+    categoriesFiltered.forEach(item => {
 
         newMenuCategory(item, menuList);
     });
+    if (categoriesFiltered.length === 0)
+        showMenusItems(undefined, menuList);
+
 }
 
 function newMenuCategory(category, menuList) {
 
     const menuItem = document.createElement('div');
-
+    menuItem.classList.add('item');
     menuItem.textContent = '-> ' + category;
+    // menuItem.style.cssText = 'cursor:pointer';
+    menuItem.classList.add("category");
+
     menuItem.addEventListener('click', function () {
         // remove(menuItem);
 
@@ -165,13 +168,17 @@ function newMenuCategory(category, menuList) {
         //     _.removeChild();
         // })
         newMenuItem({ text: '<- ' + category }, menuList, 'category');
-        _MENU_HTML.filter(_ => _.category === category).forEach(_ => {
-
-            newMenuItem(_, menuList);
-        })
+        showMenusItems(category, menuList);
 
     });
     menuList.appendChild(menuItem);
+}
+
+function showMenusItems(category, menuList) {
+    _MENU_HTML.filter(_ => _.category === category).forEach(_ => {
+
+        newMenuItem(_, menuList);
+    });
 }
 
 function cleanChildElement(menuList) {
@@ -213,10 +220,10 @@ function newMenuItem(item, menuList, type) {
 
     // Create the outermost <div> element
     const outerDiv = document.createElement('div');
-
+    outerDiv.classList.add('item');
     // Create the first nested <div> element
     const firstDiv = document.createElement('div');
-
+    firstDiv.classList.add('itemline')
     // Create the "remove" <div> element
     const removeDiv = document.createElement('div');
     removeDiv.textContent = 'X';
@@ -234,7 +241,7 @@ function newMenuItem(item, menuList, type) {
         link.addEventListener('click', function () {
             //let menuList = shadowRoot.getElementById(_OPENMENU_MENU_ID);
             let elemnt = shadowRoot.querySelector('.list');
-            
+
             cleanChildElement(elemnt);
             loadCategories(elemnt);
         });

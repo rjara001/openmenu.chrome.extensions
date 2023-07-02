@@ -13,11 +13,11 @@ toggleButton.addEventListener("change", function () {
         // ...and send a request for the DOM info...
         chrome.tabs.sendMessage(tabs[0].id,
             { "toggleValue": toggleButton.checked }, function (response) {
-                   
-                });
-            // ...also specifying a callback to be called 
-            //    from the receiving end (content script).
-             } );
+
+            });
+        // ...also specifying a callback to be called 
+        //    from the receiving end (content script).
+    });
 
     // chrome.runtime.sendMessage({ message: { "toggleValue": toggleButton.checked } }, function (response) {
     //     chrome.storage.sync.set({ toggleValue: toggleButton.checked });
@@ -25,11 +25,13 @@ toggleButton.addEventListener("change", function () {
     // });
 });
 
-chrome.storage.sync.get("toggleValue", function (data) {
-    // If toggle value is present in storage, use it
-    // Otherwise, use the default value 
-    toggleValue = data.toggleValue !== undefined ? data.toggleValue : true;
+if (chrome.storage) {
+    chrome.storage.sync.get("toggleValue", function (data) {
+        // If toggle value is present in storage, use it
+        // Otherwise, use the default value 
+        toggleValue = data.toggleValue !== undefined ? data.toggleValue : true;
 
-    // Update the toggle element based on the value
-    document.getElementById("toggle").checked = toggleValue;
-});
+        // Update the toggle element based on the value
+        document.getElementById("toggle").checked = toggleValue;
+    });
+}

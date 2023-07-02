@@ -1,36 +1,38 @@
 var tableData
 
-chrome.storage.local.get('menu', function(result) {
+if (chrome.storage)
+  chrome.storage.local.get('menu', function (result) {
     tableData = result.menu;
     if (tableData && tableData.length > 0) {
       var table = document.getElementById('myTable');
 
-      for (var i = 0; i < tableData.length; i++) {
-        var row = table.insertRow(-1);
-      
-        var categoryCell = row.insertCell(0);
-        var textCell = row.insertCell(1);
-        var dateCell = row.insertCell(2);
-        var deleteCell = row.insertCell(3); // New cell for delete button
-        
-        categoryCell.innerHTML = tableData[i].category;
-        textCell.innerHTML = tableData[i].text==undefined?tableData[i].title:tableData[i].text;
-        dateCell.innerHTML = tableData[i].date;
-        deleteCell.innerHTML = '<button class="delete-btn" data-index="' + i + '">Delete</button>';// Delete button with onclick event
+      if (table)
+        for (var i = 0; i < tableData.length; i++) {
+          var row = table.insertRow(-1);
 
-        // Add click event listener to each row
-        row.addEventListener('click', createRowClickListener(tableData[i], i));
-      }
+          var categoryCell = row.insertCell(0);
+          var textCell = row.insertCell(1);
+          var dateCell = row.insertCell(2);
+          var deleteCell = row.insertCell(3); // New cell for delete button
+
+          categoryCell.innerHTML = tableData[i].category;
+          textCell.innerHTML = tableData[i].text == undefined ? tableData[i].title : tableData[i].text;
+          dateCell.innerHTML = tableData[i].date;
+          deleteCell.innerHTML = '<button class="delete-btn" data-index="' + i + '">Delete</button>';// Delete button with onclick event
+
+          // Add click event listener to each row
+          row.addEventListener('click', createRowClickListener(tableData[i], i));
+        }
     }
   });
 
-  // Variables to store the current row and data
+// Variables to store the current row and data
 var currentRow;
 var currentData;
 var currentDataIndex;
 
 // Event delegation for delete button click
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
   if (event.target.classList.contains('delete-btn')) {
     var index = event.target.getAttribute('data-index');
     deleteItem(index);
@@ -39,12 +41,12 @@ document.addEventListener('click', function(event) {
 
 // Function to delete an item
 function deleteItem(index) {
-  chrome.storage.local.get('menu', function(result) {
-    var tableData = result.menu;    
+  chrome.storage.local.get('menu', function (result) {
+    var tableData = result.menu;
     if (tableData && tableData.length > 0) {
       tableData.splice(index, 1); // Remove the item from the array
 
-      chrome.storage.local.set({ menu: tableData }, function() {
+      chrome.storage.local.set({ menu: tableData }, function () {
         console.log('Item deleted successfully!');
         location.reload();
       });
@@ -54,9 +56,9 @@ function deleteItem(index) {
 
 // Function to create a click event listener for a row
 function createRowClickListener(rowData, index) {
-  return function() {
+  return function () {
     // Set the values in the HTML form
-    var categorySelect = document.querySelector('.category select');
+    var categorySelect = document.getElementById("searchInput");
     var textInput = document.querySelector('.text input');
 
     categorySelect.value = rowData.category;
@@ -75,7 +77,7 @@ if (saveButton)
 
 // Function to save the updated data
 function saveData() {
-  var categorySelect = document.querySelector('.category select');
+  var categorySelect = document.getElementById("searchInput");
   var textInput = document.querySelector('.text input');
 
   var categoryValue = categorySelect.value;
@@ -88,22 +90,22 @@ function saveData() {
   // Update the row in the table
   var categoryCell = currentRow.cells[0];
   var textCell = currentRow.cells[1];
-  
+
   categoryCell.innerHTML = currentData.category;
   textCell.innerHTML = currentData.text;
 
-    // Update the value in the tableData array
-    tableData[currentDataIndex] = currentData;
+  // Update the value in the tableData array
+  tableData[currentDataIndex] = currentData;
 
   // Perform the necessary saving logic using chrome.storage.local.set()
-  chrome.storage.local.set({ menu: tableData }, function() {
+  chrome.storage.local.set({ menu: tableData }, function () {
     console.log('Data saved successfully!');
   });
 }
 
 
 // Event delegation for delete button click
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
   if (event.target.classList.contains('delete-btn')) {
     var index = event.target.getAttribute('data-index');
     deleteItem(index);
@@ -112,15 +114,17 @@ document.addEventListener('click', function(event) {
 
 // Export button click event
 var exportButton = document.getElementById('exportButton');
-exportButton.addEventListener('click', exportData);
+if (exportButton)
+  exportButton.addEventListener('click', exportData);
 
 // Import button click event
 var importButton = document.getElementById('importButton');
-importButton.addEventListener('click', importData);
+if (importButton)
+  importButton.addEventListener('click', importData);
 
 // Function to export the data
 function exportData() {
-  chrome.storage.local.get('menu', function(result) {
+  chrome.storage.local.get('menu', function (result) {
     var tableData = result.menu;
     if (tableData && tableData.length > 0) {
       var csvContent = 'Category,Text,Date\n';
@@ -150,15 +154,15 @@ function importData() {
   var inputElement = document.getElementById('importInput');
   inputElement.click();
 
-  inputElement.addEventListener('change', function() {
+  inputElement.addEventListener('change', function () {
     var file = inputElement.files[0];
     var reader = new FileReader();
 
-    reader.onload = function(event) {
+    reader.onload = function (event) {
       var csvData = event.target.result;
       var menuData = parseCSV(csvData);
 
-      chrome.storage.local.set({ menu: menuData }, function() {
+      chrome.storage.local.set({ menu: menuData }, function () {
         console.log('Data imported successfully!');
         location.reload();
       });
@@ -191,3 +195,45 @@ function parseCSV(csvData) {
 
   return menuData;
 }
+
+var searchInput = document.getElementById("searchInput");
+
+if (searchInput)
+  searchInput.addEventListener("input", function () {
+    var query = searchInput.value;
+    var matches = getSuggestions(query);
+    displaySuggestions(matches);
+  });
+
+function getSuggestions(query) {
+  var matches = [];
+  const suggestions = getUniqueCategories(tableData);
+  if (suggestions)
+    for (var i = 0; i < suggestions.length; i++) {
+      var suggestion = suggestions[i];
+      if (suggestion.toLowerCase().startsWith(query.toLowerCase())) {
+        matches.push(suggestion);
+      }
+    }
+  return matches;
+}
+
+function displaySuggestions(matches) {
+  var suggestionsList = document.getElementById("suggestionsList");
+  suggestionsList.innerHTML = ""; // Clear previous suggestions
+  suggestionsList.style.display = 'block';
+
+  for (var i = 0; i < matches.length; i++) {
+    var suggestion = matches[i];
+    var listItem = document.createElement("li");
+    listItem.innerText = suggestion;
+    listItem.addEventListener("click", function () {
+      searchInput.value = this.innerText;
+      suggestionsList.innerHTML = ""; // Hide suggestions
+      suggestionsList.style.display = 'none';
+    });
+    suggestionsList.appendChild(listItem);
+  }
+}
+
+

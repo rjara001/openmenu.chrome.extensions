@@ -1,6 +1,6 @@
 
-function localSaveValue(value) {
-    _MENU_HTML.push({ text: value, page: '' });
+function localSaveValue(item) {
+    _MENU_HTML.push(item);
             
     chrome.storage.local.set({ 'menu': _MENU_HTML }, function() {
         

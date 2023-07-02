@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="pop.css">
+  <link rel="stylesheet" href="./css/pop.css">
   <style>
     table {
       border-collapse: collapse;
@@ -53,11 +53,10 @@
   <form>
     <div class="category">
       <div>Category:</div>
-      <div><select>
-          <option>Personal</option>
-          <option>Testing</option>
-          <option>Applications</option>
-        </select></div>
+      <div><input type="text" id="searchInput" />
+        <ul id="suggestionsList" style="display: none;"></ul>
+
+      </div>
     </div>
     <div class="text">
       <div>Text:</div>
@@ -82,6 +81,7 @@
   <button id="importButton">Import Data</button>
   
   <script src="pop.js"></script>
+  <script src="./js/util.js"></script>
   <script src="./js/pop_v1.js"></script>
 
 </body>
