@@ -56,17 +56,20 @@ function addEllipsis(text, maxLength) {
     }
 }
 
-function go(item, isAdd) {
+function go(item, option) {
     // const __open_menu = shadowRoot.getElementById(_OPENMENU_MENU_ID);
     item = (item || '').trim();
-
-    console.log(inputSelected.val());
+    const isAdd = option === 'add'
+    const isFulfill = option === 'fulfill'
 
     if (inputSelected !== undefined) {
+        if (isFulfill)
+            FullfillAction();
         if (isAdd) {
             let newValue = (inputSelected.val() || '').trim();
             if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.text === item)) {
-                const item = { text: newValue, page: '', date: (new Date()).toISOString() };
+                
+                const item = { text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(inputOffset)};
                 newMenuItem(item, shadowRoot.querySelector('.list'));
                 localSaveValue(item);
             }
@@ -100,6 +103,7 @@ function showMenu(e) {
     if (activeExtension)
         __open_menu.style.display = 'block';
     // _OPENMENU_MENU_ID.style.display = 'none';
+
 }
 
 function addMenu() {
@@ -137,7 +141,8 @@ function addMenu() {
 }
 
 function loadCategories(menuList) {
-    newMenuItem({ text: 'Add...', page: '' }, menuList, 'add');
+    
+    menuList.appendChild(newMenuOptionsItem());
 
     let categories = getUniqueCategories(_MENU_HTML);
     const categoriesFiltered = categories.filter(_ => _ !== undefined);
@@ -233,7 +238,7 @@ function newMenuItem(item, menuList, type) {
         menuItem.remove();
         localRemoveValue(item);
     });
-    // Create the "item" <div> element
+    
     const link = document.createElement('div');
     link.className = 'item';
     link.textContent = addEllipsis(item.text, 15);
@@ -262,4 +267,3 @@ function newMenuItem(item, menuList, type) {
 
     menuList.appendChild(menuItem);
 }
-

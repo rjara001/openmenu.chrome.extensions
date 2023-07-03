@@ -16,6 +16,8 @@ let _MENU_HTML = [
     // { text: 'Add...', page: 'Add' }
 ];
 
+var _CURRENT_URL = '';
+
 chrome.storage.sync.get("toggleValue", function (data) {
     // If toggle value is present in storage, use it
     // Otherwise, use the default value 
@@ -52,4 +54,3 @@ document.addEventListener('click', function (e) {
 window.addEventListener('load', function (e) {
     waitForMENUisLoaded(addMenu);
 });
-

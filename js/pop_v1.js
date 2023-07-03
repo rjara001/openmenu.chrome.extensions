@@ -13,11 +13,15 @@ if (chrome.storage)
           var categoryCell = row.insertCell(0);
           var textCell = row.insertCell(1);
           var dateCell = row.insertCell(2);
-          var deleteCell = row.insertCell(3); // New cell for delete button
+          var originCell = row.insertCell(3);
+          var positionCell = row.insertCell(4);
+          var deleteCell = row.insertCell(5); // New cell for delete button
 
           categoryCell.innerHTML = tableData[i].category;
           textCell.innerHTML = tableData[i].text == undefined ? tableData[i].title : tableData[i].text;
           dateCell.innerHTML = tableData[i].date;
+          originCell.innerHTML = tableData[i].page;
+          positionCell.innerHTML = tableData[i].position;
           deleteCell.innerHTML = '<button class="delete-btn" data-index="' + i + '">Delete</button>';// Delete button with onclick event
 
           // Add click event listener to each row

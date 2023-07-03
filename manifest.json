@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "version": "0.34",
+    "version": "0.35",
     "short_name": "Menu",
     "name": "MenuExtend",
     "description": "Extension allow you rapidly to add values to input text",
@@ -16,7 +16,8 @@
     },
     "permissions": [
         "storage",
-        "activeTab"
+        "activeTab",
+        "scripting"
     ],
     "web_accessible_resources": [
         {
