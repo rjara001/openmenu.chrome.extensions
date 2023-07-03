@@ -61,31 +61,33 @@ function go(item, option) {
     item = (item || '').trim();
     const isAdd = option === 'add'
     const isFulfill = option === 'fulfill'
+    const isReadAll = option === 'readall'
 
     if (inputSelected !== undefined) {
-        if (isFulfill)
-            FullfillAction();
-        if (isAdd) {
-            let newValue = (inputSelected.val() || '').trim();
-            if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.text === item)) {
-                
-                const item = { text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(inputSelected)};
-                newMenuItem(item, shadowRoot.querySelector('.list'));
-                localSaveValue(item);
-            }
-        }
-        else {
-            // inputSelected.target.value = item;
-            // inputSelected.target.focus();
-            // Set the cursor position to the end of the input element
+        switch (true) {
+            case isFulfill:
+                FullfillAction();
+                break;
+            case isReadAll:
+                ReadAllAction();
+                break;
+            case isAdd:
+                AddAction(inputSelected);
+                break;
+            default:
+                {
+                    // inputSelected.target.value = item;
+                    // inputSelected.target.focus();
+                    // Set the cursor position to the end of the input element
 
-            inputSelected.focus();
-            inputSelected.val(item);
+                    inputSelected.focus();
+                    inputSelected.val(item);
 
-            inputSelected.trigger('keydown');
-            inputSelected.trigger('keyup');
-            inputSelected.trigger('change');
-            inputSelected.focus();
+                    inputSelected.trigger('keydown');
+                    inputSelected.trigger('keyup');
+                    inputSelected.trigger('change');
+                    inputSelected.focus();
+                }
         }
     }
 
@@ -141,7 +143,7 @@ function addMenu() {
 }
 
 function loadCategories(menuList) {
-    
+
     menuList.appendChild(newMenuOptionsItem());
 
     let categories = getUniqueCategories(_MENU_HTML);
@@ -238,7 +240,7 @@ function newMenuItem(item, menuList, type) {
         menuItem.remove();
         localRemoveValue(item);
     });
-    
+
     const link = document.createElement('div');
     link.className = 'item';
     link.textContent = addEllipsis(item.text, 15);
