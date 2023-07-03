@@ -92,7 +92,10 @@ function getPosition(input) {
 function FullfillAction() {
     const inputTexts = $('input[type="text"], input[type="email"], input[type="number"], input[type="password"], input[type="date"]').toArray();
 
-    var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ id: getPosition(element) })), _MENU_HTML.map(_ => ({ id: _.position })), 'id');
-    console.log(joinedArray);
+    var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...element, position: getPosition(element) })), _MENU_HTML, 'position');
+
+    joinedArray.forEach(_=>{
+        _.val(_.text);
+    })
 
 }

@@ -69,7 +69,7 @@ function go(item, option) {
             let newValue = (inputSelected.val() || '').trim();
             if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.text === item)) {
                 
-                const item = { text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(inputOffset)};
+                const item = { text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(inputSelected)};
                 newMenuItem(item, shadowRoot.querySelector('.list'));
                 localSaveValue(item);
             }
