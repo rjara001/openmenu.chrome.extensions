@@ -9,13 +9,18 @@ function doCloseOrAttachEvent() {
 
         inputTexts.forEach(_ => {
             _.addEventListener('click', (e) => showMenu(e));
+            _.addEventListener('blur', (e) => autoSave(e));
         });
     }
 }
 
+function autoSave(e) {
+    if (activeAutoSave)
+        AddAction($(e.target), 'AutoSave');
+}
+
 function closeMenu() {
     if (!shadowRoot) return;
-
 
     const __open_menu = shadowRoot.getElementById(_OPENMENU_MENU_ID);
 
@@ -62,9 +67,13 @@ function go(item, option) {
     const isAdd = option === 'add'
     const isFulfill = option === 'fulfill'
     const isReadAll = option === 'readall'
+    const clearAll = option === 'clear'
 
     if (inputSelected !== undefined) {
         switch (true) {
+            case clearAll:
+                ClearAction();
+                break;
             case isFulfill:
                 FullfillAction();
                 break;
@@ -90,8 +99,6 @@ function go(item, option) {
                 }
         }
     }
-
-    // __open_menu.style.display = 'none';
 }
 
 function showMenu(e) {
@@ -116,8 +123,6 @@ function addMenu() {
 
     var containerMenu = document.createElement("div");
 
-    // containerMenu.setAttribute("id", _OPENMENU_MENU_ID + '_container');
-
     var parentElement = document.createElement("div");
 
     parentElement.setAttribute("id", _OPENMENU_MENU_ID);
@@ -133,9 +138,6 @@ function addMenu() {
     shadowRoot.appendChild(parentElement);
     parentElement.appendChild(createHeader());
     parentElement.appendChild(menuList);
-
-    //   };
-    //   document.head.appendChild(linkElem);
 
     document.body.appendChild(containerMenu);
 
@@ -153,7 +155,7 @@ function loadCategories(menuList) {
 
         newMenuCategory(item, menuList);
     });
-    if (categoriesFiltered.length === 0)
+    // if (categoriesFiltered.length === 0)
         showMenusItems(undefined, menuList);
 
 }
@@ -163,17 +165,13 @@ function newMenuCategory(category, menuList) {
     const menuItem = document.createElement('div');
     menuItem.classList.add('item');
     menuItem.textContent = '-> ' + category;
-    // menuItem.style.cssText = 'cursor:pointer';
+
     menuItem.classList.add("category");
 
     menuItem.addEventListener('click', function () {
-        // remove(menuItem);
-
 
         cleanChildElement(menuList);
-        // menuList.children.forEach(_=>{
-        //     _.removeChild();
-        // })
+
         newMenuItem({ text: '<- ' + category }, menuList, 'category');
         showMenusItems(category, menuList);
 

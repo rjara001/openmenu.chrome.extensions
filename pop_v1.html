@@ -38,6 +38,10 @@
     .text {
       display: flex;
     }
+
+    .checkboxgroup {
+      display: flex;
+    }
   </style>
 </head>
 
@@ -45,10 +49,17 @@
   <div class="container">
     <h1 class="header">Menu Extender v1</h1>
     <p class="instructions">Double-click on any input field to extend the menu</p>
-    <label class="toggle-label">
-      <input type="checkbox" id="toggle" class="toggle-checkbox" />
-      <span class="toggle-text">Menu Extend Active</span>
-    </label>
+    <div class="checkboxgroup">
+      <label class="toggle-label">
+        <input type="checkbox" id="menu-active" class="toggle-checkbox" />
+        <span class="toggle-text">Menu Extend Active</span>
+      </label>
+      <label class="toggle-label">
+        <input type="checkbox" id="auto-save" class="toggle-checkbox" />
+        <span class="toggle-text">Auto Save Active</span>
+      </label>
+    </div>
+
   </div>
   <form>
     <div class="category">
@@ -62,9 +73,9 @@
       <div>Text:</div>
       <div><input type="text"></input></div>
     </div>
-<div>
-  <button>Save</button>
-</div>
+    <div>
+      <button>Save</button>
+    </div>
   </form>
 
   <table id="myTable">
@@ -81,7 +92,7 @@
   <button id="exportButton">Export Data</button>
   <input type="file" id="importInput" accept=".csv" style="display: none;">
   <button id="importButton">Import Data</button>
-  
+
   <script src="pop.js"></script>
   <script src="./js/util.js"></script>
   <script src="./js/pop_v1.js"></script>

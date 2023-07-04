@@ -215,9 +215,10 @@ function getSuggestions(query) {
   if (suggestions)
     for (var i = 0; i < suggestions.length; i++) {
       var suggestion = suggestions[i];
-      if (suggestion.toLowerCase().startsWith(query.toLowerCase())) {
-        matches.push(suggestion);
-      }
+      if (suggestion)
+        if (suggestion.toLowerCase().startsWith(query.toLowerCase())) {
+          matches.push(suggestion);
+        }
     }
   return matches;
 }

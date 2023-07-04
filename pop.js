@@ -1,10 +1,10 @@
-var toggleButton = document.getElementById("toggle");
+var divMenuActive = document.getElementById("menu-active");
+var divAutoButton = document.getElementById("auto-save");
 
+divAutoButton.addEventListener("change", function () {
 
-toggleButton.addEventListener("change", function () {
-
-    toggleValue = this.checked;
-    chrome.storage.sync.set({ toggleValue: toggleValue });
+    autoSave = this.checked;
+    chrome.storage.sync.set({ autoSave });
 
     chrome.tabs.query({
         active: true,
@@ -12,26 +12,47 @@ toggleButton.addEventListener("change", function () {
     }, tabs => {
         // ...and send a request for the DOM info...
         chrome.tabs.sendMessage(tabs[0].id,
-            { "toggleValue": toggleButton.checked }, function (response) {
+            { "autoSave": divAutoButton.checked }, function (response) {
 
             });
-        // ...also specifying a callback to be called 
-        //    from the receiving end (content script).
-    });
 
-    // chrome.runtime.sendMessage({ message: { "toggleValue": toggleButton.checked } }, function (response) {
-    //     chrome.storage.sync.set({ toggleValue: toggleButton.checked });
-    //     console.log("Received response:", toggleButton.checked);
-    // });
+    });
+});
+
+divMenuActive.addEventListener("change", function () {
+
+    menuActive = this.checked;
+    chrome.storage.sync.set({ menuActive });
+
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    }, tabs => {
+        // ...and send a request for the DOM info...
+        chrome.tabs.sendMessage(tabs[0].id,
+            { "menuActive": divMenuActive.checked }, function (response) {
+
+            });
+    });
 });
 
 if (chrome.storage) {
-    chrome.storage.sync.get("toggleValue", function (data) {
+    chrome.storage.sync.get("menuActive", function (data) {
         // If toggle value is present in storage, use it
         // Otherwise, use the default value 
-        toggleValue = data.toggleValue !== undefined ? data.toggleValue : true;
+        menuActive = data.menuActive !== undefined ? data.menuActive : true;
 
         // Update the toggle element based on the value
-        document.getElementById("toggle").checked = toggleValue;
+        document.getElementById("menu-active").checked = menuActive;
+    });
+}
+if (chrome.storage) {
+    chrome.storage.sync.get("autoSave", function (data) {
+        // If toggle value is present in storage, use it
+        // Otherwise, use the default value 
+        autoSave = data.autoSave !== undefined ? data.autoSave : true;
+
+        // Update the toggle element based on the value
+        document.getElementById("auto-save").checked = autoSave;
     });
 }

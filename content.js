@@ -18,15 +18,33 @@ let _MENU_HTML = [
 
 var _CURRENT_URL = '';
 
-chrome.storage.sync.get("toggleValue", function (data) {
+chrome.storage.sync.get("autoSave", function (data) {
     // If toggle value is present in storage, use it
     // Otherwise, use the default value 
-    activeExtension = data.toggleValue !== undefined ? data.toggleValue : true;
+    activeAutoSave = data.autoSave !== undefined ? data.autoSave : true;
+
+});
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.type === "autoSave") {
+        chrome.runtime.sendMessage(request, function (response) {
+            sendResponse(response);
+        });
+        return true; // Keep the message channel open for the response
+    }
+});
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+    activeAutoSave = message.autoSave;
+});
+
+chrome.storage.sync.get("menuActive", function (data) {
+    // If toggle value is present in storage, use it
+    // Otherwise, use the default value 
+    activeExtension = data.menuActive !== undefined ? data.menuActive : true;
 
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.type === "toggleValue") {
+    if (request.type === "menuActive") {
         chrome.runtime.sendMessage(request, function (response) {
             sendResponse(response);
         });
@@ -35,7 +53,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    activeExtension = message.toggleValue;
+    activeExtension = message.menuActive;
 
 });
 
