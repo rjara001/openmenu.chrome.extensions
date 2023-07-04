@@ -131,11 +131,11 @@ function exportData() {
   chrome.storage.local.get('menu', function (result) {
     var tableData = result.menu;
     if (tableData && tableData.length > 0) {
-      var csvContent = 'Category,Text,Date\n';
+      var csvContent = 'Category,Text,Date,Position\n';
 
       for (var i = 0; i < tableData.length; i++) {
         var row = tableData[i];
-        var csvRow = row.category + ',' + (row.text || row.title) + ',' + row.date + '\n';
+        var csvRow = `${row.category},${row.text || row.title},${row.date},${row.position}\n`;
         csvContent += csvRow;
       }
 
@@ -188,10 +188,12 @@ function parseCSV(csvData) {
       var category = values[0].trim();
       var text = values[1].trim();
       var date = values[2].trim();
+      var position = values[3].trim();
       var item = {
         category: category,
         text: text,
-        date: date
+        date: date,
+        position:position
       };
       menuData.push(item);
     }
