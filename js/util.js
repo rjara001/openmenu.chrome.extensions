@@ -42,7 +42,7 @@ function createAddOption() {
     const link = document.createElement('div');
     link.classList.add('optionmenu', 'item');
 
-    link.textContent = 'Add';
+    link.appendChild(CreateSVG());
 
     link.addEventListener('click', function () {
         go(link.innerText, 'add');
@@ -54,7 +54,7 @@ function createAddOption() {
 function createSeparator() {
     const div = document.createElement('div');
 
-    div.textContent = '|';
+    div.textContent = ' ';
 
     return div;
 }
@@ -77,16 +77,16 @@ function newMenuOptionsItem() {
     // Create the "remove" <div> element
     firstDiv.appendChild(createAddOption());
 
-    
+
     const _groupAll = groupAll();
     firstDiv.appendChild(_groupAll);
- 
+
     _groupAll.appendChild(createFulfillOption());
     _groupAll.appendChild(createSeparator());
     _groupAll.appendChild(createReadAllOption());
 
     outerDiv.appendChild(firstDiv);
-   
+
     menuItem.appendChild(outerDiv);
     menuItem.classList.add('subheader');
 
@@ -95,12 +95,12 @@ function newMenuOptionsItem() {
 
 function findLastOccurrence(arr, key, value) {
     return arr.reduceRight((acc, obj) => {
-      if (obj[key] === value && !acc) {
-        return obj;
-      }
-      return acc;
+        if (obj[key] === value && !acc) {
+            return obj;
+        }
+        return acc;
     }, null);
-  }
+}
 
 function innerJoin(inputs, values, key) {
     var result = [];
@@ -108,7 +108,7 @@ function innerJoin(inputs, values, key) {
 
     for (var i = 0; i < inputs.length; i++) {
         var obj1 = inputs[i];
-        var obj2 = findLastOccurrence(values.filter(_=>_.page === currentUrl), key, obj1[key]);
+        var obj2 = findLastOccurrence(values.filter(_ => _.page === currentUrl), key, obj1[key]);
 
         if (obj2) {
             var mergedObj = { ...obj1, ...obj2 };
@@ -156,4 +156,19 @@ function ReadAllAction() {
     inputTexts.forEach(_ => {
         AddAction($(_));
     });
+}
+
+function CreateSVG() {
+    // Create the SVG element
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', '20');
+    svg.setAttribute('height', '20');
+    svg.setAttribute('id', 'my-svg');
+    // svg.classList.add('svg')
+    const $svg = $(svg);
+
+    $svg.html(PLUS_SVG);
+
+    return $svg.get(0);
+
 }
