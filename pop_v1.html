@@ -47,8 +47,8 @@
 
 <body>
   <div class="container">
-    <h1 class="header">Menu Extender v1</h1>
-    <p class="instructions">Double-click on any input field to extend the menu</p>
+    <h1 class="header">Menu Extender</h1>
+    <p class="instructions">Click on any input field to extend the menu</p>
     <div class="checkboxgroup">
       <label class="toggle-label">
         <input type="checkbox" id="menu-active" class="toggle-checkbox" />
@@ -58,20 +58,29 @@
         <input type="checkbox" id="auto-save" class="toggle-checkbox" />
         <span class="toggle-text">Auto Save Active</span>
       </label>
+
     </div>
+    <p>Share your feedback with us by clicking <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLSe8-Q7REnfG5ZA3Vq9YhxbAdas7ktnwFIBlECRTx_GISi30YA/viewform?usp=sf_link">here</a>
+    </p>
 
   </div>
   <form>
     <div class="category">
       <div>Category:</div>
-      <div><input type="text" id="searchInput" />
+      <div><input type="text" id="category" />
         <ul id="suggestionsList" style="display: none;"></ul>
 
       </div>
     </div>
     <div class="text">
+      <div>Name:</div>
+      <div><input type="text" id="name"></input></div>
+    </div>
+
+    <div class="text">
       <div>Text:</div>
-      <div><input type="text"></input></div>
+      <div><input type="text" id="text"></input></div>
     </div>
     <div>
       <button>Save</button>
@@ -81,6 +90,7 @@
   <table id="myTable">
     <tr>
       <th>Category</th>
+      <th>Name</th>
       <th>Text</th>
       <th>Date</th>
       <th>Origin</th>

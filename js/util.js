@@ -8,7 +8,16 @@ const getUniqueCategories = (htmlMenu) => {
 }
 
 const getCurrentURL = () => {
-    return window.location.href;
+    var url = window.location.href;
+    var index = url.indexOf('?');
+
+    if (index !== -1) {
+        var part = url.substring(0, index);
+        return part;
+    }
+
+    return url;
+
 }
 const showOptions = () => {
 
@@ -18,7 +27,14 @@ function createFulfillOption() {
     const link = document.createElement('div');
     link.classList.add('optionmenu', 'item', 'pr5');
     link.textContent = 'AutoFill';
-
+    var joinedArray = getInputSaved();
+    if (joinedArray.length > 0) { 
+        link.textContent += '(' + joinedArray.length + ')'; 
+        link.classList.add('fulfill');
+    }
+    else {
+        link.classList.add('disabled');
+    }
     link.addEventListener('click', function () {
         go(link.innerText, 'fulfill');
     });
@@ -94,7 +110,7 @@ function newMenuOptionsItem() {
 
     _groupAll.appendChild(createFulfillOption());
     _groupAll.appendChild(createSeparator());
-    _groupAll.appendChild(createReadAllOption());
+    // _groupAll.appendChild(createReadAllOption());
     _groupAll.appendChild(createClearOption());
 
     outerDiv.appendChild(firstDiv);
@@ -142,6 +158,18 @@ function getPosition(input) {
 }
 
 function AddAction(input, category) {
+    const lenMenu = _MENU_HTML.length;
+    if (lenMenu < LIMIT_LEN) {
+        _addAction(input, category);
+    }
+    else if (category === 'autosave') {
+        removeLastItemByCategory(_MENU_HTML, 'autosave');
+        _addAction(input, category);
+    }
+
+}
+
+function _addAction(input, category) {
     let newValue = (input.val() || '').trim();
     if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.text === newValue)) {
 
@@ -152,7 +180,7 @@ function AddAction(input, category) {
 }
 
 function FullfillAction() {
-    const inputTexts = $('input[type="text"], input[type="email"], input[type="number"], input[type="password"], input[type="date"]').toArray();
+    const inputTexts = $(INPUT_TEXTS).toArray();
 
     var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element) })), _MENU_HTML, 'position');
 
@@ -162,10 +190,15 @@ function FullfillAction() {
 
 }
 
-function ClearAction() {
-    const inputTexts = $('input[type="text"], input[type="email"], input[type="number"], input[type="password"], input[type="date"]').toArray();
+function getInputSaved() {
+    const inputTexts = $(INPUT_TEXTS).toArray();
 
-    var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element) })), _MENU_HTML, 'position');
+    return innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element) })), _MENU_HTML, 'position');
+}
+
+function ClearAction() {
+
+    var joinedArray = getInputSaved();
 
     joinedArray.forEach(_ => {
         $(_).val('');
@@ -174,7 +207,7 @@ function ClearAction() {
 }
 
 function ReadAllAction() {
-    const inputTexts = $('input[type="text"], input[type="email"], input[type="number"], input[type="password"], input[type="date"]').toArray();
+    const inputTexts = $(INPUT_TEXTS).toArray();
 
     inputTexts.forEach(_ => {
         AddAction($(_));
@@ -194,4 +227,16 @@ function CreateSVG() {
 
     return $svg.get(0);
 
+}
+
+function removeLastItemByCategory(arr, category) {
+    var index = arr.findIndex(function (item) {
+        return item.category === category;
+    });
+
+    if (index !== -1) {
+        arr.splice(index, 1);
+    }
+
+    return arr;
 }

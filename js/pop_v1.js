@@ -11,13 +11,15 @@ if (chrome.storage)
           var row = table.insertRow(-1);
 
           var categoryCell = row.insertCell(0);
-          var textCell = row.insertCell(1);
-          var dateCell = row.insertCell(2);
-          var originCell = row.insertCell(3);
-          var positionCell = row.insertCell(4);
-          var deleteCell = row.insertCell(5); // New cell for delete button
+          var nameCell = row.insertCell(1);
+          var textCell = row.insertCell(2);
+          var dateCell = row.insertCell(3);
+          var originCell = row.insertCell(4);
+          var positionCell = row.insertCell(5);
+          var deleteCell = row.insertCell(6); // New cell for delete button
 
-          categoryCell.innerHTML = tableData[i].category;
+          nameCell.innerHTML = tableData[i].name===undefined?'-':tableData[i].name;
+          categoryCell.innerHTML = tableData[i].category===undefined?'-':tableData[i].category;
           textCell.innerHTML = tableData[i].text == undefined ? tableData[i].title : tableData[i].text;
           dateCell.innerHTML = tableData[i].date;
           originCell.innerHTML = tableData[i].page;
@@ -62,11 +64,13 @@ function deleteItem(index) {
 function createRowClickListener(rowData, index) {
   return function () {
     // Set the values in the HTML form
-    var categorySelect = document.getElementById("searchInput");
-    var textInput = document.querySelector('.text input');
+    var categorySelect = document.getElementById("category");
+    var textInput = document.getElementById('text');
+    var nameInput = document.getElementById('name');
 
     categorySelect.value = rowData.category;
     textInput.value = rowData.text == undefined ? rowData.title : rowData.text;
+    nameInput.value = rowData.name;
 
     // Store the current row and data
     currentRow = this;
@@ -81,21 +85,26 @@ if (saveButton)
 
 // Function to save the updated data
 function saveData() {
-  var categorySelect = document.getElementById("searchInput");
-  var textInput = document.querySelector('.text input');
+  var categorySelect = document.getElementById("category");
+  var textInput = document.getElementById('text');
+  var nameInput = document.getElementById('name');
 
   var categoryValue = categorySelect.value;
   var textValue = textInput.value;
+  var nameValue = nameInput.value;
 
   // Perform the necessary updating logic
   currentData.category = categoryValue;
   currentData.text = textValue;
+  currentData.name = nameValue;
 
   // Update the row in the table
   var categoryCell = currentRow.cells[0];
-  var textCell = currentRow.cells[1];
-
+  var nameCell = currentRow.cells[1];
+  var textCell = currentRow.cells[2];
+  
   categoryCell.innerHTML = currentData.category;
+  nameCell.innerHTML = currentData.name;
   textCell.innerHTML = currentData.text;
 
   // Update the value in the tableData array
@@ -103,7 +112,7 @@ function saveData() {
 
   // Perform the necessary saving logic using chrome.storage.local.set()
   chrome.storage.local.set({ menu: tableData }, function () {
-    console.log('Data saved successfully!');
+    // console.log('Data saved successfully!');
   });
 }
 
@@ -202,11 +211,11 @@ function parseCSV(csvData) {
   return menuData;
 }
 
-var searchInput = document.getElementById("searchInput");
+var category = document.getElementById("category");
 
-if (searchInput)
-  searchInput.addEventListener("input", function () {
-    var query = searchInput.value;
+if (category)
+  category.addEventListener("input", function () {
+    var query = category.value;
     var matches = getSuggestions(query);
     displaySuggestions(matches);
   });
@@ -235,7 +244,7 @@ function displaySuggestions(matches) {
     var listItem = document.createElement("li");
     listItem.innerText = suggestion;
     listItem.addEventListener("click", function () {
-      searchInput.value = this.innerText;
+      category.value = this.innerText;
       suggestionsList.innerHTML = ""; // Hide suggestions
       suggestionsList.style.display = 'none';
     });

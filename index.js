@@ -4,7 +4,7 @@ function doCloseOrAttachEvent() {
     if (isMenuOpened() && clickOutOfBox(event.target))
         closeMenu();
     else {
-        const inputTexts = $('input[type="text"], input[type="email"], input[type="number"], input[type="password"], input[type="date"]').toArray();
+        const inputTexts = $(INPUT_TEXTS).toArray();
 
 
         inputTexts.forEach(_ => {
@@ -44,7 +44,7 @@ function clickOutOfBox(obj) {
     if (obj.shadowRoot !== undefined && obj.shadowRoot !== null)
         return false;
 
-    if (obj.nodeName === 'INPUT')
+    if (obj.nodeName === 'INPUT' || obj.nodeName === 'TEXTAREA')
         return false;
 
     if (obj.id != _OPENMENU_MENU_ID)// && obj.id != _divVeryMatch_IMAGEN)
@@ -156,7 +156,7 @@ function loadCategories(menuList) {
         newMenuCategory(item, menuList);
     });
     // if (categoriesFiltered.length === 0)
-        showMenusItems(undefined, menuList);
+    showMenusItems(undefined, menuList);
 
 }
 
@@ -193,28 +193,39 @@ function cleanChildElement(menuList) {
 }
 
 function createHeader() {
-    var _div = document.createElement("div");
+    var header = document.createElement("div");
     var _text = document.createElement("div");
     _text.innerText = NAME_EXTENSION;
 
-    _div.setAttribute("class", "header");
-    _div.appendChild(_text);
-    _div.appendChild(createCloseBtn());
+    header.setAttribute("class", "header");
+    header.appendChild(_text);
+    header.appendChild(createCloseBtn());
 
-    return _div;
+    header.addEventListener('mousedown', startDragging);
+
+    return header;
 }
 
 function createCloseBtn() {
     var closeBtn = document.createElement("button"); //  <button id="closeBtn">&times;</button>
     closeBtn.id = 'closeBtn';
     closeBtn.className = 'closeBtn'
-    closeBtn.innerText = 'x';
+    closeBtn.innerText = 'X';
     closeBtn.addEventListener('click', function () {
         //   const __open_menu = document.getElementById(_OPENMENU_MENU_ID);
         closeMenu();
     });
 
     return closeBtn;
+}
+
+function toText(item) {
+    let textElipsed = addEllipsis(item.text, 25);
+    let nameElipsed = addEllipsis(item.name !== undefined ? item.name : '', 15);
+    
+    if (nameElipsed.length > 0)
+        return `${textElipsed} (${nameElipsed})`;
+    return textElipsed;
 }
 
 function newMenuItem(item, menuList, type) {
@@ -241,7 +252,7 @@ function newMenuItem(item, menuList, type) {
 
     const link = document.createElement('div');
     link.className = 'item';
-    link.textContent = addEllipsis(item.text, 15);
+    link.textContent = toText(item);
     if (isCategory)
         link.addEventListener('click', function () {
             //let menuList = shadowRoot.getElementById(_OPENMENU_MENU_ID);

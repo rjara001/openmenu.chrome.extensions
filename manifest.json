@@ -1,9 +1,9 @@
 {
     "manifest_version": 3,
-    "version": "0.35",
+    "version": "0.36",
     "short_name": "Menu",
     "name": "MenuExtend",
-    "description": "Extension allow you rapidly to add values to input text",
+    "description": "Extension allow you rapidly to add values to input text, and auto saves your form data.",
     "homepage_url": "https://www.randuslab.com/",
     "background": {
         "service_worker": "background.js"
@@ -41,6 +41,7 @@
                 "store.js",
                 "content.js",
                 "index.js",
+                "js/move.js",
                 "js/util.js",
                 "js/pop_v1.js"
          
