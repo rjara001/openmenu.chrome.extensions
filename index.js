@@ -129,8 +129,7 @@ function addMenu() {
 
     // linkElem.onload = () => {
     const linkElem = document.createElement('style');
-    // linkElem.setAttribute('rel', 'stylesheet');
-    // linkElem.setAttribute('href', 'style-shadow.css');
+    
     linkElem.innerHTML = _STYLE_AS_STRING;
     shadowRoot = containerMenu.attachShadow({ mode: 'open' });
     shadowRoot.appendChild(linkElem);
@@ -222,7 +221,7 @@ function createCloseBtn() {
 function toText(item) {
     let textElipsed = addEllipsis(item.text, 25);
     let nameElipsed = addEllipsis(item.name !== undefined ? item.name : '', 15);
-    
+
     if (nameElipsed.length > 0)
         return `${textElipsed} (${nameElipsed})`;
     return textElipsed;
