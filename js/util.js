@@ -27,6 +27,7 @@ function createFulfillOption() {
     const link = document.createElement('div');
     link.classList.add('optionmenu', 'item', 'pr5');
     link.textContent = 'AutoFill';
+    
     var joinedArray = getInputSaved();
     if (joinedArray.length > 0) {
         link.textContent += '(' + joinedArray.length + ')';
@@ -34,6 +35,7 @@ function createFulfillOption() {
     }
     else {
         link.classList.add('disabled');
+        link.title = 'Fulfill will be activated when you have data saved for these input texts'
     }
     link.addEventListener('click', function () {
         go(link.innerText, 'fulfill');

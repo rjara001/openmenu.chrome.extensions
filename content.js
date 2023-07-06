@@ -1,16 +1,17 @@
 
 
 function waitForMENUisLoaded(callback) {
-    if (_MENU_HTML) {
+    if (_variables_loaded===true) {
         // Variable is already loaded
         callback();
     } else {
         // Variable is not yet loaded, wait and check again
         setTimeout(function () {
-            waitForVariable(callback);
+            waitForMENUisLoaded(callback);
         }, 100); // Adjust the interval as needed (e.g., 100 milliseconds)
     }
 }
+_variables_loaded = false;
 
 let _MENU_HTML = [
     // { text: 'Add...', page: 'Add' }
@@ -60,13 +61,14 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 chrome.storage.local.get('menu', function (result) {
     if (result.menu) {
         ///const list = JSON.parse(result.menu);
-        _MENU_HTML = [..._MENU_HTML, ...result.menu]
+        _MENU_HTML = [..._MENU_HTML, ...result.menu];
+        _variables_loaded = true;
     }
 });
 
 document.addEventListener('click', function (e) {
 
-    doCloseOrAttachEvent();
+    waitForMENUisLoaded(doCloseOrAttachEvent);
 });
 
 window.addEventListener('load', function (e) {

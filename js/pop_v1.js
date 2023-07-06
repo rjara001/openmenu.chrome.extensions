@@ -18,8 +18,8 @@ if (chrome.storage)
           var positionCell = row.insertCell(5);
           var deleteCell = row.insertCell(6); // New cell for delete button
 
-          nameCell.innerHTML = tableData[i].name===undefined?'-':tableData[i].name;
-          categoryCell.innerHTML = tableData[i].category===undefined?'-':tableData[i].category;
+          nameCell.innerHTML = tableData[i].name === undefined ? '-' : tableData[i].name;
+          categoryCell.innerHTML = tableData[i].category === undefined ? '-' : tableData[i].category;
           textCell.innerHTML = tableData[i].text == undefined ? tableData[i].title : tableData[i].text;
           dateCell.innerHTML = tableData[i].date;
           originCell.innerHTML = tableData[i].page;
@@ -70,7 +70,7 @@ function createRowClickListener(rowData, index) {
 
     categorySelect.value = rowData.category;
     textInput.value = rowData.text == undefined ? rowData.title : rowData.text;
-    nameInput.value = rowData.name;
+    nameInput.value = rowData.name === undefined ? '' : rowData.name;
 
     // Store the current row and data
     currentRow = this;
@@ -102,7 +102,7 @@ function saveData() {
   var categoryCell = currentRow.cells[0];
   var nameCell = currentRow.cells[1];
   var textCell = currentRow.cells[2];
-  
+
   categoryCell.innerHTML = currentData.category;
   nameCell.innerHTML = currentData.name;
   textCell.innerHTML = currentData.text;
@@ -115,7 +115,6 @@ function saveData() {
     // console.log('Data saved successfully!');
   });
 }
-
 
 // Event delegation for delete button click
 document.addEventListener('click', function (event) {
@@ -202,7 +201,7 @@ function parseCSV(csvData) {
         category: category,
         text: text,
         date: date,
-        position:position
+        position: position
       };
       menuData.push(item);
     }
