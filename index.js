@@ -88,17 +88,44 @@ function go(item, option) {
                     // inputSelected.target.value = item;
                     // inputSelected.target.focus();
                     // Set the cursor position to the end of the input element
+                    // setTimeout(() => {
+                        // setValueOnInput(inputSelected, item);
+                        typeIntoElement(inputSelected[0], item);
 
-                    inputSelected.focus();
-                    inputSelected.val(item);
+                    // }, 100);
 
-                    inputSelected.trigger('keydown');
-                    inputSelected.trigger('keyup');
-                    inputSelected.trigger('change');
-                    inputSelected.focus();
                 }
         }
     }
+}
+
+function setValueOnInput(inputSelected, item) {
+    // Create a new 'keydown' event
+    let element = inputSelected[0];
+
+    let lastValue = element.value;
+    element.value = item;
+    let event = new Event("input", { target: element, bubbles: true });
+    // React 15
+    event.simulated = true;
+    // React 16
+    let tracker = element._valueTracker;
+    if (tracker) {
+        tracker.setValue(lastValue);
+    }
+    element.dispatchEvent(event);
+    
+    // inputSelected.focus();
+    // // inputSelected.val(item).trigger('change');
+
+    // $(inputSelected).prop('value', item);
+
+    // // Trigger a keydown event for the Backspace key
+    // inputSelected.trigger($.Event('keydown', { key: 'Backspace', keyCode: 8 }));
+
+    // // Trigger a keyup event for the Backspace key
+    // inputSelected.trigger($.Event('keyup', { key: 'Backspace', keyCode: 8 }));
+
 }
 
 function showMenu(e) {
@@ -129,7 +156,7 @@ function addMenu() {
 
     // linkElem.onload = () => {
     const linkElem = document.createElement('style');
-    
+
     linkElem.innerHTML = _STYLE_AS_STRING;
     shadowRoot = containerMenu.attachShadow({ mode: 'open' });
     shadowRoot.appendChild(linkElem);

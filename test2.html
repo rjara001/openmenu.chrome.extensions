@@ -8,28 +8,58 @@
     <title>Document</title>
 
 </head>
-<script>
-//     document.addEventListener('DOMContentLoaded', function(e){
-    
-//     addMenu();
 
-//     const inputTexts = document.querySelectorAll('input[type="text"]');
-//     inputTexts.forEach(_=>{
-//         _.addEventListener('click', (e)=>showMenu(e));
-//     })
-// });
 
-</script>
 <body>
- 
 
-    <input type="text"/>
 
-    <input type="text"/>
+    <input type="text" id="uno" />
 
-    <input type="text"/>
+    <input type="text" id="dos" />
+
+    <input type="text" id="tres" />
 
 </body>
 
+<script>
 
+    function typeIntoElement(element, text) {
+        // Set focus on the element
+        element.focus();
+
+        // Iterate over each character in the text
+        for (let i = 0; i < text.length; i++) {
+            // Create a new KeyboardEvent for each character
+            const keyEvent = new KeyboardEvent('keydown', {
+                key: text[i],
+                bubbles: true,
+                cancelable: true,
+            });
+
+            // Dispatch the keyboard event
+            element.dispatchEvent(keyEvent);
+
+            // Update the value of the element with the current character
+            element.value += text[i];
+
+            // Create and dispatch an input event
+            const inputEvent = new Event('input', { bubbles: true, cancelable: true });
+            element.dispatchEvent(inputEvent);
+
+            // Create and dispatch a keyup event
+            const keyupEvent = new KeyboardEvent('keyup', {
+                key: text[i],
+                bubbles: true,
+                cancelable: true,
+            });
+            element.dispatchEvent(keyupEvent);
+        }
+    }
+
+    // Usage example:
+    const inputElement = document.getElementById('uno');
+    const textToType = 'Hello, World!';
+    typeIntoElement(inputElement, textToType);
+
+</script>
 </html>

@@ -28,8 +28,8 @@ function createFulfillOption() {
     link.classList.add('optionmenu', 'item', 'pr5');
     link.textContent = 'AutoFill';
     var joinedArray = getInputSaved();
-    if (joinedArray.length > 0) { 
-        link.textContent += '(' + joinedArray.length + ')'; 
+    if (joinedArray.length > 0) {
+        link.textContent += '(' + joinedArray.length + ')';
         link.classList.add('fulfill');
     }
     else {
@@ -239,4 +239,37 @@ function removeLastItemByCategory(arr, category) {
     }
 
     return arr;
+}
+
+function typeIntoElement(element, text) {
+    // Set focus on the element
+    element.focus();
+
+     // Iterate over each character in the text
+    for (let i = 0; i < text.length; i++) {
+        // Create a new KeyboardEvent for each character
+        const keyEvent = new KeyboardEvent('keydown', {
+            key: text[i],
+            bubbles: true,
+            cancelable: true,
+        });
+
+        // Dispatch the keyboard event
+        element.dispatchEvent(keyEvent);
+
+        // Update the value of the element with the current character
+        element.value += text[i];
+
+        // Create and dispatch an input event
+        const inputEvent = new Event('input', { bubbles: true, cancelable: true });
+        element.dispatchEvent(inputEvent);
+
+        // Create and dispatch a keyup event
+        const keyupEvent = new KeyboardEvent('keyup', {
+            key: text[i],
+            bubbles: true,
+            cancelable: true,
+        });
+        element.dispatchEvent(keyupEvent);
+    }
 }
