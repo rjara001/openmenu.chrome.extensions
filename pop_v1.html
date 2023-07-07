@@ -7,6 +7,7 @@
     table {
       border-collapse: collapse;
       width: 100%;
+
     }
 
     th,
@@ -42,8 +43,16 @@
     .checkboxgroup {
       display: flex;
     }
+
     .feedback {
       text-align: center
+    }
+
+    .table-container {
+      max-height: 300px;
+      /* Set the desired height of the table container */
+      overflow: auto;
+      /* Enable scrolling */
     }
   </style>
 </head>
@@ -65,8 +74,8 @@
     </div>
     <p class="feedback">Share your feedback with us by clicking <a
         href="https://docs.google.com/forms/d/e/1FAIpQLSe8-Q7REnfG5ZA3Vq9YhxbAdas7ktnwFIBlECRTx_GISi30YA/viewform?usp=sf_link">here</a><br>
-        Like my work?Buy me a <a
-        href="https://bmc.link/menuextend">coffee</a> or <a href="https://bmc.link/menuextend">beer</a>!
+      Like my work?Buy me a <a href="https://bmc.link/menuextend">coffee</a> or <a
+        href="https://bmc.link/menuextend">beer</a>!
     </p>
     <p>
     </p>
@@ -93,19 +102,25 @@
       <button>Save</button>
     </div>
   </form>
+  <div class="table-container">
+    <table id="myTable">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Name</th>
+          <th>Text</th>
+          <th>Date</th>
+          <th>Origin</th>
+          <th>Position</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
 
-  <table id="myTable">
-    <tr>
-      <th>Category</th>
-      <th>Name</th>
-      <th>Text</th>
-      <th>Date</th>
-      <th>Origin</th>
-      <th>Position</th>
-      <th>Actions</th>
-    </tr>
-  </table>
+      </tbody>
+    </table>
 
+  </div>
   <button id="exportButton">Export Data</button>
   <input type="file" id="importInput" accept=".csv" style="display: none;">
   <button id="importButton">Import Data</button>

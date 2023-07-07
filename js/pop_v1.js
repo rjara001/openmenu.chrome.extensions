@@ -3,33 +3,7 @@ var tableData
 if (chrome.storage)
   chrome.storage.local.get('menu', function (result) {
     tableData = result.menu;
-    if (tableData && tableData.length > 0) {
-      var table = document.getElementById('myTable');
-
-      if (table)
-        for (var i = 0; i < tableData.length; i++) {
-          var row = table.insertRow(-1);
-
-          var categoryCell = row.insertCell(0);
-          var nameCell = row.insertCell(1);
-          var textCell = row.insertCell(2);
-          var dateCell = row.insertCell(3);
-          var originCell = row.insertCell(4);
-          var positionCell = row.insertCell(5);
-          var deleteCell = row.insertCell(6); // New cell for delete button
-
-          nameCell.innerHTML = tableData[i].name === undefined ? '-' : tableData[i].name;
-          categoryCell.innerHTML = tableData[i].category === undefined ? '-' : tableData[i].category;
-          textCell.innerHTML = tableData[i].text == undefined ? tableData[i].title : tableData[i].text;
-          dateCell.innerHTML = tableData[i].date;
-          originCell.innerHTML = tableData[i].page;
-          positionCell.innerHTML = tableData[i].position;
-          deleteCell.innerHTML = '<button class="delete-btn" data-index="' + i + '">Delete</button>';// Delete button with onclick event
-
-          // Add click event listener to each row
-          row.addEventListener('click', createRowClickListener(tableData[i], i));
-        }
-    }
+    renderTable(tableData);
   });
 
 // Variables to store the current row and data
@@ -41,12 +15,46 @@ var currentDataIndex;
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('delete-btn')) {
     var index = event.target.getAttribute('data-index');
+    event.preventDefault();
     deleteItem(index);
   }
 });
 
+function renderTable(tableData) {
+  if (tableData && tableData.length > 0) {
+    var table = document.querySelector('tbody');
+    table.innerHTML = '';
+
+    if (table)
+      for (var i = 0; i < tableData.length; i++) {
+        var row = table.insertRow(-1);
+
+        var categoryCell = row.insertCell(0);
+        var nameCell = row.insertCell(1);
+        var textCell = row.insertCell(2);
+        var dateCell = row.insertCell(3);
+        var originCell = row.insertCell(4);
+        var positionCell = row.insertCell(5);
+        var deleteCell = row.insertCell(6); // New cell for delete button
+
+        nameCell.innerHTML = tableData[i].name === undefined ? '-' : tableData[i].name;
+        categoryCell.innerHTML = tableData[i].category === undefined ? '-' : tableData[i].category;
+        textCell.innerHTML = tableData[i].text == undefined ? tableData[i].title : tableData[i].text;
+        dateCell.innerHTML = tableData[i].date;
+        originCell.innerHTML = tableData[i].page;
+        positionCell.innerHTML = tableData[i].position;
+        deleteCell.innerHTML = '<button class="delete-btn" data-index="' + i + '">Delete</button>'; // Delete button with onclick event
+
+
+        // Add click event listener to each row
+        row.addEventListener('click', createRowClickListener(tableData[i], i));
+      }
+  }
+}
+
 // Function to delete an item
 function deleteItem(index) {
+  
   chrome.storage.local.get('menu', function (result) {
     var tableData = result.menu;
     if (tableData && tableData.length > 0) {
@@ -54,10 +62,28 @@ function deleteItem(index) {
 
       chrome.storage.local.set({ menu: tableData }, function () {
         console.log('Item deleted successfully!');
-        location.reload();
+        renderTable(tableData);
+
+        remainderScroll(index);
+        // location.reload();
       });
     }
   });
+}
+
+function remainderScroll(index) {
+  const tableBody = document.querySelector('tbody');
+  const tableContainer = document.querySelector('.table-container');
+
+  // After refreshing the table, scroll to the appropriate position
+  const updatedRows = tableBody.children;
+  const targetRow = updatedRows[Math.min(index, updatedRows.length - 1)]; // Get the target row
+
+  if (targetRow) {
+    const rect = targetRow.getBoundingClientRect();
+    const scrollTop = rect.top + window.pageYOffset - tableContainer.offsetTop;
+    tableContainer.scrollTop = scrollTop;
+  }
 }
 
 // Function to create a click event listener for a row
@@ -84,7 +110,9 @@ if (saveButton)
   saveButton.addEventListener('click', saveData);
 
 // Function to save the updated data
-function saveData() {
+function saveData(event) {
+  event.preventDefault();
+
   var categorySelect = document.getElementById("category");
   var textInput = document.getElementById('text');
   var nameInput = document.getElementById('name');
@@ -113,6 +141,9 @@ function saveData() {
   // Perform the necessary saving logic using chrome.storage.local.set()
   chrome.storage.local.set({ menu: tableData }, function () {
     // console.log('Data saved successfully!');
+    // renderTable(tableData);
+
+    // remainderScroll(currentDataIndex);
   });
 }
 
