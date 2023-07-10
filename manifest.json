@@ -1,9 +1,9 @@
 {
     "manifest_version": 3,
-    "version": "0.38",
+    "version": "0.39",
     "short_name": "Menu",
     "name": "MenuExtend",
-    "description": "Extension allow you rapidly to add values to input text, and auto saves your form data.",
+    "description": "Save input text values for easy retrieval, eliminating rewriting. Quickly access and reuse saved values.",
     "homepage_url": "https://www.randuslab.com/",
     "background": {
         "service_worker": "background.js"
@@ -16,8 +16,7 @@
     },
     "permissions": [
         "storage",
-        "activeTab",
-        "scripting"
+        "activeTab"
     ],
     "web_accessible_resources": [
         {
