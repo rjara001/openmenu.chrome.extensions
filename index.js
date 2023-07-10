@@ -89,8 +89,8 @@ function go(item, option) {
                     // inputSelected.target.focus();
                     // Set the cursor position to the end of the input element
                     // setTimeout(() => {
-                        // setValueOnInput(inputSelected, item);
-                        typeIntoElement(inputSelected[0], item);
+                    // setValueOnInput(inputSelected, item);
+                    typeIntoElement(inputSelected[0], item);
 
                     // }, 100);
 
@@ -114,7 +114,7 @@ function setValueOnInput(inputSelected, item) {
         tracker.setValue(lastValue);
     }
     element.dispatchEvent(event);
-    
+
     // inputSelected.focus();
     // // inputSelected.val(item).trigger('change');
 
@@ -144,30 +144,32 @@ function showMenu(e) {
 
 function addMenu() {
 
-    const menuList = document.createElement('div');
+    $(document).ready(function () {
+        const menuList = document.createElement('div');
 
-    menuList.className = 'list'
+        menuList.className = 'list'
 
-    var containerMenu = document.createElement("div");
+        var containerMenu = document.createElement("div");
 
-    var parentElement = document.createElement("div");
+        var parentElement = document.createElement("div");
 
-    parentElement.setAttribute("id", _OPENMENU_MENU_ID);
+        parentElement.setAttribute("id", _OPENMENU_MENU_ID);
 
-    // linkElem.onload = () => {
-    const linkElem = document.createElement('style');
+        // linkElem.onload = () => {
+        const linkElem = document.createElement('style');
 
-    linkElem.innerHTML = _STYLE_AS_STRING;
-    shadowRoot = containerMenu.attachShadow({ mode: 'open' });
-    shadowRoot.appendChild(linkElem);
+        linkElem.innerHTML = _STYLE_AS_STRING;
+        shadowRoot = containerMenu.attachShadow({ mode: 'open' });
+        shadowRoot.appendChild(linkElem);
 
-    shadowRoot.appendChild(parentElement);
-    parentElement.appendChild(createHeader());
-    parentElement.appendChild(menuList);
+        shadowRoot.appendChild(parentElement);
+        parentElement.appendChild(createHeader());
+        parentElement.appendChild(menuList);
 
-    document.body.appendChild(containerMenu);
+        document.body.appendChild(containerMenu);
 
-    loadCategories(menuList);
+        loadCategories(menuList);
+    });
 }
 
 function loadCategories(menuList) {

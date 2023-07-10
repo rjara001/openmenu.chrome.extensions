@@ -29,14 +29,16 @@ function renderTable(tableData) {
       for (var i = 0; i < tableData.length; i++) {
         var row = table.insertRow(-1);
 
-        var categoryCell = row.insertCell(0);
-        var nameCell = row.insertCell(1);
-        var textCell = row.insertCell(2);
-        var dateCell = row.insertCell(3);
-        var originCell = row.insertCell(4);
-        var positionCell = row.insertCell(5);
-        var deleteCell = row.insertCell(6); // New cell for delete button
+        var checkCell = row.insertCell(0);
+        var categoryCell = row.insertCell(1);
+        var nameCell = row.insertCell(2);
+        var textCell = row.insertCell(3);
+        var dateCell = row.insertCell(4);
+        var originCell = row.insertCell(5);
+        var positionCell = row.insertCell(6);
+        var deleteCell = row.insertCell(7); // New cell for delete button
 
+        checkCell.innerHTML = "<input type='checkbox'>";
         nameCell.innerHTML = tableData[i].name === undefined ? '-' : tableData[i].name;
         categoryCell.innerHTML = tableData[i].category === undefined ? '-' : tableData[i].category;
         textCell.innerHTML = tableData[i].text == undefined ? tableData[i].title : tableData[i].text;
@@ -54,21 +56,19 @@ function renderTable(tableData) {
 
 // Function to delete an item
 function deleteItem(index) {
-  
-  chrome.storage.local.get('menu', function (result) {
-    var tableData = result.menu;
-    if (tableData && tableData.length > 0) {
-      tableData.splice(index, 1); // Remove the item from the array
 
-      chrome.storage.local.set({ menu: tableData }, function () {
-        console.log('Item deleted successfully!');
-        renderTable(tableData);
 
-        remainderScroll(index);
-        // location.reload();
-      });
-    }
-  });
+  if (tableData && tableData.length > 0) {
+    tableData.splice(index, 1); // Remove the item from the array
+
+    chrome.storage.local.set({ menu: tableData }, function () {
+      console.log('Item deleted successfully!');
+      renderTable(tableData);
+
+      remainderScroll(index);
+      // location.reload();
+    });
+  }
 }
 
 function remainderScroll(index) {
@@ -104,6 +104,57 @@ function createRowClickListener(rowData, index) {
     currentDataIndex = index;
   };
 }
+
+// #### delete-selected
+const deleteSelectedButton = document.getElementById('delete-selected');
+
+deleteSelectedButton.addEventListener('click', () => {
+  const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+
+  // const selectedRows = [];
+
+  // Iterate through checkboxes and find selected rows
+  checkboxes.forEach((checkbox, index) => {
+    const reverseIndex = checkboxes.length - index - 1;
+    if (checkboxes[reverseIndex].checked) {
+      tableData.splice(reverseIndex, 1); // Remove the item from the array
+    }
+  });
+
+  chrome.storage.local.set({ menu: tableData }, function () {
+    console.log('Items deleted successfully!');
+    renderTable(tableData);
+
+    remainderScroll(index);
+    // location.reload();
+  });
+
+});
+// #### delete-selected
+
+// #### set-category-selected
+const setCagtegorySelectedButton = document.getElementById('set-category-selected');
+
+setCagtegorySelectedButton.addEventListener('click', () => {
+  const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+
+  // Iterate through checkboxes and find selected rows
+  checkboxes.forEach((checkbox, index) => {
+
+    if (checkboxes[index].checked) {
+      tableData[index].category = category.value;
+    }
+  });
+
+  chrome.storage.local.set({ menu: tableData }, function () {
+
+    renderTable(tableData);
+  });
+
+});
+
+// #### set-category-selected
+
 // Add event listener to the "Save" button
 var saveButton = document.querySelector('button');
 if (saveButton)
@@ -127,10 +178,12 @@ function saveData(event) {
   currentData.name = nameValue;
 
   // Update the row in the table
-  var categoryCell = currentRow.cells[0];
-  var nameCell = currentRow.cells[1];
-  var textCell = currentRow.cells[2];
+  var checkCell = currentRow.cells[0];
+  var categoryCell = currentRow.cells[1];
+  var nameCell = currentRow.cells[2];
+  var textCell = currentRow.cells[3];
 
+  checkCell.innerHTML = "<input type='checkbox'>";
   categoryCell.innerHTML = currentData.category;
   nameCell.innerHTML = currentData.name;
   textCell.innerHTML = currentData.text;
@@ -244,9 +297,12 @@ function parseCSV(csvData) {
 var category = document.getElementById("category");
 
 if (category)
-  category.addEventListener("input", function () {
+  category.addEventListener("change", function () {
     var query = category.value;
+
     var matches = getSuggestions(query);
+
+    setCagtegorySelectedButton.textContent = "Set Category '{text}' Items Selected".replace('{text}', query);
     displaySuggestions(matches);
   });
 

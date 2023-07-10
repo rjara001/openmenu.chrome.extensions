@@ -27,7 +27,7 @@ function createFulfillOption() {
     const link = document.createElement('div');
     link.classList.add('optionmenu', 'item', 'pr5');
     link.textContent = 'AutoFill';
-    
+
     var joinedArray = getInputSaved();
     if (joinedArray.length > 0) {
         link.textContent += '(' + joinedArray.length + ')';
@@ -138,7 +138,7 @@ function innerJoin(inputs, values, key) {
 
     for (var i = 0; i < inputs.length; i++) {
         var obj1 = inputs[i];
-        var obj2 = findLastOccurrence(values.filter(_ => _.page === currentUrl), key, obj1[key]);
+        var obj2 = findLastOccurrence(values, key, obj1[key]);
 
         if (obj2) {
             var mergedObj = { ...obj1, ...obj2 };
@@ -173,15 +173,34 @@ function AddAction(input, category) {
 
 function _addAction(input, category) {
     let newValue = (input.val() || '').trim();
-    if (newValue.length > 0 && newValue.length < 80 && !_MENU_HTML.find(_ => _.text === newValue)) {
+    if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
+        let _item = _MENU_HTML.find(_ => _.text === newValue);
 
-        const item = { category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(input) };
-        newMenuItem(item, shadowRoot.querySelector('.list'));
-        localSaveValue(item);
+        const newitem = { category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(input) };
+        if (_item)
+            localUpdateValue(newitem);
+        else {
+
+            newMenuItem(newitem, shadowRoot.querySelector('.list'));
+            localSaveValue(newitem);
+        }
     }
 }
 
+function getHost(url) {
+    if (url) {
+        const parsedURL = new URL(url);
+        return parsedURL.host;
+    }
+    return false;
+}
+function hostExist() {
+    const currentHost = window.location.host;
+
+    return _MENU_HTML.filter(_ => getHost(_.page) === currentHost).length > 0;
+}
 function FullfillAction() {
+
     const inputTexts = $(INPUT_TEXTS).toArray();
 
     var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element) })), _MENU_HTML, 'position');
@@ -190,12 +209,19 @@ function FullfillAction() {
         $(_).val(_.text);
     })
 
+
 }
 
 function getInputSaved() {
-    const inputTexts = $(INPUT_TEXTS).toArray();
+    if (hostExist(_MENU_HTML)) {
+        {
+            const inputTexts = $(INPUT_TEXTS).toArray();
 
-    return innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element) })), _MENU_HTML, 'position');
+            return innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element) })), _MENU_HTML, 'position');
+        }
+    }
+
+    return [];
 }
 
 function ClearAction() {
@@ -247,7 +273,7 @@ function typeIntoElement(element, text) {
     // Set focus on the element
     element.focus();
 
-     // Iterate over each character in the text
+    // Iterate over each character in the text
     for (let i = 0; i < text.length; i++) {
         // Create a new KeyboardEvent for each character
         const keyEvent = new KeyboardEvent('keydown', {
