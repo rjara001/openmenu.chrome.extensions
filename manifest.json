@@ -42,9 +42,7 @@
                 "content.js",
                 "index.js",
                 "js/move.js",
-                "js/util.js",
-                "js/pop_v1.js"
-         
+                "js/util.js"         
             ],
             "css": [],
             "all_frames": true
