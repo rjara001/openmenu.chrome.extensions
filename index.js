@@ -44,6 +44,9 @@ function clickOutOfBox(obj) {
     if (obj.shadowRoot !== undefined && obj.shadowRoot !== null)
         return false;
 
+    if (obj.nodeName === 'INPUT' && obj.type === 'password')
+        return true;
+
     if (obj.nodeName === 'INPUT' || obj.nodeName === 'TEXTAREA')
         return false;
 
