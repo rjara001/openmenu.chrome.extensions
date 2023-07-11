@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "version": "0.39",
+    "version": "0.40",
     "short_name": "Menu",
-    "name": "MenuExtend",
+    "name": "Menu Extend",
     "description": "Save input text values for easy retrieval, eliminating rewriting. Quickly access and reuse saved values.",
     "homepage_url": "https://www.randuslab.com/",
     "background": {

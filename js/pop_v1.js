@@ -36,7 +36,8 @@ function renderTable(tableData) {
         var dateCell = row.insertCell(4);
         var originCell = row.insertCell(5);
         var positionCell = row.insertCell(6);
-        var deleteCell = row.insertCell(7); // New cell for delete button
+        var xpathCell = row.insertCell(7);
+        var deleteCell = row.insertCell(8); // New cell for delete button
 
         checkCell.innerHTML = "<input type='checkbox'>";
         nameCell.innerHTML = tableData[i].name === undefined ? '-' : tableData[i].name;
@@ -45,6 +46,7 @@ function renderTable(tableData) {
         dateCell.innerHTML = tableData[i].date;
         originCell.innerHTML = tableData[i].page;
         positionCell.innerHTML = tableData[i].position;
+        xpathCell.innerHTML = tableData[i].xpath;
         deleteCell.innerHTML = '<button class="delete-btn" data-index="' + i + '">Delete</button>'; // Delete button with onclick event
 
 
@@ -223,11 +225,11 @@ function exportData() {
   chrome.storage.local.get('menu', function (result) {
     var tableData = result.menu;
     if (tableData && tableData.length > 0) {
-      var csvContent = 'Category,Text,Date,Position\n';
+      var csvContent = 'Category,Text,Date,Position,Xpath\n';
 
       for (var i = 0; i < tableData.length; i++) {
         var row = tableData[i];
-        var csvRow = `${row.category},${row.text || row.title},${row.date},${row.position}\n`;
+        var csvRow = `${row.category},${row.text || row.title},${row.date},${row.position},${row.xpath}\n`;
         csvContent += csvRow;
       }
 
@@ -281,11 +283,13 @@ function parseCSV(csvData) {
       var text = values[1].trim();
       var date = values[2].trim();
       var position = values[3].trim();
+      var xpath = values[4].trim();
       var item = {
         category: category,
         text: text,
         date: date,
-        position: position
+        position: position,
+        xpath:xpath
       };
       menuData.push(item);
     }
@@ -297,7 +301,7 @@ function parseCSV(csvData) {
 var category = document.getElementById("category");
 
 if (category)
-  category.addEventListener("change", function () {
+  category.addEventListener("input", function () {
     var query = category.value;
 
     var matches = getSuggestions(query);

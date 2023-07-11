@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-row {
+            display: flex;
+        }
+
+        .form-column {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Optional: Add more styles as needed */
+
+
+        /* Optional: Add more styles as needed */
+    </style>
+</head>
+
+<body>
+    <h1>Job Application Form</h1>
+
+    <form action="submit_form.php" method="POST">
+        <h2>Job Application Form</h2>
+
+        <div class="form-row">
+            <div class="form-column">
+                <label for="full_name">Full Name:</label>
+                <input type="text" id="full_name" name="full_name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" required>
+
+                <label for="current_company">Current Company:</label>
+                <input type="text" id="current_company" name="current_company" required>
+            </div>
+
+            <div class="form-column">
+                <label for="linkedin_url">LinkedIn Profile:</label>
+                <input type="url" id="linkedin_url" name="linkedin_url" required>
+
+                <label for="twitter_url">Twitter Profile:</label>
+                <input type="url" id="twitter_url" name="twitter_url" required>
+
+                <label for="github_url">GitHub Profile:</label>
+                <input type="url" id="github_url" name="github_url" required>
+
+                <label for="portfolio_url">Portfolio URL:</label>
+                <input type="url" id="portfolio_url" name="portfolio_url" required>
+            </div>
+        </div>
+
+        <label for="cover_letter">Cover Letter:</label>
+        <textarea id="cover_letter" name="cover_letter" required></textarea>
+
+        <input type="submit" value="Submit">
+    </form>
+
+
+</body>
+
+</html>

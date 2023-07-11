@@ -125,11 +125,28 @@ function newMenuOptionsItem() {
 
 function findLastOccurrence(arr, key, value) {
     return arr.reduceRight((acc, obj) => {
-        if (obj[key] === value && !acc) {
+        if ((obj[key] === value) && !acc) {
             return obj;
         }
         return acc;
     }, null);
+}
+
+function innerJoin2(inputs, values, key1, key2) {
+    var result = [];
+    var currentUrl = window.location.href;
+
+    for (var i = 0; i < inputs.length; i++) {
+        var obj1 = inputs[i];
+        var obj2 = findLastOccurrence(values, key1, obj1[key1], key2, obj1[key2]);
+
+        if (obj2) {
+            var mergedObj = { ...obj1, ...obj2 };
+            result.push(mergedObj);
+        }
+    }
+
+    return result;
 }
 
 function innerJoin(inputs, values, key) {
@@ -176,7 +193,7 @@ function _addAction(input, category) {
     if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
         let _item = _MENU_HTML.find(_ => _.text === newValue);
 
-        const newitem = { category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(input) };
+        const newitem = { category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(input), xpath: getFullXPath(input) };
         if (_item)
             localUpdateValue(newitem);
         else {
@@ -200,16 +217,19 @@ function hostExist() {
     return _MENU_HTML.filter(_ => getHost(_.page) === currentHost).length > 0;
 }
 function FullfillAction() {
+    const currentHost = window.location.host;
 
     const inputTexts = $(INPUT_TEXTS).toArray();
 
-    var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element) })), _MENU_HTML, 'position');
+    const inputSaved = _MENU_HTML.filter(_=>getHost(_.page) === currentHost);
+
+    var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath:getFullXPath(element) })), _MENU_HTML, 'xpath');
+
+    // var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element), xpath:getFullXPath(element) })), _MENU_HTML, 'position', 'xpath');
 
     joinedArray.forEach(_ => {
         $(_).val(_.text);
-    })
-
-
+    });
 }
 
 function getInputSaved() {
@@ -217,7 +237,7 @@ function getInputSaved() {
         {
             const inputTexts = $(INPUT_TEXTS).toArray();
 
-            return innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element) })), _MENU_HTML, 'position');
+            return innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath:getFullXPath(element) })), _MENU_HTML, 'xpath');
         }
     }
 
@@ -301,3 +321,26 @@ function typeIntoElement(element, text) {
         element.dispatchEvent(keyupEvent);
     }
 }
+
+function getFullXPath(element) {
+    var xpath = '';
+    var $element = $(element);
+  
+    while ($element.length) {
+      var tagName = $element.prop('tagName')?.toLowerCase() || '';
+      var parent = $element.parent();
+      var siblings = parent.children(tagName);
+  
+      if (siblings.length > 1) {
+        var index = siblings.index($element) + 1;
+        xpath = '/' + tagName + '[' + index + ']' + xpath;
+      } else {
+        xpath = '/' + tagName + xpath;
+      }
+  
+      $element = parent;
+    }
+  
+    return xpath;
+  }
+  
