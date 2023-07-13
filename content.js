@@ -1,7 +1,7 @@
 
 
 function waitForMENUisLoaded(callback) {
-    if (_variables_loaded===true) {
+    if (_variables_loaded === true) {
         // Variable is already loaded
         callback();
     } else {
@@ -12,10 +12,6 @@ function waitForMENUisLoaded(callback) {
     }
 }
 _variables_loaded = false;
-
-let _MENU_HTML = [
-    // { text: 'Add...', page: 'Add' }
-];
 
 var _CURRENT_URL = '';
 
@@ -60,15 +56,23 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
 chrome.storage.local.get('menu', function (result) {
     if (result.menu) {
+        if (Array.isArray(result.menu)) // old fashion
+            _MENU.items = result.menu;
+            else
+            _MENU = result.menu;
         ///const list = JSON.parse(result.menu);
-        _MENU_HTML = [..._MENU_HTML, ...result.menu];
+        // _MENU = [..._MENU, items: ...result.menu];
+
         _variables_loaded = true;
     }
 });
 
 document.addEventListener('click', function (e) {
 
-    waitForMENUisLoaded(doCloseOrAttachEvent);
+    const host = getHost(window.location.href);
+
+    if (!_MENU.settings.pages.find(_=>_.host.toLowerCase() === host.toLowerCase()))
+        waitForMENUisLoaded(doCloseOrAttachEvent);
 });
 
 window.addEventListener('load', function (e) {

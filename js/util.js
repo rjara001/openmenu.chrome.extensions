@@ -7,6 +7,24 @@ const getUniqueCategories = (htmlMenu) => {
     }, []);
 }
 
+const removeHTMLElements = (htmlString) => {
+
+    // Create a temporary container element
+    var tempContainer = document.createElement('div');
+    tempContainer.innerHTML = htmlString;
+
+    // Remove the desired element
+    var elementToRemove = tempContainer.querySelector('p'); // Select the element to remove
+    if (elementToRemove) {
+        elementToRemove.parentNode.removeChild(elementToRemove);
+    }
+
+    // Get the modified HTML string
+    var modifiedHtmlString = tempContainer.innerText;
+    
+    return modifiedHtmlString;
+}
+
 const getCurrentURL = () => {
     var url = window.location.href;
     var index = url.indexOf('?');
@@ -177,21 +195,22 @@ function getPosition(input) {
 }
 
 function AddAction(input, category) {
-    const lenMenu = _MENU_HTML.length;
+    const lenMenu = _MENU.items.length;
     if (lenMenu < LIMIT_LEN) {
         _addAction(input, category);
     }
     else if (category === 'autosave') {
-        removeLastItemByCategory(_MENU_HTML, 'autosave');
+        removeLastItemByCategory(_MENU.items, 'autosave');
         _addAction(input, category);
     }
 
 }
 
 function _addAction(input, category) {
-    let newValue = (input.val() || '').trim();
+    let newValue = removeHTMLElements((input.val() || '').trim());
+
     if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
-        let _item = _MENU_HTML.find(_ => _.text === newValue);
+        let _item = _MENU.items.find(_ => _.text === newValue);
 
         const newitem = { category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(input), xpath: getFullXPath(input) };
         if (_item)
@@ -211,21 +230,22 @@ function getHost(url) {
     }
     return false;
 }
+
 function hostExist() {
     const currentHost = window.location.host;
 
-    return _MENU_HTML.filter(_ => getHost(_.page) === currentHost).length > 0;
+    return _MENU.items.filter(_ => getHost(_.page) === currentHost).length > 0;
 }
 function FullfillAction() {
     const currentHost = window.location.host;
 
     const inputTexts = $(INPUT_TEXTS).toArray();
 
-    const inputSaved = _MENU_HTML.filter(_=>getHost(_.page) === currentHost);
+    const inputSaved = _MENU.items.filter(_ => getHost(_.page) === currentHost);
 
-    var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath:getFullXPath(element) })), _MENU_HTML, 'xpath');
+    var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath: getFullXPath(element) })), _MENU.items, 'xpath');
 
-    // var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element), xpath:getFullXPath(element) })), _MENU_HTML, 'position', 'xpath');
+    // var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element), xpath:getFullXPath(element) })), _MENU, 'position', 'xpath');
 
     joinedArray.forEach(_ => {
         $(_).val(_.text);
@@ -233,11 +253,11 @@ function FullfillAction() {
 }
 
 function getInputSaved() {
-    if (hostExist(_MENU_HTML)) {
+    if (hostExist(_MENU.items)) {
         {
             const inputTexts = $(INPUT_TEXTS).toArray();
 
-            return innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath:getFullXPath(element) })), _MENU_HTML, 'xpath');
+            return innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath: getFullXPath(element) })), _MENU.items, 'xpath');
         }
     }
 
@@ -325,22 +345,21 @@ function typeIntoElement(element, text) {
 function getFullXPath(element) {
     var xpath = '';
     var $element = $(element);
-  
+
     while ($element.length) {
-      var tagName = $element.prop('tagName')?.toLowerCase() || '';
-      var parent = $element.parent();
-      var siblings = parent.children(tagName);
-  
-      if (siblings.length > 1) {
-        var index = siblings.index($element) + 1;
-        xpath = '/' + tagName + '[' + index + ']' + xpath;
-      } else {
-        xpath = '/' + tagName + xpath;
-      }
-  
-      $element = parent;
+        var tagName = $element.prop('tagName')?.toLowerCase() || '';
+        var parent = $element.parent();
+        var siblings = parent.children(tagName);
+
+        if (siblings.length > 1) {
+            var index = siblings.index($element) + 1;
+            xpath = '/' + tagName + '[' + index + ']' + xpath;
+        } else {
+            xpath = '/' + tagName + xpath;
+        }
+
+        $element = parent;
     }
-  
+
     return xpath;
-  }
-  
+}

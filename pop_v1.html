@@ -54,10 +54,43 @@
       overflow: auto;
       /* Enable scrolling */
     }
+
+    .tabs {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tab-header {
+      display: flex;
+    }
+
+    .tab-button {
+      padding: 8px 16px;
+      background-color: #f2f2f2;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: border-bottom-color 0.3s;
+    }
+
+    .tab-button.active {
+      border-bottom-color: #333;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .section {
+      padding-top: 15px;
+    }
+
+    /* Add styling as per your requirements for the table */
   </style>
 </head>
 
 <body>
+
   <div class="container">
     <h1 class="header">Menu Extend</h1>
     <p class="instructions">Click on any input field to extend the menu</p>
@@ -70,68 +103,114 @@
         <input type="checkbox" id="auto-save" class="toggle-checkbox" />
         <span class="toggle-text">Auto Save Active</span>
       </label>
-
     </div>
     <p class="feedback">Share your feedback with us by clicking <a
         href="https://docs.google.com/forms/d/e/1FAIpQLSe8-Q7REnfG5ZA3Vq9YhxbAdas7ktnwFIBlECRTx_GISi30YA/viewform?usp=sf_link">here</a><br>
       Like my work?Buy me a <a href="https://bmc.link/menuextend">coffee</a> or <a
         href="https://bmc.link/menuextend">beer</a>!
     </p>
-    <p>
-    </p>
-
   </div>
-  <form>
-    <div class="category">
-      <div>Category:</div>
-      <div><input type="text" id="category" />
-        <ul id="suggestionsList" style="display: none;"></ul>
 
+  <div class="section">
+
+    <div class="tabs">
+      <div class="tab-header">
+        <button class="tab-button active" data-tab="tab1">Manage Data</button>
+        <button class="tab-button" data-tab="tab2">Disabled Pages</button>
       </div>
-    </div>
-    <div class="text">
-      <div>Name:</div>
-      <div><input type="text" id="name"></input></div>
-    </div>
+      <div class="tab-content active" id="tab1" style="display: block;">
+        <!-- Table content for Tab 1 -->
+        <div class="table-container">
 
-    <div class="text">
-      <div>Text:</div>
-      <div><input type="text" id="text"></input></div>
-    </div>
-    <div>
-      <button id="save">Save</button>
-      <button id="delete-selected">Delete Items Selected</button>
-      <button id="set-category-selected">Set Category Items Selected</button>
-    </div>
-  </form>
-  <div class="table-container">
-    <table id="myTable">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Category</th>
-          <th>Name</th>
-          <th>Text</th>
-          <th>Date</th>
-          <th>Origin</th>
-          <th>Position</th>
-          <th>Xpath</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
+          <div class="section">
 
-      </tbody>
-    </table>
+            <form>
+              <div class="category">
+                <div>Category:</div>
+                <div><input type="text" id="category" />
+                  <ul id="suggestionsList" style="display: none;"></ul>
 
+                </div>
+              </div>
+              <div class="text">
+                <div>Name:</div>
+                <div><input type="text" id="name"></input></div>
+              </div>
+
+              <div class="text">
+                <div>Text:</div>
+                <div><input type="text" id="text"></input></div>
+              </div>
+              <input type="hidden" id="url"></input>
+              <div>
+                <button id="save">Save</button>
+                <button id="delete-selected">Delete Items Selected</button>
+                <button id="set-category-selected">Set Category Items Selected</button>
+                <button id="disable-page">Disable Page</button>
+              </div>
+            </form>
+
+            <table id="data">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Category</th>
+                  <th>Name</th>
+                  <th>Text</th>
+                  <th>Date</th>
+                  <th>Origin</th>
+                  <th>Position</th>
+                  <th>Xpath</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="section">
+            <button id="exportButton">Export Data</button>
+            <input type="file" id="importInput" accept=".csv" style="display: none;">
+            <button id="importButton">Import Data</button>
+          </div>
+
+        </div>
+      </div>
+      <div class="tab-content" id="tab2">
+        <!-- Table content for Tab 2 -->
+        <div class="table-container">
+          <form>
+            <div>
+              <button id="delete-selected-pages">Delete Items Selected</button>
+            </div>
+          </form>
+          <table id="pages">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Host</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </div>
-  <button id="exportButton">Export Data</button>
-  <input type="file" id="importInput" accept=".csv" style="display: none;">
-  <button id="importButton">Import Data</button>
 
   <script src="pop.js"></script>
+  <script src="./constants.js"></script>
   <script src="./js/util.js"></script>
-  <script src="./js/pop_v1.js"></script>
+  <script src="./js/settings.util.js"></script>
+  <script src="./js/tabs.js"></script>
+  <script src="./js/tables.js"></script>
+  <script src="./js/index.settings.js"></script>
 
 </body>
 

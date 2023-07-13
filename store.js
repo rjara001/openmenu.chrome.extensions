@@ -1,26 +1,26 @@
 
 function localSaveValue(item) {
-    _MENU_HTML.push(item);
+    _MENU.items.push(item);
             
-    chrome.storage.local.set({ 'menu': _MENU_HTML }, function() {
+    chrome.storage.local.set({ 'menu': _MENU }, function() {
         
     });
 }
 
 function localUpdateValue(item) {
-    _MENU_HTML = _MENU_HTML.filter(_=>_.text !== item.text);
+    _MENU = _MENU.items.filter(_=>_.text !== item.text);
 
-    _MENU_HTML.push(item);
+    _MENU.items.push(item);
             
-    chrome.storage.local.set({ 'menu': _MENU_HTML }, function() {
+    chrome.storage.local.set({ 'menu': _MENU }, function() {
         
     });
 }
 
 function localRemoveValue(value) {
-    _MENU_HTML = _MENU_HTML.filter(_=>_.text !== value.text);
+    _MENU = _MENU.items.filter(_=>_.text !== value.text);
             
-    chrome.storage.local.set({ 'menu': _MENU_HTML }, function() {
+    chrome.storage.local.set({ 'menu': _MENU }, function() {
         
     });
 }

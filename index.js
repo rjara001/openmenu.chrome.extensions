@@ -179,7 +179,7 @@ function loadCategories(menuList) {
 
     menuList.appendChild(newMenuOptionsItem());
 
-    let categories = getUniqueCategories(_MENU_HTML);
+    let categories = getUniqueCategories(_MENU.items);
     const categoriesFiltered = categories.filter(_ => _ !== undefined);
 
     categoriesFiltered.forEach(item => {
@@ -211,7 +211,7 @@ function newMenuCategory(category, menuList) {
 }
 
 function showMenusItems(category, menuList) {
-    _MENU_HTML.filter(_ => _.category === category).forEach(_ => {
+    _MENU.items.filter(_ => _.category === category).forEach(_ => {
 
         newMenuItem(_, menuList);
     });
