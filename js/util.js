@@ -1,11 +1,4 @@
-const getUniqueCategories = (htmlMenu) => {
-    return htmlMenu.reduce(function (acc, item) {
-        if (!acc.includes(item.category)) {
-            acc.push(item.category);
-        }
-        return acc;
-    }, []);
-}
+
 
 const removeHTMLElements = (htmlString) => {
 
@@ -72,73 +65,6 @@ function createReadAllOption() {
     });
 
     return link;
-}
-
-function createClearOption() {
-    const link = document.createElement('div');
-    link.classList.add('optionmenu', 'item');
-    link.textContent = 'Clear';
-
-    link.addEventListener('click', function () {
-        go(link.innerText, 'clear');
-    });
-
-    return link;
-}
-
-function createAddOption() {
-    const link = document.createElement('div');
-    link.classList.add('optionmenu', 'item');
-
-    link.innerText = 'Add'
-    // link.appendChild(CreateSVG());
-
-    link.addEventListener('click', function () {
-        go(link.innerText, 'add');
-    });
-
-    return link;
-}
-
-function createSeparator() {
-    const div = document.createElement('div');
-
-    div.textContent = ' ';
-
-    return div;
-}
-
-function groupAll() {
-    const div = document.createElement('div');
-    div.classList.add('submenu');
-    return div;
-}
-
-function newMenuOptionsItem() {
-    const menuItem = document.createElement('div');
-
-    const outerDiv = document.createElement('div');
-    outerDiv.classList.add('optionmenu');
-
-    const firstDiv = document.createElement('div');
-    firstDiv.classList.add('itemline');
-    firstDiv.appendChild(createAddOption());
-
-
-    const _groupAll = groupAll();
-    firstDiv.appendChild(_groupAll);
-
-    _groupAll.appendChild(createFulfillOption());
-    _groupAll.appendChild(createSeparator());
-    // _groupAll.appendChild(createReadAllOption());
-    _groupAll.appendChild(createClearOption());
-
-    outerDiv.appendChild(firstDiv);
-
-    menuItem.appendChild(outerDiv);
-    menuItem.classList.add('subheader');
-
-    return menuItem;
 }
 
 function findLastOccurrence(arr, key, value) {

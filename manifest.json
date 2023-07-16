@@ -20,7 +20,12 @@
     ],
     "web_accessible_resources": [
         {
-            "resources": [],
+            "resources": [
+                "html/styles.css",
+                "html/index.html.js",
+                "html/index.html",
+                "html/util.html.js"
+            ],
             "matches": [
                 "<all_urls>"
             ]
@@ -38,6 +43,8 @@
                 "background.js",
                 "constants.js",
                 "store.js",
+                "js/box.util.js",
+                "js/index.util.js",
                 "content.js",
                 "index.js",
                 "js/move.js",

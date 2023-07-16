@@ -75,6 +75,6 @@ document.addEventListener('click', function (e) {
         waitForMENUisLoaded(doCloseOrAttachEvent);
 });
 
-window.addEventListener('load', function (e) {
-    waitForMENUisLoaded(addMenu);
-});
+// window.addEventListener('load', function (e) {
+//     waitForMENUisLoaded(addMenu);
+// });

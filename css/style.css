@@ -1,8 +1,42 @@
-#__open_menu_id {
-	display: none;
-	position: fixed;
-	top: 0;
-	width: 200px;
+:host {
+	all: initial;
+	/* Reset all styles */
+	display: block;
+	/* Make the host element a block-level element */
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.scroll {
+	overflow-y: auto;
+	height: 400px;
+}
+
+.list .menu{
+	background-color: floralwhite;
+	text-align: left;
+	width: 100%
+	font-
+}
+.list .submenu {
+	display: inline-flex;
+}
+
+.list .item .disabled {
+	cursor: not-allowed;
+	color: #C6C6C6;
+}
+
+.list .fulfill {
+	color: blue;
+	font-weight: 400;
+}
+
+.list {
+	width: 100%;
 	background-color: #fff;
 	z-index: 9999;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -13,7 +47,7 @@
 	letter-spacing: 0.01071em;
 }
 
-#__open_menu_id select {
+.list select {
 	appearance: none;
 	border: none;
 	background: transparent;
@@ -24,34 +58,34 @@
 	outline: none;
 }
 
-#__open_menu_id select option {
+.list select option {
 	font-weight: bold;
 }
 
-#__open_menu_id select option:first-child {
+.list select option:first-child {
 	color: #999;
 	font-weight: normal;
 }
 
-#__open_menu_id select::-ms-expand {
+.list select::-ms-expand {
 	display: none;
 }
 
-#__open_menu_id select option:before {
+.list select option:before {
 	content: "";
 	display: none;
 }
 
-#__open_menu_id ul {
+.list ul {
 	list-style-type: none;
 	padding-inline-start: 10px;
 }
 
-#__open_menu_id .closeBtn {
+.list .closeBtn {
 	position: absolute;
 	top: 0;
 	right: 0;
-    /* padding: 10px; */
+	/* padding: 10px; */
 	font-size: 15px;
 	color: #180606;
 	background: none;
@@ -59,17 +93,22 @@
 	cursor: pointer;
 }
 
-#__open_menu_id .closeBtn:hover {
+.list .closeBtn:hover {
 	color: #ccc;
 }
 
-#__open_menu_id .header {
-    /* border: 1px solid #999; */
+.list .header {
+	/* border: 1px solid #999; */
 	background-color: #999;
 	height: 20px;
 }
 
-#__open_menu_id .item {
+.list .submenu .item {
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.list .item {
 	color: rgb(144, 202, 249);
 	text-decoration: underline rgba(144, 202, 249, 0.4);
 	position: relative;
@@ -87,52 +126,55 @@
 	display: inline-block;
 }
 
-#__open_menu_id .remove {
+.list .remove {
 	display: inline-block;
 	width: 10%;
 	font-size: 11px;
 }
 
-#__open_menu_id .remove:hover {
+.list .remove:hover {
 	color: #ccc;
 	cursor: pointer;
 }
-#__open_menu_id .category {
-    color: rgb(144, 202, 249);
-    cursor: pointer;
-}
-#__open_menu_id .item {
-    text-align: left;
-    width: 100%;
+
+.list .category {
+	color: rgb(144, 202, 249);
+	cursor: pointer;
 }
 
-#__open_menu_id .itemline {
-    display: flex;
+.list .item {
+	text-align: left;
+	width: 100%;
+}
+
+.list .itemline {
+	justify-content: space-between;
+	display: flex;
 }
 
 #category {
-  width: 300px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+	width: 300px;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
 
 #suggestionsList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #fff;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: 300px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #fff;
 }
 
 #suggestionsList li {
-  padding: 10px;
-  cursor: pointer;
+	padding: 10px;
+	cursor: pointer;
 }
 
 #suggestionsList li:hover {
-  background-color: #f5f5f5;
+	background-color: #f5f5f5;
 }
