@@ -21,6 +21,35 @@ function toText(item) {
     return textElipsed;
 }
 
+function _addAction(input, category) {
+    let newValue = removeHTMLElements((input.val() || '').trim());
+
+    if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
+        let _item = _MENU.items.find(_ => _.text === newValue);
+
+        const newitem = { category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(input), xpath: getFullXPath(input) };
+        if (_item)
+            localUpdateValue(newitem);
+        else {
+
+            newMenuItem(newitem, shadowRoot.querySelector('.list'));
+            localSaveValue(newitem);
+        }
+    }
+}
+
+function removeLastItemByCategory(arr, category) {
+    var index = arr.findIndex(function (item) {
+        return item.category === category;
+    });
+
+    if (index !== -1) {
+        arr.splice(index, 1);
+    }
+
+    return arr;
+}
+
 function clean(menuList) {
     // const parentElement = document.getElementById('parent');
     const childNodes = Array.from(menuList.childNodes);
@@ -64,6 +93,7 @@ function hostExist() {
 }
 
 function createFulfillOption() {
+    debugger;
     const link = document.createElement('div');
     link.classList.add('optionmenu', 'item', 'pr5');
     link.textContent = 'AutoFill';
@@ -78,6 +108,7 @@ function createFulfillOption() {
         link.title = 'Fulfill will be activated when you have data saved for these input texts'
     }
     link.addEventListener('click', function () {
+        debugger;
         go(link.innerText, 'fulfill');
     });
 
@@ -122,32 +153,4 @@ function createClearOption() {
     });
 
     return link;
-}
-
-function newMenuOptionsItem() {
-    
-    // const menuItem = document.createElement('div');
-
-    // const outerDiv = document.createElement('div');
-    // outerDiv.classList.add('optionmenu');
-
-    // const firstDiv = document.createElement('div');
-    // firstDiv.classList.add('itemline');
-    // firstDiv.appendChild(createAddOption());
-
-
-    // const _groupAll = groupAll();
-    // firstDiv.appendChild(_groupAll);
-
-    // _groupAll.appendChild(createFulfillOption());
-    // _groupAll.appendChild(createSeparator());
-    // // _groupAll.appendChild(createReadAllOption());
-    // _groupAll.appendChild(createClearOption());
-
-    // outerDiv.appendChild(firstDiv);
-
-    // menuItem.appendChild(outerDiv);
-    // menuItem.classList.add('subheader');
-
-    // return menuItem;
 }

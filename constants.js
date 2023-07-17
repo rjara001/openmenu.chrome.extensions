@@ -19,7 +19,7 @@ const URL_IFRAME = chrome.runtime.getURL('html/index.html');
 
 const _HTML_BOX = `
 <div class="balloon-header">
-      <h3>Speed Shortcut</h3>
+      <h3>Menu Extend</h3>
       <span class="close-btn">&times;</span>
     </div>
     <iframe id='imenu' src='${URL_IFRAME}' style="border-width: 0px;width:100%"></iframe>
@@ -33,8 +33,6 @@ const _STYLE_AS_STRING = `
   }
   .balloon {
     position: fixed;
-    padding: 2px;
-    background-color: #f1f1f1;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     display: none;
     z-index: 9999;

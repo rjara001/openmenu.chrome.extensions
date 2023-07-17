@@ -1,5 +1,6 @@
 
 
+
 const removeHTMLElements = (htmlString) => {
 
     // Create a temporary container element
@@ -14,7 +15,7 @@ const removeHTMLElements = (htmlString) => {
 
     // Get the modified HTML string
     var modifiedHtmlString = tempContainer.innerText;
-    
+
     return modifiedHtmlString;
 }
 
@@ -121,32 +122,24 @@ function getPosition(input) {
 }
 
 function AddAction(input, category) {
-    const lenMenu = _MENU.items.length;
-    if (lenMenu < LIMIT_LEN) {
-        _addAction(input, category);
-    }
-    else if (category === 'autosave') {
-        removeLastItemByCategory(_MENU.items, 'autosave');
-        _addAction(input, category);
-    }
+    const value = input.val();
+    const position = getPosition(input);
+    const xpath = getFullXPath(input);
 
-}
+    sendMessageToIframe('add', { value, position, xpath, category });
 
-function _addAction(input, category) {
-    let newValue = removeHTMLElements((input.val() || '').trim());
+    // if (!_MENU || !_MENU.items)
+    //     return;
 
-    if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
-        let _item = _MENU.items.find(_ => _.text === newValue);
+    // const lenMenu = _MENU.items.length;
+    // if (lenMenu < LIMIT_LEN) {
+    //     _addAction(input, category);
+    // }
+    // else if (category === 'autosave') {
+    //     removeLastItemByCategory(_MENU.items, 'autosave');
+    //     _addAction(input, category);
+    // }
 
-        const newitem = { category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(input), xpath: getFullXPath(input) };
-        if (_item)
-            localUpdateValue(newitem);
-        else {
-
-            newMenuItem(newitem, shadowRoot.querySelector('.list'));
-            localSaveValue(newitem);
-        }
-    }
 }
 
 function getHost(url) {
@@ -223,18 +216,6 @@ function CreateSVG() {
 
 }
 
-function removeLastItemByCategory(arr, category) {
-    var index = arr.findIndex(function (item) {
-        return item.category === category;
-    });
-
-    if (index !== -1) {
-        arr.splice(index, 1);
-    }
-
-    return arr;
-}
-
 function typeIntoElement(element, text) {
     // Set focus on the element
     element.focus();
@@ -288,4 +269,71 @@ function getFullXPath(element) {
     }
 
     return xpath;
+}
+
+const load = () => {
+
+    var container = document.createElement("div");
+
+    container.setAttribute("id", _BOX_ID);
+
+    document.body.appendChild(container);
+
+    shadowRoot = container.attachShadow({ mode: 'open' });
+
+    // Create a new HTML element
+    balloon = document.createElement("div");
+    balloon.classList.add("balloon");
+    balloon.id = "balloon";
+    balloon.innerHTML = _HTML_BOX;
+
+    // Append the created element to the document body
+    shadowRoot.appendChild(balloon);
+    const linkElem = document.createElement('style');
+
+    linkElem.innerHTML = _STYLE_AS_STRING;
+
+    shadowRoot.appendChild(linkElem);
+
+    // // Example close button functionality
+    var closeButton = balloon.querySelector(".close-btn");
+ 
+    var header = balloon.querySelector(".balloon-header");
+   
+    header.addEventListener('mousedown', startDragging);
+
+    closeButton.addEventListener("click", function () {
+        hideBalloon();
+    });
+
+    var iframe = shadowRoot.getElementById('imenu');
+
+    iframe.addEventListener('load', ()=>{
+        loadEventosOnInputs();
+    });
+
+    window.addEventListener('message', function (event) {
+        // Log the message received from the iframe
+        console.log('Message received from iframe:', event.data);
+
+        if (event.data.go)
+            go(event.data.go.text, event.data.go.action);
+
+        if (event.data.bar)
+            barMessage(event.data.bar);
+        if (event.data.maxHeight) {
+            resizeIframe(event.data.maxHeight);
+        }
+        if (event.data.url) {
+            barMessage(`Moving to the selected URL: ${addEllipsis(event.data.url, 40)}`);
+
+            if (event.data.action === 'createNewTab')
+                chrome.runtime.sendMessage({ action: "createNewTab", url: event.data.url });
+            else
+                window.location.href = event.data.url;
+        }
+    });
+
+    hideBalloon();
+
 }

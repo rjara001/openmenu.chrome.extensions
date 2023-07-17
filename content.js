@@ -69,12 +69,11 @@ chrome.storage.local.get('menu', function (result) {
 
 document.addEventListener('click', function (e) {
 
-    const host = getHost(window.location.href);
+   doClose();
 
-    if (!_MENU.settings.pages.find(_=>_.host.toLowerCase() === host.toLowerCase()))
-        waitForMENUisLoaded(doCloseOrAttachEvent);
 });
 
-// window.addEventListener('load', function (e) {
-//     waitForMENUisLoaded(addMenu);
-// });
+window.addEventListener('load', function (e) {
+    waitForMENUisLoaded(load);
+    //loadEventosOnInputs();
+});

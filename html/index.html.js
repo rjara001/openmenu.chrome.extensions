@@ -21,7 +21,7 @@ function newMenuCategory(category, menuList) {
         cleanChildElement(menuList);
 
         newMenuItem({ text: '<- ' + category }, menuList, 'category');
-       
+
         const menuScroll = document.createElement('div');
         menuScroll.classList.add('scroll');
         menuList.appendChild(menuScroll);
@@ -87,17 +87,16 @@ function showMenusItems(category, menuList) {
 
         newMenuItem(_, menuList);
     });
-
-    let maxHeight = (menuList.offsetHeight>0?menuList.offsetHeight + 22: menuList.offsetHeight);
-    // if (maxHeight>300)
-    //     maxHeight = 300;
-    window.parent.postMessage({ maxHeight: maxHeight }, "*");
 }
 
 function loadCategories() {
 
     let menuList = document.getElementsByClassName('items')[0];
     let fulfill = document.getElementById('fulfill');
+
+    fulfill.addEventListener('click', (e) => {
+        go('fulfill', 'fulfill');
+    });
 
     clean(menuList);
 
@@ -126,9 +125,37 @@ function loadCategories() {
 $(document).ready(function () {
 
     window.addEventListener('message', function (event) {
-        // Check the origin of the message for security purposes
-        _MENU = event.data.items;
 
-        loadCategories();
+        switch (event.data.action) {
+            case 'resize':{
+                let menuList = document.getElementsByClassName('items')[0];
+                let maxHeight = menuList.parentNode.parentNode.offsetHeight;
+                window.parent.postMessage({ maxHeight: maxHeight }, "*");
+            }
+            break;
+            case 'load':
+                {
+                    _MENU = event.data.payload;
+
+                    loadCategories();
+                }
+                break;
+            case 'add':
+                {
+                    const category = event.data.payload.category;
+                    if (!_MENU)
+                        return;
+
+                    const lenMenu = _MENU.length;
+                    if (lenMenu < LIMIT_LEN) {
+                        _addAction(input, category);
+                    }
+                    else if (category === 'autosave') {
+                        removeLastItemByCategory(_MENU, 'autosave');
+                        _addAction(input, category);
+                    }
+                }
+        }
+
     });
 });
