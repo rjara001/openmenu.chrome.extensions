@@ -1,8 +1,4 @@
 let ITEMS = [];
-function resizeIframe(size) {
-    var iframe = shadowRoot.getElementById('ifav');
-    iframe.style.height = `${size}px`;
-}
 
 function addEllipsis(text, maxLength) {
     if (text.length > maxLength) {

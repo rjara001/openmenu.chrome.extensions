@@ -121,6 +121,21 @@ function getPosition(input) {
     return `t:${chkval(inputOffset.top)};l:${chkval(inputOffset.left)};b:${chkval(inputOffset.bottom)};r:${chkval(inputOffset.right)}`;
 }
 
+function _addAction(input, category) {
+    let newValue = removeHTMLElements((input.val() || '').trim());
+
+    if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
+        let _item = _MENU.items.find(_ => _.text === newValue);
+
+        const newitem = { category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(input), xpath: getFullXPath(input) };
+        if (_item)
+            localUpdateValue(newitem);
+        else {
+            localSaveValue(newitem);
+        }
+    }
+}
+
 function AddAction(input, category) {
     const value = input.val();
     const position = getPosition(input);
@@ -128,17 +143,14 @@ function AddAction(input, category) {
 
     sendMessageToIframe('add', { value, position, xpath, category });
 
-    // if (!_MENU || !_MENU.items)
-    //     return;
-
-    // const lenMenu = _MENU.items.length;
-    // if (lenMenu < LIMIT_LEN) {
-    //     _addAction(input, category);
-    // }
-    // else if (category === 'autosave') {
-    //     removeLastItemByCategory(_MENU.items, 'autosave');
-    //     _addAction(input, category);
-    // }
+    const lenMenu = _MENU.items.length;
+    if (lenMenu < LIMIT_LEN) {
+        _addAction(input, category);
+    }
+    else if (category === 'autosave') {
+        removeLastItemByCategory(_MENU.items, 'autosave');
+        _addAction(input, category);
+    }
 
 }
 
@@ -297,9 +309,9 @@ const load = () => {
 
     // // Example close button functionality
     var closeButton = balloon.querySelector(".close-btn");
- 
+
     var header = balloon.querySelector(".balloon-header");
-   
+
     header.addEventListener('mousedown', startDragging);
 
     closeButton.addEventListener("click", function () {
@@ -308,7 +320,7 @@ const load = () => {
 
     var iframe = shadowRoot.getElementById('imenu');
 
-    iframe.addEventListener('load', ()=>{
+    iframe.addEventListener('load', () => {
         loadEventosOnInputs();
     });
 

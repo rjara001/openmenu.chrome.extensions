@@ -80,6 +80,10 @@ function newMenuItem(item, menuList, type) {
     menuItem.appendChild(outerDiv);
 
     menuList.appendChild(menuItem);
+
+    // resizeIframe(menuList.parentNode.parentNode.offsetHeight);
+    let maxHeight = menuList.parentNode.parentNode.offsetHeight;
+    window.parent.postMessage({ maxHeight: maxHeight }, "*");
 }
 
 function showMenusItems(category, menuList) {
@@ -148,7 +152,7 @@ $(document).ready(function () {
 
                     const lenMenu = _MENU.length;
                     if (lenMenu < LIMIT_LEN) {
-                        _addAction(input, category);
+                        _addAction(event.data, category);
                     }
                     else if (category === 'autosave') {
                         removeLastItemByCategory(_MENU, 'autosave');

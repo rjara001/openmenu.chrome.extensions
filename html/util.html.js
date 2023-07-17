@@ -1,7 +1,59 @@
 
 
+
+
+function resizeIframe(size) {
+    var iframe = shadowRoot.getElementById('imenu');
+    iframe.style.height = `${size}px`;
+}
+
+const getCurrentURL = () => {
+    var url = window.location.href;
+    var index = url.indexOf('?');
+
+    if (index !== -1) {
+        var part = url.substring(0, index);
+        return part;
+    }
+
+    return url;
+
+}
+
+const removeHTMLElements = (htmlString) => {
+
+    // Create a temporary container element
+    var tempContainer = document.createElement('div');
+    tempContainer.innerHTML = htmlString;
+
+    // Remove the desired element
+    var elementToRemove = tempContainer.querySelector('p'); // Select the element to remove
+    if (elementToRemove) {
+        elementToRemove.parentNode.removeChild(elementToRemove);
+    }
+
+    // Get the modified HTML string
+    var modifiedHtmlString = tempContainer.innerText;
+
+    return modifiedHtmlString;
+}
+
+function _addAction(obj) {
+    let newValue = removeHTMLElements((obj.payload.value || '').trim());
+
+    if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
+        let _item = _MENU.find(_ => _.text === newValue);
+
+        const newitem = { category: obj.payload.category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: obj.payload.position, xpath: obj.payload.xpath };
+        if (!_item){
+            newMenuItem(newitem, document.getElementsByClassName('list')[0]);
+           
+        }
+    }
+}
+
 function go(text, isAdd) {
-    window.parent.postMessage({ go: {text, action: isAdd} }, "*");
+    window.parent.postMessage({ go: { text, action: isAdd } }, "*");
 }
 
 function addEllipsis(text, maxLength) {
@@ -21,22 +73,6 @@ function toText(item) {
     return textElipsed;
 }
 
-function _addAction(input, category) {
-    let newValue = removeHTMLElements((input.val() || '').trim());
-
-    if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
-        let _item = _MENU.items.find(_ => _.text === newValue);
-
-        const newitem = { category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(input), xpath: getFullXPath(input) };
-        if (_item)
-            localUpdateValue(newitem);
-        else {
-
-            newMenuItem(newitem, shadowRoot.querySelector('.list'));
-            localSaveValue(newitem);
-        }
-    }
-}
 
 function removeLastItemByCategory(arr, category) {
     var index = arr.findIndex(function (item) {

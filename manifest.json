@@ -41,14 +41,14 @@
             "js": [
                 "jquery/jquery.min.js",
                 "background.js",
-                "constants.js",
                 "store.js",
+                "js/util.js",
+                "constants.js",
                 "js/box.util.js",
                 "js/index.util.js",
                 "content.js",
                 "index.js",
-                "js/move.js",
-                "js/util.js"         
+                "js/move.js"
             ],
             "css": [],
             "all_frames": true
