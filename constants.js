@@ -12,6 +12,8 @@ const PLUS_SVG='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmln
 const INPUT_TEXTS = 'input[type="datetime"], input[type="time"], input[type="tel"], input[type="search"], input[type="url"], input[type="text"], input[type="email"], input[type="number"], input[type="date"], textarea';
 
 var _MENU = {items:[], settings:{}};
+var _URL = '';
+var _JOINED_ARRAY = [];
 
 const _BOX_ID = '__open_menu_id';
 

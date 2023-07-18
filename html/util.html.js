@@ -110,20 +110,9 @@ const getUniqueCategories = (htmlMenu) => {
         return acc;
     }, []);
 }
-function getInputSaved() {
-    if (hostExist(_MENU)) {
-        {
-            const inputTexts = $(INPUT_TEXTS).toArray();
-
-            return innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath: getFullXPath(element) })), _MENU, 'xpath');
-        }
-    }
-
-    return [];
-}
 
 function hostExist() {
-    const currentHost = window.location.host;
+    const currentHost = getHost(_URL);
 
     return _MENU.filter(_ => getHost(_.page) === currentHost).length > 0;
 }
@@ -134,7 +123,7 @@ function createFulfillOption() {
     link.classList.add('optionmenu', 'item', 'pr5');
     link.textContent = 'AutoFill';
 
-    var joinedArray = getInputSaved();
+    var joinedArray = _JOINED_ARRAY;
     if (joinedArray.length > 0) {
         link.textContent += '(' + joinedArray.length + ')';
         link.classList.add('fulfill');

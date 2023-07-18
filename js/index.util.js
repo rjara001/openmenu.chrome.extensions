@@ -13,7 +13,9 @@ function loadEventosOnInputs() {
         _.addEventListener('blur', (e) => autoSave(e));
     });
 
-    sendMessageToIframe('load', _MENU.items);
+    var joinedArray = getInputSaved().map(_=>(_.xpath));
+
+    sendMessageToIframe('load', { items: _MENU.items, url: window.location.href, joined: joinedArray });
 }
 
 function autoSave(e) {
@@ -146,7 +148,7 @@ function showMenu(e) {
         sendMessageToIframe('resize', {});
     }
     // _OPENMENU_MENU_ID.style.display = 'none';
-    
+
 }
 
 function sendMessageToIframe(action, payload) {

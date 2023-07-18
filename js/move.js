@@ -1,8 +1,9 @@
 var isDragging = false;
 var initialX;
 var initialY;
+var box;
 
-
+document.addEventListener('mousedown', startDragging);
 document.addEventListener('mousemove', drag);
 document.addEventListener('mouseup', stopDragging);
 

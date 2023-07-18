@@ -96,7 +96,6 @@ function innerJoin2(inputs, values, key1, key2) {
 
 function innerJoin(inputs, values, key) {
     var result = [];
-    var currentUrl = window.location.href;
 
     for (var i = 0; i < inputs.length; i++) {
         var obj1 = inputs[i];

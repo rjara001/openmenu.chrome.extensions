@@ -104,7 +104,7 @@ function loadCategories() {
 
     clean(menuList);
 
-    var joinedArray = getInputSaved();
+    var joinedArray = _JOINED_ARRAY;
     if (joinedArray.length > 0) {
         fulfill.textContent += '(' + joinedArray.length + ')';
         fulfill.classList.add('fulfill');
@@ -139,7 +139,9 @@ $(document).ready(function () {
             break;
             case 'load':
                 {
-                    _MENU = event.data.payload;
+                    _MENU = event.data.payload.items;
+                    _URL = event.data.payload.url;
+                    _JOINED_ARRAY = event.data.payload.joined;
 
                     loadCategories();
                 }
