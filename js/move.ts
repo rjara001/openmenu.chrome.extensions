@@ -1,3 +1,5 @@
+import { getShadowRoot } from "../globals/index.js";
+
 var isDragging = false;
 var initialX;
 var initialY;
@@ -7,8 +9,8 @@ document.addEventListener('mousedown', startDragging);
 document.addEventListener('mousemove', drag);
 document.addEventListener('mouseup', stopDragging);
 
-function startDragging(event) {
-    box = shadowRoot.getElementById('balloon');
+export function startDragging(event) {
+    box = getShadowRoot().getElementById('balloon');
   isDragging = true;
   initialX = event.clientX - box.offsetLeft;
   initialY = event.clientY - box.offsetTop;
@@ -16,7 +18,7 @@ function startDragging(event) {
 
 function drag(event) {
   if (isDragging) {
-    box = shadowRoot.getElementById('balloon');
+    box = getShadowRoot().getElementById('balloon');
     var newX = event.clientX - initialX;
     var newY = event.clientY - initialY;
     box.style.left = newX + 'px';

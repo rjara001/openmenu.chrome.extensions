@@ -74,7 +74,7 @@ function toText(item) {
 }
 
 
-function removeLastItemByCategory(arr, category) {
+export function removeLastItemByCategory(arr, category) {
     var index = arr.findIndex(function (item) {
         return item.category === category;
     });
@@ -102,7 +102,7 @@ function getHost(url) {
     return false;
 }
 
-const getUniqueCategories = (htmlMenu) => {
+export const getUniqueCategories = (htmlMenu) => {
     return htmlMenu.reduce(function (acc, item) {
         if (!acc.includes(item.category)) {
             acc.push(item.category);

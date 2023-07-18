@@ -1,26 +1,27 @@
+import { getMenu } from "./globals/index.js";
 
-function localSaveValue(item) {
-    _MENU.items.push(item);
+export function localSaveValue(item) {
+    getMenu().items.push(item);
             
-    chrome.storage.local.set({ 'menu': _MENU }, function() {
+    chrome.storage.local.set({ 'menu': getMenu() }, function() {
         
     });
 }
 
-function localUpdateValue(item) {
-    _MENU.items = _MENU.items.filter(_=>_.text !== item.text);
+export function localUpdateValue(item) {
+    getMenu().items = getMenu().items.filter(_=>_.text !== item.text);
 
-    _MENU.items.push(item);
+    getMenu().items.push(item);
             
-    chrome.storage.local.set({ 'menu': _MENU }, function() {
+    chrome.storage.local.set({ 'menu': getMenu() }, function() {
         
     });
 }
 
 function localRemoveValue(value) {
-    _MENU.items = _MENU.items.filter(_=>_.text !== value.text);
+    getMenu().items = getMenu().items.filter(_=>_.text !== value.text);
             
-    chrome.storage.local.set({ 'menu': _MENU }, function() {
+    chrome.storage.local.set({ 'menu': getMenu() }, function() {
         
     });
 }

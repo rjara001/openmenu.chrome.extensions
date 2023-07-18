@@ -1,25 +1,30 @@
+import { URL_IFRAME, _BOX_ID } from "../constants.js";
+import { getShadowRoot } from "../globals/index.js";
+
 let ITEMS = [];
 
-function addEllipsis(text, maxLength) {
+export function addEllipsis(text, maxLength) {
     if (text.length > maxLength) {
         return text.slice(0, maxLength) + '...';
     } else {
         return text;
     }
 }
-function barMessage(text) {
+export function barMessage(text) {
+    let balloon = getShadowRoot().getElementById("balloon");
+    
     var status = balloon.querySelector(".status-bar");
     status.innerText = text;
 }
 
-function resizeIframe(size) {
-    var iframe = shadowRoot.getElementById('imenu');
+export function resizeIframe(size) {
+    var iframe = getShadowRoot().getElementById('imenu');
     iframe.style.height = `${size}px`;
 }
 
 function showBalloon(x, y) {
 
-    balloon = shadowRoot.getElementById("balloon");
+    let balloon = getShadowRoot().getElementById("balloon");
 
     x = x || 0;
     y = y || 0;
@@ -33,21 +38,21 @@ function showBalloon(x, y) {
     balloon.style.left = x + "px";
     balloon.style.top = y + "px";
 
-    var iframe = shadowRoot.getElementById('imenu');
+    var iframe = getShadowRoot().getElementById('imenu');
     const domain = URL_IFRAME.split('/')[0] + '//' + URL_IFRAME.split('/')[2];
 
     iframe.contentWindow.postMessage({ items: ITEMS, currentUrl: window.location.href }, domain);
 }
 
-function hideBalloon() {
-    balloon = shadowRoot.getElementById("balloon");
+export function hideBalloon() {
+    let balloon = getShadowRoot().getElementById("balloon");
     balloon.style.display = "none";
 }
 
 function isMenuOpened() {
-    if (!shadowRoot) return;
+    if (!getShadowRoot()) return;
 
-    const balloon = shadowRoot.getElementById("balloon");
+    const balloon = getShadowRoot().getElementById("balloon");
     if (balloon)
         return balloon.style.display === 'block';
 }

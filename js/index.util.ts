@@ -1,11 +1,16 @@
+import { INPUT_TEXTS, NAME_EXTENSION, URL_IFRAME, _OPENMENU_MENU_ID } from "../constants.js";
+import { getActiveAutoSave, getActiveExtension, getInputSelected, getMenu, getShadowRoot, setInputSelected } from "../globals/index.js";
+import { startDragging } from "./move.js";
+import { AddAction, ClearAction, FullfillAction, ReadAllAction, getInputSaved, typeIntoElement } from "./util.js";
+
 let shadowRoot = undefined;
 
-function doClose() {
+export function doClose(event) {
     if (isMenuOpened() && clickOutOfBox(event.target))
         closeMenu();
 }
 
-function loadEventosOnInputs() {
+export function loadEventosOnInputs() {
     const inputTexts = $(INPUT_TEXTS).toArray();
 
     inputTexts.forEach(_ => {
@@ -15,18 +20,18 @@ function loadEventosOnInputs() {
 
     var joinedArray = getInputSaved().map(_=>(_.xpath));
 
-    sendMessageToIframe('load', { items: _MENU.items, url: window.location.href, joined: joinedArray });
+    sendMessageToIframe('load', { items: getMenu().items, url: window.location.href, joined: joinedArray });
 }
 
 function autoSave(e) {
-    if (activeAutoSave)
+    if (getActiveAutoSave())
         AddAction($(e.target), 'AutoSave');
 }
 
 function closeMenu() {
     if (!shadowRoot) return;
 
-    const __open_menu = shadowRoot.getElementById('balloon');
+    const __open_menu = getShadowRoot().getElementById('balloon');
 
     if (__open_menu)
         __open_menu.style.display = 'none';
@@ -35,7 +40,7 @@ function closeMenu() {
 function isMenuOpened() {
     if (!shadowRoot) return;
 
-    const __open_menu = shadowRoot.getElementById('balloon');
+    const __open_menu = getShadowRoot().getElementById('balloon');
     if (__open_menu)
         return __open_menu.style.display === 'block';
 }
@@ -68,7 +73,7 @@ function addEllipsis(text, maxLength) {
     }
 }
 
-function go(item, option) {
+export function go(item, option) {
     // const __open_menu = shadowRoot.getElementById(_OPENMENU_MENU_ID);
     item = (item || '').trim();
     const isAdd = option === 'add'
@@ -76,7 +81,7 @@ function go(item, option) {
     const isReadAll = option === 'readall'
     const clearAll = option === 'clear'
 
-    if (inputSelected !== undefined) {
+    if (getInputSelected() !== undefined) {
         switch (true) {
             case clearAll:
                 ClearAction();
@@ -88,19 +93,11 @@ function go(item, option) {
                 ReadAllAction();
                 break;
             case isAdd:
-                AddAction(inputSelected);
+                AddAction(getInputSelected(), undefined);
                 break;
             default:
-                {
-                    // inputSelected.target.value = item;
-                    // inputSelected.target.focus();
-                    // Set the cursor position to the end of the input element
-                    // setTimeout(() => {
-                    // setValueOnInput(inputSelected, item);
-                    typeIntoElement(inputSelected[0], item);
-
-                    // }, 100);
-
+                {                
+                    typeIntoElement(getInputSelected()[0], item);
                 }
         }
     }
@@ -112,47 +109,38 @@ function setValueOnInput(inputSelected, item) {
 
     let lastValue = element.value;
     element.value = item;
-    let event = new Event("input", { target: element, bubbles: true });
+    let event = new CustomEvent("input", {
+        bubbles: true,
+        detail: { additionalData: "" }, // You can add any additional data here
+      });
+      
     // React 15
-    event.simulated = true;
+    // event.simulated = true;
     // React 16
     let tracker = element._valueTracker;
     if (tracker) {
         tracker.setValue(lastValue);
     }
     element.dispatchEvent(event);
-
-    // inputSelected.focus();
-    // // inputSelected.val(item).trigger('change');
-
-    // $(inputSelected).prop('value', item);
-
-    // // Trigger a keydown event for the Backspace key
-    // inputSelected.trigger($.Event('keydown', { key: 'Backspace', keyCode: 8 }));
-
-    // // Trigger a keyup event for the Backspace key
-    // inputSelected.trigger($.Event('keyup', { key: 'Backspace', keyCode: 8 }));
-
 }
 
 function showMenu(e) {
-    const __open_menu = shadowRoot.getElementById('balloon');
+    const __open_menu = getShadowRoot().getElementById('balloon');
 
-    inputSelected = $(e.target);
+    setInputSelected($(e.target));
 
     __open_menu.style.top = (e.clientY + 20) + 'px';
     __open_menu.style.left = (e.clientX + 20) + 'px';
 
-    if (activeExtension) {
+    if (getActiveExtension()) {
         __open_menu.style.display = 'block';
         sendMessageToIframe('resize', {});
     }
-    // _OPENMENU_MENU_ID.style.display = 'none';
 
 }
 
-function sendMessageToIframe(action, payload) {
-    var iframe = shadowRoot.getElementById('imenu');
+export function sendMessageToIframe(action, payload) {
+    var iframe = getShadowRoot().getElementById('imenu');
     const domain = URL_IFRAME.split('/')[0] + '//' + URL_IFRAME.split('/')[2];
 
     // if (!isMenuOpened())

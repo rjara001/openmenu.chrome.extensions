@@ -1,18 +1,25 @@
+import { getMenu, setMenu } from "../globals/index.js";
+import { displaySuggestions, exportData, getHost, getSuggestions, importData } from "./settings.util.js";
+import { renderTable, renderTablePages } from "./tables.js";
+
 // Variables to store the current row and data
 var currentRow;
 var currentData;
 var currentDataIndex;
 
+var category = document.getElementById("category") as HTMLInputElement;
+
+
 if (chrome.storage) {
   chrome.storage.local.get('menu', function (result) {
     if (result.menu) {
       if (Array.isArray(result.menu)) // old fashion
-        _MENU.items = result.menu;
+        getMenu().items = result.menu;
       else
-        _MENU = result.menu;
+        setMenu(result.menu);
 
-      renderTable(_MENU.items);
-      renderTablePages(_MENU.settings.pages);
+      renderTable(getMenu().items);
+      renderTablePages(getMenu().settings.pages);
     }
   });
 
@@ -29,16 +36,19 @@ if (chrome.storage) {
 
 function remainderScroll(index) {
   const tableBody = document.querySelector('tbody');
-  const tableContainer = document.querySelector('.table-container');
+  const tableContainer = document.querySelector('.table-container') as HTMLElement;
 
   // After refreshing the table, scroll to the appropriate position
-  const updatedRows = tableBody.children;
-  const targetRow = updatedRows[Math.min(index, updatedRows.length - 1)]; // Get the target row
+  const updatedRows = tableBody?.children;
+  if (updatedRows) {
+    const targetRow = updatedRows[Math.min(index, updatedRows.length - 1)]; // Get the target row
 
-  if (targetRow) {
-    const rect = targetRow.getBoundingClientRect();
-    const scrollTop = rect.top + window.pageYOffset - tableContainer.offsetTop;
-    tableContainer.scrollTop = scrollTop;
+    if (targetRow) {
+      const rect = targetRow.getBoundingClientRect();
+      const scrollTop = rect.top + window.pageYOffset - tableContainer?.offsetTop;
+      if (tableContainer)
+        tableContainer.scrollTop = scrollTop;
+    }
   }
 }
 
@@ -47,11 +57,11 @@ function remainderScroll(index) {
 const deleteSelectedButton = document.getElementById('delete-selected');
 const deleteSelectedButtonPages = document.getElementById('delete-selected-pages');
 
-deleteSelectedButtonPages.addEventListener('click', () => {
+deleteSelectedButtonPages?.addEventListener('click', () => {
   deleteRowsSelected('#pages tbody input[type="checkbox"]');
 });
 
-deleteSelectedButton.addEventListener('click', () => {
+deleteSelectedButton?.addEventListener('click', () => {
   deleteRowsSelected('#data tbody input[type="checkbox"]');
 });
 
@@ -60,20 +70,20 @@ deleteSelectedButton.addEventListener('click', () => {
 // #### set-category-selected
 const setCagtegorySelectedButton = document.getElementById('set-category-selected');
 
-setCagtegorySelectedButton.addEventListener('click', () => {
-  const checkboxes = document.querySelectorAll('#data tbody input[type="checkbox"]');
+setCagtegorySelectedButton?.addEventListener('click', () => {
+  const checkboxes = document.querySelectorAll<HTMLInputElement>('#data tbody input[type="checkbox"]');
 
   // Iterate through checkboxes and find selected rows
   checkboxes.forEach((checkbox, index) => {
 
     if (checkboxes[index].checked) {
-      _MENU.items[index].category = category.value;
+      getMenu().items[index].category = category?.value;
     }
   });
 
-  chrome.storage.local.set({ 'menu': _MENU }, function () {
+  chrome.storage.local.set({ 'menu': getMenu() }, function () {
 
-    renderTable(_MENU.items);
+    renderTable(getMenu().items);
   });
 
 });
@@ -82,25 +92,25 @@ setCagtegorySelectedButton.addEventListener('click', () => {
 
 // #### disable page
 
-var url = document.getElementById("url");
+var url = document.getElementById("url") as HTMLInputElement;
 
 const disablePage = document.getElementById('disable-page');
 
-disablePage.addEventListener('click', () => {
+disablePage?.addEventListener('click', () => {
   debugger;
-  const checkboxes = document.querySelectorAll('#data tbody input[type="checkbox"]');
+  const checkboxes = document.querySelectorAll<HTMLInputElement>('#data tbody input[type="checkbox"]');
 
   // Iterate through checkboxes and find selected rows
   checkboxes.forEach((checkbox, index) => {
 
     if (checkboxes[index].checked) {
-      _MENU.settings.pages.push({ host: getHost(url.value), date: (new Date()).toISOString() })
+      getMenu().settings.pages.push({ host: getHost(url.value), date: (new Date()).toISOString() })
     }
   });
 
-  chrome.storage.local.set({ 'menu': _MENU }, function () {
+  chrome.storage.local.set({ 'menu': getMenu() }, function () {
 
-    renderTablePages(_MENU.settings.pages);
+    renderTablePages(getMenu().settings.pages);
   });
 
 });
@@ -118,15 +128,15 @@ function deleteRowsSelected(tableSelected) {
   checkboxes.forEach((checkbox, index) => {
     const reverseIndex = checkboxes.length - index - 1;
     if (checkboxes[reverseIndex].checked) {
-      _MENU.items.splice(reverseIndex, 1); // Remove the item from the array
+      getMenu().items.splice(reverseIndex, 1); // Remove the item from the array
     }
   });
 
-  chrome.storage.local.set({ 'menu': _MENU }, function () {
+  chrome.storage.local.set({ 'menu': getMenu() }, function () {
     console.log('Items deleted successfully!');
-    renderTable(_MENU.items);
+    renderTable(getMenu().items);
 
-    remainderScroll(index);
+    // remainderScroll(index);
   });
 }
 
@@ -134,9 +144,9 @@ function deleteRowsSelected(tableSelected) {
 function saveData(event) {
   event.preventDefault();
 
-  var categorySelect = document.getElementById("category");
-  var textInput = document.getElementById('text');
-  var nameInput = document.getElementById('name');
+  var categorySelect = document.getElementById("category") as HTMLInputElement;
+  var textInput = document.getElementById('text') as HTMLInputElement;
+  var nameInput = document.getElementById('name') as HTMLInputElement;
 
   var categoryValue = categorySelect.value;
   var textValue = textInput.value;
@@ -159,10 +169,10 @@ function saveData(event) {
   textCell.innerHTML = currentData.text;
 
   // Update the value in the tableData array
-  _MENU.items[currentDataIndex] = currentData;
+  getMenu().items[currentDataIndex] = currentData;
 
   // Perform the necessary saving logic using chrome.storage.local.set()
-  chrome.storage.local.set({ 'menu': _MENU }, function () {
+  chrome.storage.local.set({ 'menu': getMenu() }, function () {
     // console.log('Data saved successfully!');
     // renderTable(tableData);
 
@@ -180,7 +190,6 @@ var importButton = document.getElementById('importButton');
 if (importButton)
   importButton.addEventListener('click', importData);
 
-var category = document.getElementById("category");
 
 if (category)
   category.addEventListener("input", function () {
@@ -188,7 +197,8 @@ if (category)
 
     var matches = getSuggestions(query);
 
-    setCagtegorySelectedButton.textContent = "Set Category '{text}' Items Selected".replace('{text}', query);
+    if (setCagtegorySelectedButton)
+      setCagtegorySelectedButton.textContent = "Set Category '{text}' Items Selected".replace('{text}', query);
     displaySuggestions(matches);
   });
 

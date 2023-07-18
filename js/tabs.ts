@@ -7,10 +7,17 @@ tabButtons.forEach((button) => {
 
     // Remove 'active' class from all buttons and hide all tab contents
     tabButtons.forEach((btn) => btn.classList.remove('active'));
-    tabContents.forEach((content) => (content.style.display = 'none'));
+    // tabContents.forEach((content) => (content.style.display = 'none'));
 
     // Add 'active' class to the clicked button and display the corresponding tab content
     button.classList.add('active');
-    document.getElementById(tabId).style.display = 'block';
+    if (tabId) {
+      let elem = document.getElementById(tabId);
+
+      if (elem !== null && elem !== undefined) {
+        elem.style.display = 'block';
+      }
+    }
+
   });
 });

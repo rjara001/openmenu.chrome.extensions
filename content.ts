@@ -1,7 +1,8 @@
-import { activeAutoSave } from "./constants";
+import { setActiveAutoSave, setActiveExtension, setMenu, setVariablesLoaded } from "./globals/index.js";
+import { doClose } from "./js/index.util.js";
+import { load } from "./js/util.js";
 
-
-const _variables_loaded:boolean = false;
+const _variables_loaded: boolean = false;
 
 function waitForMENUisLoaded(callback) {
     if (_variables_loaded === true) {
@@ -15,12 +16,10 @@ function waitForMENUisLoaded(callback) {
     }
 }
 
-var _CURRENT_URL = '';
-
 chrome.storage.sync.get("autoSave", function (data) {
     // If toggle value is present in storage, use it
     // Otherwise, use the default value 
-    activeAutoSave = data.autoSave !== undefined ? data.autoSave : true;
+    setActiveAutoSave(data.autoSave !== undefined ? data.autoSave : true);
 
 });
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -32,13 +31,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 });
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    activeAutoSave = message.autoSave;
+    setActiveAutoSave(message.autoSave);
 });
 
 chrome.storage.sync.get("menuActive", function (data) {
     // If toggle value is present in storage, use it
     // Otherwise, use the default value 
-    activeExtension = data.menuActive !== undefined ? data.menuActive : true;
+    setActiveExtension(data.menuActive !== undefined ? data.menuActive : true);
 
 });
 
@@ -52,26 +51,25 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    activeExtension = message.menuActive;
-
+    setActiveExtension(message.menuActive);
 });
 
 chrome.storage.local.get('menu', function (result) {
     if (result.menu) {
         if (Array.isArray(result.menu)) // old fashion
-            _MENU.items = [...result.menu];
-            else
-            _MENU = result.menu;
+            setMenu({ items: [...result.menu], settings: {pages:[]} });
+        else
+            setMenu(result.menu);
         ///const list = JSON.parse(result.menu);
         // _MENU = [..._MENU, items: ...result.menu];
 
-        _variables_loaded = true;
+        setVariablesLoaded(true);
     }
 });
 
 document.addEventListener('click', function (e) {
 
-   doClose();
+    doClose(e);
 
 });
 

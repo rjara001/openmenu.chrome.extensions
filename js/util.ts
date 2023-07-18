@@ -1,5 +1,10 @@
-
-
+import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, _BOX_ID, _HTML_BOX, _STYLE_AS_STRING } from "../constants.js";
+import { getMenu, getShadowRoot, setShadowRoot } from "../globals/index.js";
+import { removeLastItemByCategory } from "../html/util.html.js";
+import { localSaveValue, localUpdateValue } from "../store.js";
+import { addEllipsis, barMessage, hideBalloon, resizeIframe } from "./box.util.js";
+import { go, loadEventosOnInputs, sendMessageToIframe } from "./index.util.js";
+import { startDragging } from "./move.js";
 
 const removeHTMLElements = (htmlString) => {
 
@@ -10,7 +15,7 @@ const removeHTMLElements = (htmlString) => {
     // Remove the desired element
     var elementToRemove = tempContainer.querySelector('p'); // Select the element to remove
     if (elementToRemove) {
-        elementToRemove.parentNode.removeChild(elementToRemove);
+        elementToRemove.parentNode?.removeChild(elementToRemove);
     }
 
     // Get the modified HTML string
@@ -78,12 +83,12 @@ function findLastOccurrence(arr, key, value) {
 }
 
 function innerJoin2(inputs, values, key1, key2) {
-    var result = [];
+    var result:any[] = [];
     var currentUrl = window.location.href;
 
     for (var i = 0; i < inputs.length; i++) {
         var obj1 = inputs[i];
-        var obj2 = findLastOccurrence(values, key1, obj1[key1], key2, obj1[key2]);
+        var obj2 = findLastOccurrence(values, key1, obj1[key1]);
 
         if (obj2) {
             var mergedObj = { ...obj1, ...obj2 };
@@ -95,7 +100,7 @@ function innerJoin2(inputs, values, key1, key2) {
 }
 
 function innerJoin(inputs, values, key) {
-    var result = [];
+    var result:any[] = [];
 
     for (var i = 0; i < inputs.length; i++) {
         var obj1 = inputs[i];
@@ -117,14 +122,14 @@ function chkval(value) {
 }
 function getPosition(input) {
     let inputOffset = $(input).offset();
-    return `t:${chkval(inputOffset.top)};l:${chkval(inputOffset.left)};b:${chkval(inputOffset.bottom)};r:${chkval(inputOffset.right)}`;
+    return `t:${chkval(inputOffset?.top)};l:${chkval(inputOffset?.left)}}`;
 }
 
 function _addAction(input, category) {
     let newValue = removeHTMLElements((input.val() || '').trim());
 
     if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
-        let _item = _MENU.items.find(_ => _.text === newValue);
+        let _item = getMenu().items.find(_ => _.text === newValue);
 
         const newitem = { category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(input), xpath: getFullXPath(input) };
         if (_item)
@@ -135,19 +140,19 @@ function _addAction(input, category) {
     }
 }
 
-function AddAction(input, category) {
+export function AddAction(input, category) {
     const value = input.val();
     const position = getPosition(input);
     const xpath = getFullXPath(input);
 
     sendMessageToIframe('add', { value, position, xpath, category });
 
-    const lenMenu = _MENU.items.length;
+    const lenMenu = getMenu().items.length;
     if (lenMenu < LIMIT_LEN) {
         _addAction(input, category);
     }
     else if (category === 'autosave') {
-        removeLastItemByCategory(_MENU.items, 'autosave');
+        removeLastItemByCategory(getMenu().items, 'autosave');
         _addAction(input, category);
     }
 
@@ -164,16 +169,16 @@ function getHost(url) {
 function hostExist() {
     const currentHost = window.location.host;
 
-    return _MENU.items.filter(_ => getHost(_.page) === currentHost).length > 0;
+    return getMenu().items.filter(_ => getHost(_.page) === currentHost).length > 0;
 }
-function FullfillAction() {
+export function FullfillAction() {
     const currentHost = window.location.host;
 
     const inputTexts = $(INPUT_TEXTS).toArray();
 
-    const inputSaved = _MENU.items.filter(_ => getHost(_.page) === currentHost);
+    const inputSaved = getMenu().items.filter(_ => getHost(_.page) === currentHost);
 
-    var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath: getFullXPath(element) })), _MENU.items, 'xpath');
+    var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath: getFullXPath(element) })), getMenu().items, 'xpath');
 
     // var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element), xpath:getFullXPath(element) })), _MENU, 'position', 'xpath');
 
@@ -182,19 +187,19 @@ function FullfillAction() {
     });
 }
 
-function getInputSaved() {
-    if (hostExist(_MENU.items)) {
+export function getInputSaved() {
+    if (hostExist()) {
         {
             const inputTexts = $(INPUT_TEXTS).toArray();
 
-            return innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath: getFullXPath(element) })), _MENU.items, 'xpath');
+            return innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath: getFullXPath(element) })), getMenu().items, 'xpath');
         }
     }
 
     return [];
 }
 
-function ClearAction() {
+export function ClearAction() {
 
     var joinedArray = getInputSaved();
 
@@ -204,11 +209,11 @@ function ClearAction() {
 
 }
 
-function ReadAllAction() {
+export function ReadAllAction() {
     const inputTexts = $(INPUT_TEXTS).toArray();
 
     inputTexts.forEach(_ => {
-        AddAction($(_));
+        AddAction($(_), undefined);
     });
 }
 
@@ -227,7 +232,7 @@ function CreateSVG() {
 
 }
 
-function typeIntoElement(element, text) {
+export function typeIntoElement(element, text) {
     // Set focus on the element
     element.focus();
 
@@ -282,7 +287,7 @@ function getFullXPath(element) {
     return xpath;
 }
 
-const load = () => {
+export const load = () => {
 
     var container = document.createElement("div");
 
@@ -290,34 +295,34 @@ const load = () => {
 
     document.body.appendChild(container);
 
-    shadowRoot = container.attachShadow({ mode: 'open' });
+    setShadowRoot(container.attachShadow({ mode: 'open' }));
 
     // Create a new HTML element
-    balloon = document.createElement("div");
+    let balloon = document.createElement("div");
     balloon.classList.add("balloon");
     balloon.id = "balloon";
     balloon.innerHTML = _HTML_BOX;
 
     // Append the created element to the document body
-    shadowRoot.appendChild(balloon);
+    getShadowRoot().appendChild(balloon);
     const linkElem = document.createElement('style');
 
     linkElem.innerHTML = _STYLE_AS_STRING;
 
-    shadowRoot.appendChild(linkElem);
+    getShadowRoot().appendChild(linkElem);
 
     // // Example close button functionality
     var closeButton = balloon.querySelector(".close-btn");
 
     var header = balloon.querySelector(".balloon-header");
 
-    header.addEventListener('mousedown', startDragging);
+    header?.addEventListener('mousedown', startDragging);
 
-    closeButton.addEventListener("click", function () {
+    closeButton?.addEventListener("click", function () {
         hideBalloon();
     });
 
-    var iframe = shadowRoot.getElementById('imenu');
+    var iframe = getShadowRoot().getElementById('imenu');
 
     iframe.addEventListener('load', () => {
         loadEventosOnInputs();
