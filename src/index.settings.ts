@@ -1,11 +1,11 @@
-import { getMenu, setMenu } from "../globals/index.js";
+import { getMenu, setMenu } from "./globals/index.js";
 import { displaySuggestions, exportData, getHost, getSuggestions, importData } from "./settings.util.js";
 import { renderTable, renderTablePages } from "./tables.js";
 
 // Variables to store the current row and data
-var currentRow;
-var currentData;
-var currentDataIndex;
+let currentRow:any;
+let currentData:any;
+let currentDataIndex:any;
 
 var category = document.getElementById("category") as HTMLInputElement;
 
@@ -34,7 +34,7 @@ if (chrome.storage) {
 //   }
 // });
 
-function remainderScroll(index) {
+function remainderScroll(index:number) {
   const tableBody = document.querySelector('tbody');
   const tableContainer = document.querySelector('.table-container') as HTMLElement;
 
@@ -120,8 +120,8 @@ var saveButton = document.querySelector('save');
 if (saveButton)
   saveButton.addEventListener('click', saveData);
 
-function deleteRowsSelected(tableSelected) {
-  const checkboxes = document.querySelectorAll(tableSelected);
+function deleteRowsSelected(tableSelected:string) {
+  const checkboxes = document.querySelectorAll<HTMLInputElement>(tableSelected);
 
   // const selectedRows = [];
   // Iterate through checkboxes and find selected rows
@@ -141,7 +141,7 @@ function deleteRowsSelected(tableSelected) {
 }
 
 // Function to save the updated data
-function saveData(event) {
+function saveData(event:any) {
   event.preventDefault();
 
   var categorySelect = document.getElementById("category") as HTMLInputElement;

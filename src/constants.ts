@@ -1,4 +1,3 @@
-import { MenuItem } from "./types/MenuItem";
 
 export const NAME_EXTENSION = 'Menu Extend';
 export const _OPENMENU_MENU_ID = '__open_menu_id';

@@ -1,6 +1,6 @@
-import { MenuItem } from "../types/MenuItem.js";
+import { MenuItem } from "../types/MenuItem";
 
-let _inputSelected = undefined;
+let _inputSelected:any = undefined;
 let _activeExtension = false;
 let _activeAutoSave: boolean = false;
 let _MENU : MenuItem = { items: [], settings: {pages:[]} };

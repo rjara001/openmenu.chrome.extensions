@@ -1,6 +1,6 @@
 import { deleteItem } from "./settings.util.js";
 
-export function renderTablePages(tableData) {
+export function renderTablePages(tableData:any) {
     if (tableData && tableData.length > 0) {
         var table = document.querySelector('#pages tbody') as HTMLTableElement;
         if (table) {
@@ -36,7 +36,7 @@ export function renderTablePages(tableData) {
     }
 }
 
-export function renderTable(tableData) {
+export function renderTable(tableData:any) {
     if (tableData && tableData.length > 0) {
         var table = document.querySelector('#data tbody') as HTMLTableElement;
         if (table) {
@@ -85,7 +85,7 @@ export function renderTable(tableData) {
 }
 
 // Function to create a click event listener for a row
-function createRowDataClickListener(rowData, index) {
+function createRowDataClickListener(rowData:any, index:number) {
     return function () {
         // Set the values in the HTML form
         var categorySelect = document.getElementById("category") as HTMLInputElement;

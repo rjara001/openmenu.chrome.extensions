@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "build": "tsc"
+  },
   "devDependencies": {
     "@types/chrome": "^0.0.241",
     "@types/jquery": "^3.5.16",
