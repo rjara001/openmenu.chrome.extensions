@@ -5,3 +5,6 @@
 *.d.js
 src/**/*.js
 src-iframe/**/*.js
+dist/
+*.tsbuildinfo
+tsconfig.tsbuildinfo
