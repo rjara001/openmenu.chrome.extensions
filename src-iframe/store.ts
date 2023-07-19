@@ -1,4 +1,4 @@
-import { getMenu } from "./globals/index.js";
+import { getMenu } from "./globals/index";
 
 export function localSaveValue(item:any) {
     getMenu().items.push(item);
@@ -9,7 +9,7 @@ export function localSaveValue(item:any) {
 }
 
 export function localUpdateValue(item:any) {
-    getMenu().items = getMenu().items.filter(_=>_.text !== item.text);
+    getMenu().items = getMenu().items.filter((_:any)=>_.text !== item.text);
 
     getMenu().items.push(item);
             
@@ -19,7 +19,7 @@ export function localUpdateValue(item:any) {
 }
 
 export function localRemoveValue(value:any) {
-    getMenu().items = getMenu().items.filter(_=>_.text !== value.text);
+    getMenu().items = getMenu().items.filter((_:any)=>_.text !== value.text);
             
     chrome.storage.local.set({ 'menu': getMenu() }, function() {
         

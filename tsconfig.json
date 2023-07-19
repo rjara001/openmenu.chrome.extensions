@@ -1,11 +1,22 @@
-
 {
+    "references": [
+        {
+            "path": "./src/tsconfig.json"
+        },
+        {
+            "path": "./src-iframe/tsconfig.json"
+        }
+    ],
     "compilerOptions": {
-      "target": "es6",
-      "module": "es6",
-      "outDir": "dist",
-      "strict": true
+        "target": "esnext",
+        "strict": true,
+        "composite": true,
+        "allowJs": false
     },
-    "include": ["src", "background.ts"]
-  }
-  
+   
+    "exclude": [
+
+        "./dist/src/**/*", // This is what fixed it!
+        "./dist/iframe/**/*" // This is what fixed it!
+    ]
+}

@@ -1,9 +1,10 @@
 import { getMenu } from "./globals/index.js";
-import { getUniqueCategories } from "../html/util.html.js";
+// import { getUniqueCategories } from "../html/util.html.js";
 import { renderTable } from "./tables.js";
+import { getUniqueCategories } from "./util.js";
 
 // Function to delete an item
-export function deleteItem(index, tableData) {
+export function deleteItem(index:number, tableData:any) {
 
     if (tableData && tableData.length > 0) {
         tableData.splice(index, 1); // Remove the item from the array
@@ -18,7 +19,7 @@ export function deleteItem(index, tableData) {
     }
 }
 
-export function getHost(url) {
+export function getHost(url:string) {
     if (url) {
         const parsedURL = new URL(url);
         return parsedURL.host;
@@ -61,7 +62,7 @@ export function importData() {
             var reader = new FileReader();
 
             reader.onload = function (event) {
-                var csvData = event?.target?.result;
+                var csvData = event?.target?.result as string;
                 var menuData = parseCSV(csvData);
 
                 chrome.storage.local.set({ 'menu': getMenu() }, function () {
@@ -74,7 +75,7 @@ export function importData() {
     });
 }
 // Function to parse CSV data
-function parseCSV(csvData) {
+function parseCSV(csvData:string) {
     var lines = csvData.split('\n');
     var menuData: any[] = [];
 
@@ -102,7 +103,7 @@ function parseCSV(csvData) {
 }
 
 
-export function getSuggestions(query) {
+export function getSuggestions(query: string) {
     var matches: any[] = [];
     const suggestions = getUniqueCategories(getMenu().items);
     if (suggestions)
@@ -116,7 +117,7 @@ export function getSuggestions(query) {
     return matches;
 }
 
-export function displaySuggestions(matches) {
+export function displaySuggestions(matches:any[]) {
     var suggestionsList = document.getElementById("suggestionsList");
     if (suggestionsList) {
         suggestionsList.innerHTML = ""; // Clear previous suggestions

@@ -6,6 +6,15 @@ import { addEllipsis, barMessage, hideBalloon, resizeIframe } from "./box.util.j
 import { go, loadEventosOnInputs, sendMessageToIframe } from "./index.util.js";
 import { startDragging } from "./move.js";
 
+function customFindIndex<T>(array: T[], callback: (element: T) => boolean): number {
+    for (let i = 0; i < array.length; i++) {
+      if (callback(array[i])) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  
 export function removeLastItemByCategory(arr:any[], category:string) {
     var index = arr.findIndex(function (item) {
         return item.category === category;
@@ -189,8 +198,12 @@ export function FullfillAction() {
     const inputTexts = $(INPUT_TEXTS).toArray();
 
     const inputSaved = getMenu().items.filter(_ => getHost(_.page) === currentHost);
+    var inputs:any[] = [];
+    inputTexts.forEach(element => {
+        inputs.push({element, xpath: getFullXPath(element)});
+    });
 
-    var inputs = $(inputTexts).map((index:number, element) => ({ ...$(element), xpath: getFullXPath(element) })) as HTMLElement[];
+    //  inputs = inputTexts.map((index:number, element) => ({ ...$(element), xpath: getFullXPath(element) }));
 
     var joinedArray = innerJoin(inputs, getMenu().items, 'xpath');
 
@@ -201,12 +214,27 @@ export function FullfillAction() {
     });
 }
 
+export const getUniqueCategories = (htmlMenu:any[]) => {
+    return htmlMenu.reduce(function (acc, item) {
+        if (!acc.includes(item.category)) {
+            acc.push(item.category);
+        }
+        return acc;
+    }, []);
+}
+
 export function getInputSaved() {
     if (hostExist()) {
         {
             const inputTexts = $(INPUT_TEXTS).toArray();
 
-            return innerJoin($(inputTexts).map((index, element) => ({ ...$(element), xpath: getFullXPath(element) })), getMenu().items, 'xpath');
+            var inputs:any[] = [];
+            inputTexts.forEach(element => {
+                inputs.push({element, xpath: getFullXPath(element)});
+            });
+            var joinedArray = innerJoin(inputs, getMenu().items, 'xpath');
+
+            return joinedArray;
         }
     }
 
@@ -227,7 +255,7 @@ export function ReadAllAction() {
     const inputTexts = $(INPUT_TEXTS).toArray();
 
     inputTexts.forEach(_ => {
-        AddAction($(_), undefined);
+        AddAction($(_), '');
     });
 }
 
@@ -246,7 +274,7 @@ function CreateSVG() {
 
 }
 
-export function typeIntoElement(element, text) {
+export function typeIntoElement(element:any, text:string) {
     // Set focus on the element
     element.focus();
 
@@ -279,7 +307,7 @@ export function typeIntoElement(element, text) {
     }
 }
 
-function getFullXPath(element) {
+function getFullXPath(element:any) {
     var xpath = '';
     var $element = $(element);
 

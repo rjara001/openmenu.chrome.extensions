@@ -40,15 +40,18 @@
             ],
             "js": [
                 "jquery/jquery.min.js",
-                "background.js",
-                "store.js",
-                "js/util.js",
-                "constants.js",
-                "js/box.util.js",
-                "js/index.util.js",
-                "content.js",
-                "index.js",
-                "js/move.js"
+                "dist/src/types/MenuItem.js",
+                "dist/src/types/Settings.js",
+                "dist/src/globals/index.js",
+                "dist/background.js",
+                "dist/src/store.js",
+                "dist/src/util.js",
+                "dist/src/constants.js",
+                "dist/src/box.util.js",
+                "dist/src/index.util.js",
+                "dist/src/content.js",
+                "dist/src/index.js",
+                "dist/src/move.js"
             ],
             "css": [],
             "all_frames": true

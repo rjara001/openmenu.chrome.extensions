@@ -93,7 +93,7 @@ export function go(item:any, option:string) {
                 ReadAllAction();
                 break;
             case isAdd:
-                AddAction(getInputSelected(), undefined);
+                AddAction(getInputSelected(), '');
                 break;
             default:
                 {                
