@@ -8,3 +8,4 @@ src-iframe/**/*.js
 dist/
 *.tsbuildinfo
 tsconfig.tsbuildinfo
+node_modules/
