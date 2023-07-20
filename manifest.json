@@ -6,7 +6,7 @@
     "description": "Save input text values for easy retrieval, eliminating rewriting. Quickly access and reuse saved values.",
     "homepage_url": "https://www.randuslab.com/",
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "dist/src/background.js"
     },
     "action": {},
     "icons": {
@@ -22,9 +22,9 @@
         {
             "resources": [
                 "html/styles.css",
-                "html/index.html.js",
+                "dist/iframe/index.html.js",
                 "html/index.html",
-                "html/util.html.js"
+                "dist/iframe/util.html.js"
             ],
             "matches": [
                 "<all_urls>"
@@ -40,17 +40,13 @@
             ],
             "js": [
                 "jquery/jquery.min.js",
-                "dist/src/types/MenuItem.js",
-                "dist/src/types/Settings.js",
                 "dist/src/globals/index.js",
-                "dist/background.js",
                 "dist/src/store.js",
                 "dist/src/util.js",
                 "dist/src/constants.js",
                 "dist/src/box.util.js",
                 "dist/src/index.util.js",
                 "dist/src/content.js",
-                "dist/src/index.js",
                 "dist/src/move.js"
             ],
             "css": [],
