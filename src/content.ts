@@ -1,11 +1,9 @@
-import { setActiveAutoSave, setActiveExtension, setMenu, setVariablesLoaded } from "./globals/index";
-import { doClose } from "./index.util.js";
-import { load } from "./util.js";
-
-const _variables_loaded: boolean = false;
+import { getVariablesLoaded, setActiveAutoSave, setActiveExtension, setMenu, setVariablesLoaded } from "./globals/index";
+import { doClose } from "./index.util";
+import { load } from "./util";
 
 function waitForMENUisLoaded(callback: ()=>void) {
-    if (_variables_loaded === true) {
+    if (getVariablesLoaded() === true) {
         // Variable is already loaded
         callback();
     } else {

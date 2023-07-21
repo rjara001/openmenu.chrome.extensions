@@ -1,6 +1,6 @@
-import { getMenu, setMenu } from "./globals/index.js";
-import { displaySuggestions, exportData, getHost, getSuggestions, importData } from "./settings.util.js";
-import { renderTable, renderTablePages } from "./tables.js";
+import { getMenu, setMenu } from "./globals/index";
+import { displaySuggestions, exportData, getHost, getSuggestions, importData } from "./settings.util";
+import { renderTable, renderTablePages } from "./tables";
 
 // Variables to store the current row and data
 let currentRow:any;

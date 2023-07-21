@@ -18,6 +18,7 @@
         "storage",
         "activeTab"
     ],
+
     "web_accessible_resources": [
         {
             "resources": [
@@ -40,14 +41,7 @@
             ],
             "js": [
                 "jquery/jquery.min.js",
-                "dist/src/globals/index.js",
-                "dist/src/store.js",
-                "dist/src/util.js",
-                "dist/src/constants.js",
-                "dist/src/box.util.js",
-                "dist/src/index.util.js",
-                "dist/src/content.js",
-                "dist/src/move.js"
+                "dist/src/content.js"
             ],
             "css": [],
             "all_frames": true

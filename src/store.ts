@@ -1,4 +1,4 @@
-import { getMenu } from "./globals/index.js";
+import { getMenu } from "./globals/index";
 
 export function localSaveValue(item:any) {
     getMenu().items.push(item);

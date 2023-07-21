@@ -1,4 +1,4 @@
-import { deleteItem } from "./settings.util.js";
+import { deleteItem } from "./settings.util";
 
 export function renderTablePages(tableData:any) {
     if (tableData && tableData.length > 0) {

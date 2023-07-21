@@ -1,5 +1,5 @@
-import { URL_IFRAME, _BOX_ID } from "./constants.js";
-import { getShadowRoot } from "./globals/index.js";
+import { URL_IFRAME, _BOX_ID } from "./constants";
+import { getShadowRoot } from "./globals/index";
 
 let ITEMS = [];
 

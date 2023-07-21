@@ -1,10 +1,10 @@
-import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, _BOX_ID, _HTML_BOX, _STYLE_AS_STRING } from "./constants.js";
-import { getMenu, getShadowRoot, setShadowRoot } from "./globals/index.js";
-// import { removeLastItemByCategory } from "../html/util.html.js";
-import { localSaveValue, localUpdateValue } from "../src/store.js";
-import { addEllipsis, barMessage, hideBalloon, resizeIframe } from "./box.util.js";
-import { go, loadEventosOnInputs, sendMessageToIframe } from "./index.util.js";
-import { startDragging } from "./move.js";
+import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, _BOX_ID, _HTML_BOX, _STYLE_AS_STRING } from "./constants";
+import { getMenu, getShadowRoot, setShadowRoot } from "./globals/index";
+// import { removeLastItemByCategory } from "../html/util.html";
+import { localSaveValue, localUpdateValue } from "../src/store";
+import { addEllipsis, barMessage, hideBalloon, resizeIframe } from "./box.util";
+import { go, loadEventosOnInputs, sendMessageToIframe } from "./index.util";
+import { startDragging } from "./move";
 
 function customFindIndex<T>(array: T[], callback: (element: T) => boolean): number {
     for (let i = 0; i < array.length; i++) {

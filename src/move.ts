@@ -1,4 +1,4 @@
-import { getShadowRoot } from "./globals/index.js";
+import { getShadowRoot } from "./globals/index";
 
 var isDragging = false;
 var initialX:number;

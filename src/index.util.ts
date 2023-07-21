@@ -1,7 +1,7 @@
-import { INPUT_TEXTS, NAME_EXTENSION, URL_IFRAME, _OPENMENU_MENU_ID } from "./constants.js";
-import { getActiveAutoSave, getActiveExtension, getInputSelected, getMenu, getShadowRoot, setInputSelected } from "./globals/index.js";
-import { startDragging } from "./move.js";
-import { AddAction, ClearAction, FullfillAction, ReadAllAction, getInputSaved, typeIntoElement } from "./util.js";
+import { INPUT_TEXTS, NAME_EXTENSION, URL_IFRAME, _OPENMENU_MENU_ID } from "./constants";
+import { getActiveAutoSave, getActiveExtension, getInputSelected, getMenu, getShadowRoot, setInputSelected } from "./globals/index";
+import { startDragging } from "./move";
+import { AddAction, ClearAction, FullfillAction, ReadAllAction, getInputSaved, typeIntoElement } from "./util";
 
 let shadowRoot:any = undefined;
 

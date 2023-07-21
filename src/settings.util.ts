@@ -1,7 +1,7 @@
-import { getMenu } from "./globals/index.js";
-// import { getUniqueCategories } from "../html/util.html.js";
-import { renderTable } from "./tables.js";
-import { getUniqueCategories } from "./util.js";
+import { getMenu } from "./globals/index";
+// import { getUniqueCategories } from "../html/util.html";
+import { renderTable } from "./tables";
+import { getUniqueCategories } from "./util";
 
 // Function to delete an item
 export function deleteItem(index:number, tableData:any) {
