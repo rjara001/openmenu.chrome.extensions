@@ -23,7 +23,7 @@ $(document).ready(function () {
             break;
             case 'load':
                 {
-                    debugger;
+                    // debugger;
                     setMenu(event.data.payload.items);
                     setURL(event.data.payload.url);
                     setJoinedArray(event.data.payload.joined);

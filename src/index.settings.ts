@@ -97,7 +97,7 @@ var url = document.getElementById("url") as HTMLInputElement;
 const disablePage = document.getElementById('disable-page');
 
 disablePage?.addEventListener('click', () => {
-  debugger;
+  // debugger;
   const checkboxes = document.querySelectorAll<HTMLInputElement>('#data tbody input[type="checkbox"]');
 
   // Iterate through checkboxes and find selected rows

@@ -2,8 +2,8 @@
 
 
 import { getJoinedArray, getMenu } from './globals/index';
-import {localRemoveValue} from './store'
-import { LIMIT_LEN_TEXT} from './constants'
+import { localRemoveValue } from './store'
+import { LIMIT_LEN_TEXT } from './constants'
 
 const getCurrentURL = () => {
     var url = window.location.href;
@@ -18,7 +18,7 @@ const getCurrentURL = () => {
 
 }
 
-const removeHTMLElements = (htmlString:string) => {
+const removeHTMLElements = (htmlString: string) => {
 
     // Create a temporary container element
     var tempContainer = document.createElement('div');
@@ -36,19 +36,19 @@ const removeHTMLElements = (htmlString:string) => {
     return modifiedHtmlString;
 }
 
-function cleanChildElement(menuList:HTMLElement) {
+function cleanChildElement(menuList: HTMLElement) {
     while (menuList.firstChild) {
         menuList.removeChild(menuList.firstChild);
     }
 }
-function showMenusItems(category:string, menuList:HTMLElement) {
-    getMenu().filter((_:any) => _.category === category).forEach((_:any) => {
+function showMenusItems(category: string, menuList: HTMLElement) {
+    getMenu().filter((_: any) => _.category === category).forEach((_: any) => {
 
         newMenuItem(_, menuList, '');
     });
 }
 
-function newMenuCategory(category:string, menuList:HTMLElement) {
+function newMenuCategory(category: string, menuList: HTMLElement) {
 
     const menuItem = document.createElement('div');
     menuItem.classList.add('item');
@@ -71,15 +71,15 @@ function newMenuCategory(category:string, menuList:HTMLElement) {
     menuList.appendChild(menuItem);
 }
 
-export function _addAction(obj:any) {
+export function _addAction(obj: any) {
     let newValue = removeHTMLElements((obj.payload.value || '').trim());
 
     if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
-        let _item = getMenu().find((_:any) => _.text === newValue);
+        let _item = getMenu().find((_: any) => _.text === newValue);
 
         const newitem = { category: obj.payload.category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: obj.payload.position, xpath: obj.payload.xpath };
-        if (!_item){
-            newMenuItem(newitem, document.getElementsByClassName('list')[0] as HTMLElement, ''); 
+        if (!_item) {
+            newMenuItem(newitem, document.getElementsByClassName('list')[0] as HTMLElement, '');
         }
     }
 }
@@ -105,18 +105,20 @@ export function loadCategories() {
     }
 
     let categories = getUniqueCategories(getMenu());
-    const categoriesFiltered = categories.filter(_ => _ !== undefined);
+    const categoriesFiltered = categories.filter((_: string) => _ !== undefined);
 
-    categoriesFiltered.forEach(item => {
+    categoriesFiltered.forEach((item: string) => {
 
         newMenuCategory(item, menuList);
     });
     // if (categoriesFiltered.length === 0)
     showMenusItems('', menuList);
 
+    let maxHeight = (menuList.parentNode?.parentNode as HTMLElement).offsetHeight;
+    window.parent.postMessage({ maxHeight: maxHeight }, "*");
 }
 
-function newMenuItem(item:any, menuList:HTMLElement, type:string) {
+function newMenuItem(item: any, menuList: HTMLElement, type: string) {
     const isCategory: boolean = type === 'category'
     const isAdd: boolean = type === 'add'
 
@@ -144,7 +146,7 @@ function newMenuItem(item:any, menuList:HTMLElement, type:string) {
     if (isCategory)
         link.addEventListener('click', function () {
             //let menuList = shadowRoot.getElementById(_OPENMENU_MENU_ID);
-            let elemnt = document.getElementsByClassName('list')[0] as HTMLElement;
+            let elemnt = document.getElementsByClassName('items')[0] as HTMLElement;
 
             cleanChildElement(elemnt);
             loadCategories();
@@ -171,11 +173,11 @@ function newMenuItem(item:any, menuList:HTMLElement, type:string) {
     window.parent.postMessage({ maxHeight: maxHeight }, "*");
 }
 
-function go(text:string, isAdd:string) {
+function go(text: string, isAdd: string) {
     window.parent.postMessage({ go: { text, action: isAdd } }, "*");
 }
 
-function addEllipsis(text:string, maxLength:number) {
+function addEllipsis(text: string, maxLength: number) {
     if (text.length > maxLength) {
         return text.slice(0, maxLength) + '...';
     } else {
@@ -194,14 +196,14 @@ export function toText(item: any) {
 
 function customFindIndex<T>(array: T[], callback: (element: T) => boolean): number {
     for (let i = 0; i < array.length; i++) {
-      if (callback(array[i])) {
-        return i;
-      }
+        if (callback(array[i])) {
+            return i;
+        }
     }
     return -1;
-  }
-export function removeLastItemByCategory(arr: string[], category:string) {
-    var index = customFindIndex(arr, function (item:any) {
+}
+export function removeLastItemByCategory(arr: string[], category: string) {
+    var index = customFindIndex(arr, function (item: any) {
         return item.category === category;
     });
 
@@ -220,7 +222,7 @@ function clean(menuList: HTMLElement) {
     childNodes.forEach(node => menuList.removeChild(node));
 }
 
-function getHost(url:string) {
+function getHost(url: string) {
     if (url) {
         const parsedURL = new URL(url);
         return parsedURL.host;
@@ -228,9 +230,9 @@ function getHost(url:string) {
     return false;
 }
 
-export const getUniqueCategories = (htmlMenu:any[]) => {
-    return htmlMenu.reduce(function (acc:string[], item:any) {
-        if (acc.indexOf(item.category) !== -1) {
+export const getUniqueCategories = (htmlMenu: any[]) => {
+    return htmlMenu.reduce(function (acc, item) {
+        if (!acc.includes(item.category)) {
             acc.push(item.category);
         }
         return acc;
