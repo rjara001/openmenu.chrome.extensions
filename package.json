@@ -1,11 +1,11 @@
 {
   "scripts": {
     "build": "tsc --build tsconfig.json",
-    "webpack-main": "webpack --config src/webpack/webpack.config.js"
-    , "webpack-iframe": "webpack --config src-iframe/webpack/webpack.config.js"
-    , "dev-main": "npm run webpack-main -- --mode development"
-    , "dev-iframe": "npm run webpack-iframe -- --mode development"
-    , "dev": "npm run dev-main && npm run dev-iframe"
+    "webpack-main": "webpack --config src/webpack/webpack.config.js",
+    "webpack-iframe": "webpack --config src-iframe/webpack/webpack.config.js",
+    "dev-main": "npm run webpack-main -- --mode development",
+    "dev-iframe": "npm run webpack-iframe -- --mode development",
+    "dev": "npm run dev-main && npm run dev-iframe"
   },
   "devDependencies": {
     "@types/chrome": "0.0.241",
@@ -15,5 +15,8 @@
     "typescript": "5.1.6",
     "webpack": "5.88.2",
     "webpack-cli": "5.1.4"
+  },
+  "dependencies": {
+    "nodemon": "3.0.1"
   }
 }

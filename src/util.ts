@@ -372,7 +372,7 @@ export const load = () => {
 
     window.addEventListener('message', function (event) {
         // Log the message received from the iframe
-        console.log('Message received from iframe:', event.data);
+        // console.log('Message received from iframe:', event.data);
 
         if (event.data.go)
             go(event.data.go.text, event.data.go.action);
