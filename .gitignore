@@ -10,4 +10,6 @@ dist/
 tsconfig.tsbuildinfo
 node_modules/
 *.js.map
+
+# Negation Rule to Include webpack.config.js
 !.config.js
