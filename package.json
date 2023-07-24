@@ -1,11 +1,13 @@
 {
   "scripts": {
     "build": "tsc --build tsconfig.json",
+    "webpack-pop": "webpack --config src-pop/webpack/webpack.config.js",
     "webpack-main": "webpack --config src/webpack/webpack.config.js",
     "webpack-iframe": "webpack --config src-iframe/webpack/webpack.config.js",
     "dev-main": "npm run webpack-main -- --mode development",
+    "dev-pop": "npm run webpack-pop -- --mode development",
     "dev-iframe": "npm run webpack-iframe -- --mode development",
-    "dev": "npm run dev-main && npm run dev-iframe"
+    "dev": "npm run dev-main && npm run dev-iframe && npm run dev-pop"
   },
   "devDependencies": {
     "@types/chrome": "0.0.241",

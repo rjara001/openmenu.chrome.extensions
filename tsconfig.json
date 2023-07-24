@@ -1,27 +1,30 @@
 {
-    "references": [
-        {
-            "path": "./src/tsconfig.json"
-        },
-        {
-            "path": "./src-iframe/tsconfig.json"
-        }
-    ],
-    "compilerOptions": {
-        "composite": true,
-        "allowJs": false,
-        "strict": true,
-        "module": "commonjs",
-        "target": "es6",
-        "esModuleInterop": true,
-        "sourceMap": true,
-        "noEmitOnError": true,
-        "typeRoots": [ "node_modules/@types" ]
+  "references": [
+    {
+      "path": "./src/tsconfig.json"
     },
-   
-    "exclude": [
-
-        "./dist/src/**/*", // This is what fixed it!
-        "./dist/iframe/**/*" // This is what fixed it!
+    {
+      "path": "./src-iframe/tsconfig.json"
+    },
+    {
+      "path": "./src-pop/tsconfig.json"
+    }
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "allowJs": false,
+    "strict": true,
+    "module": "commonjs",
+    "target": "es6",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "noEmitOnError": true,
+    "typeRoots": [
+      "node_modules/@types"
     ]
+  },
+  "exclude": [
+    "./dist/src/**/*", // This is what fixed it!
+    "./dist/iframe/**/*" // This is what fixed it!
+  ]
 }

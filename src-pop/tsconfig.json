@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../dist/pop",
+    "rootDir": "../src-pop"
+  },
+  "include": [
+    "../src-pop/**/*.ts"
+  ]
+}

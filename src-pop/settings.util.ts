@@ -1,5 +1,4 @@
 import { getMenu } from "./globals/index";
-// import { getUniqueCategories } from "../html/util.html";
 import { renderTable } from "./tables";
 import { getUniqueCategories } from "./util";
 
