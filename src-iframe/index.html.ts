@@ -33,11 +33,13 @@ $(document).ready(function () {
                 break;
             case 'add':
                 {
-                    const category = event.data.payload.category;
+                    debugger;
+                    const category = event.data.payload.category?.toLowerCase();
                     if (!getMenu())
                         return;
 
                     const lenMenu = getMenu().length;
+                    
                     if (lenMenu < LIMIT_LEN) {
                         _addAction(event.data);
                     }

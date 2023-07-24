@@ -204,9 +204,9 @@ function customFindIndex<T>(array: T[], callback: (element: T) => boolean): numb
 }
 export function removeLastItemByCategory(arr: string[], category: string) {
     var index = customFindIndex(arr, function (item: any) {
-        return item.category === category;
+        return item.category?.toLowerCase() === category;
     });
-
+    
     if (index !== -1) {
         arr.splice(index, 1);
     }
