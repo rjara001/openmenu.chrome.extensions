@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist/src-iframe",
+    "outDir": "../dist/iframe",
     "rootDir": "../src-iframe"
   },
   "include": [
