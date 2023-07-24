@@ -1,11 +1,11 @@
 const path = require('path');
 module.exports = {
    entry: {
-      content: path.resolve(__dirname, "..", "index.settings.ts")
+      pop: path.resolve(__dirname, "..", "index.settings.ts")
    },
    devtool: 'source-map',
    output: {
-      path: path.join(__dirname, "../../dist/src"),
+      path: path.join(__dirname, "../../dist/pop"),
       filename: "[name].js",
    },
    resolve: {
