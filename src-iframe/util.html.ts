@@ -4,6 +4,7 @@
 import { getJoinedArray, getMenu } from './globals/index';
 import { localRemoveValue } from './store'
 import { LIMIT_LEN_TEXT } from './constants'
+import { getActiveAutoSave } from './globals/index';
 
 const getCurrentURL = () => {
     var url = window.location.href;
@@ -41,7 +42,7 @@ function cleanChildElement(menuList: HTMLElement) {
         menuList.removeChild(menuList.firstChild);
     }
 }
-function showMenusItems(category: string, menuList: HTMLElement) {
+export function showMenusItems(category: string, menuList: HTMLElement) {
     getMenu().filter((_: any) => _.category === category).forEach((_: any) => {
 
         newMenuItem(_, menuList, '');
@@ -65,6 +66,7 @@ function newMenuCategory(category: string, menuList: HTMLElement) {
         const menuScroll = document.createElement('div');
         menuScroll.classList.add('scroll');
         menuList.appendChild(menuScroll);
+
         showMenusItems(category, menuScroll);
 
     });
@@ -79,7 +81,7 @@ export function _addAction(obj: any) {
 
         const newitem = { category: obj.payload.category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: obj.payload.position, xpath: obj.payload.xpath };
         if (!_item) {
-            newMenuItem(newitem, document.getElementsByClassName('list')[0] as HTMLElement, '');
+            newMenuItem(newitem, document.getElementsByClassName('items')[0] as HTMLElement, '');
         }
     }
 }
@@ -88,7 +90,7 @@ export function loadCategories() {
 
     let menuList = document.getElementsByClassName('items')[0] as HTMLElement;
     let fulfill = document.getElementById('fulfill') as HTMLInputElement;
-
+  
     fulfill.addEventListener('click', (e) => {
         go('fulfill', 'fulfill');
     });
@@ -206,7 +208,7 @@ export function removeLastItemByCategory(arr: string[], category: string) {
     var index = customFindIndex(arr, function (item: any) {
         return item.category?.toLowerCase() === category;
     });
-    
+
     if (index !== -1) {
         arr.splice(index, 1);
     }
@@ -222,17 +224,17 @@ function clean(menuList: HTMLElement) {
     childNodes.forEach(node => menuList.removeChild(node));
 }
 
-function getHost(url: string) {
-    if (url) {
-        const parsedURL = new URL(url);
-        return parsedURL.host;
-    }
-    return false;
-}
+// function getHost(url: string) {
+//     if (url) {
+//         const parsedURL = new URL(url);
+//         return parsedURL.host;
+//     }
+//     return false;
+// }
 
 export const getUniqueCategories = (htmlMenu: any[]) => {
     return htmlMenu.reduce(function (acc, item) {
-        if (!acc.includes(item.category)) {
+        if (item.category != undefined && item.category.length > 0 && !acc.includes(item.category)) {
             acc.push(item.category);
         }
         return acc;

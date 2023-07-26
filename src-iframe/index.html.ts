@@ -1,31 +1,45 @@
 
 
-import { getMenu, setJoinedArray, setMenu, setURL } from "./globals/index";
-import { _addAction, loadCategories, toText, removeLastItemByCategory } from "./util.html";
-import {LIMIT_LEN} from './constants'
+import { getActiveAutoSave, getMenu, setActiveAutoSave, setJoinedArray, setMenu, setURL } from "./globals/index";
+import { _addAction, loadCategories, toText, removeLastItemByCategory, showMenusItems } from "./util.html";
+import { LIMIT_LEN } from './constants'
 
-function cleanChildElement(menuList:HTMLElement) {
-    while (menuList.firstChild) {
-        menuList.removeChild(menuList.firstChild);
-    }
-}
+// function cleanChildElement(menuList:HTMLElement) {
+//     while (menuList.firstChild) {
+//         menuList.removeChild(menuList.firstChild);
+//     }
+// }
 
 $(document).ready(function () {
-
     window.addEventListener('message', function (event) {
-
         switch (event.data.action) {
-            case 'resize':{
+            case 'showmenu': {
+                let menuList = document.getElementsByClassName('items')[0] as HTMLElement;
+                let maxHeight = (menuList.parentNode?.parentNode as HTMLElement).offsetHeight;
+                window.parent.postMessage({ maxHeight: maxHeight }, "*");
+
+                let add = document.getElementById('add') as HTMLInputElement;
+
+                if (!getActiveAutoSave())
+                    add.addEventListener('click', (e) => {
+                        window.parent.postMessage({ action: 'add' }, "*"); // send a message to iframe for stop autosave and save the new value
+
+                        // showMenusItems('', menuList);
+                    });
+            }
+                break;
+            case 'resize': {
                 let menuList = document.getElementsByClassName('items')[0] as HTMLElement;
                 let maxHeight = (menuList.parentNode?.parentNode as HTMLElement).offsetHeight;
                 window.parent.postMessage({ maxHeight: maxHeight }, "*");
             }
-            break;
+                break;
             case 'load':
                 {
                     // debugger;
                     setMenu(event.data.payload.items);
                     setURL(event.data.payload.url);
+                    setActiveAutoSave(event.data.payload.activeAutoSaved);
                     setJoinedArray(event.data.payload.joined);
 
                     loadCategories();
@@ -33,13 +47,13 @@ $(document).ready(function () {
                 break;
             case 'add':
                 {
-                    debugger;
+                    // debugger;
                     const category = event.data.payload.category?.toLowerCase();
                     if (!getMenu())
                         return;
 
                     const lenMenu = getMenu().length;
-                    
+
                     if (lenMenu < LIMIT_LEN) {
                         _addAction(event.data);
                     }

@@ -1,8 +1,6 @@
 import { URL_IFRAME, _BOX_ID } from "./constants";
 import { getShadowRoot } from "./globals/index";
 
-let ITEMS = [];
-
 export function addEllipsis(text:string, maxLength:number) {
     if (text.length > maxLength) {
         return text.slice(0, maxLength) + '...';
@@ -49,13 +47,13 @@ export function hideBalloon() {
     balloon.style.display = "none";
 }
 
-function isMenuOpened() {
-    if (!getShadowRoot()) return;
+// function isMenuOpened() {
+//     if (!getShadowRoot()) return;
 
-    const balloon = getShadowRoot().getElementById("balloon");
-    if (balloon)
-        return balloon.style.display === 'block';
-}
+//     const balloon = getShadowRoot().getElementById("balloon");
+//     if (balloon)
+//         return balloon.style.display === 'block';
+// }
 
 // function clickOutOfBox(obj) {
 

@@ -1,14 +1,13 @@
-import { getMenu, setMenu } from "./globals/index";
+import { getMenu, setActiveAutoSave, setActiveMenu, setMenu } from "./globals/index";
 import { displaySuggestions, exportData, getHost, getSuggestions, importData } from "./settings.util";
 import { renderTable, renderTablePages } from "./tables";
 
 // Variables to store the current row and data
-let currentRow:any;
-let currentData:any;
-let currentDataIndex:any;
+let currentRow: any;
+let currentData: any;
+let currentDataIndex: any;
 
 var category = document.getElementById("category") as HTMLInputElement;
-
 
 if (chrome.storage) {
   chrome.storage.local.get('menu', function (result) {
@@ -17,6 +16,24 @@ if (chrome.storage) {
         getMenu().items = result.menu;
       else
         setMenu(result.menu);
+
+      if (result.menu.settings.activeMenu === undefined)
+        setActiveMenu(true);
+      if (result.menu.settings.activeAutoSave === undefined)
+        setActiveAutoSave(true);
+
+
+      var activeMenuInput = document.getElementById('menu-active') as HTMLInputElement;
+      activeMenuInput.checked = result.menu.settings.activeMenu;
+      activeMenuInput.addEventListener('change', (e: any)=>{
+        setActiveMenu(e.target.checked);
+      });
+
+      var activeSaveInput = document.getElementById('auto-save') as HTMLInputElement;
+      activeSaveInput.checked = result.menu.settings.activeAutoSave;
+      activeSaveInput.addEventListener('change', (e: any)=>{
+        setActiveAutoSave(e.target.checked);
+      });
 
       renderTable(getMenu().items);
       renderTablePages(getMenu().settings.pages);
@@ -34,7 +51,7 @@ if (chrome.storage) {
 //   }
 // });
 
-function remainderScroll(index:number) {
+function remainderScroll(index: number) {
   const tableBody = document.querySelector('tbody');
   const tableContainer = document.querySelector('.table-container') as HTMLElement;
 
@@ -120,7 +137,7 @@ var saveButton = document.querySelector('save');
 if (saveButton)
   saveButton.addEventListener('click', saveData);
 
-function deleteRowsSelected(tableSelected:string) {
+function deleteRowsSelected(tableSelected: string) {
   const checkboxes = document.querySelectorAll<HTMLInputElement>(tableSelected);
 
   // const selectedRows = [];
@@ -141,7 +158,7 @@ function deleteRowsSelected(tableSelected:string) {
 }
 
 // Function to save the updated data
-function saveData(event:any) {
+function saveData(event: any) {
   event.preventDefault();
 
   var categorySelect = document.getElementById("category") as HTMLInputElement;
@@ -189,6 +206,7 @@ if (exportButton)
 var importButton = document.getElementById('importButton');
 if (importButton)
   importButton.addEventListener('click', importData);
+import { getActiveAutoSave } from './../dist/src/globals/index';
 
 
 if (category)

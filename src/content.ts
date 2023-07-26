@@ -14,10 +14,10 @@ function waitForMENUisLoaded(callback: ()=>void) {
     }
 }
 
-chrome.storage.sync.get("autoSave", function (data) {
+chrome.storage.local.get("menu", function (result) {
     // If toggle value is present in storage, use it
     // Otherwise, use the default value 
-    setActiveAutoSave(data.autoSave !== undefined ? data.autoSave : true);
+    setActiveAutoSave(result.menu.settings.activeAutoSave !== undefined ? result.menu.settings.activeAutoSave : true);
 
 });
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -32,10 +32,10 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     setActiveAutoSave(message.autoSave);
 });
 
-chrome.storage.sync.get("menuActive", function (data) {
+chrome.storage.local.get("menu", function (result) {
     // If toggle value is present in storage, use it
     // Otherwise, use the default value 
-    setActiveExtension(data.menuActive !== undefined ? data.menuActive : true);
+    setActiveExtension(result.menu.settings.activeMenu !== undefined ? result.menu.settings.activeMenu : true);
 
 });
 

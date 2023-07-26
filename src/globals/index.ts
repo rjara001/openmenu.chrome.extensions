@@ -1,15 +1,14 @@
+import { _MENU_DEFAULT } from "../constants";
 import { MenuItem } from "../types/MenuItem";
 
-let _inputSelected:any = undefined;
+let _inputSelected: any = undefined;
 let _activeExtension = false;
 let _activeAutoSave: boolean = false;
-let _MENU : MenuItem = { items: [], settings: {pages:[]} };
+let _MENU: MenuItem = { items: [], settings: { pages: [] } };
 let _URL: string = '';
 let _JOINED_ARRAY: any[] = [];
-let _variables_loaded:boolean = false;
+let _variables_loaded: boolean = false;
 let _shadowRoot: any;
-
-var _CURRENT_URL = '';
 
 export function getShadowRoot(): any {
   return _shadowRoot;
@@ -52,6 +51,12 @@ export function setActiveAutoSave(value: boolean): void {
 }
 
 export function getMenu(): MenuItem {
+  if (_MENU === undefined)
+    _MENU = _MENU_DEFAULT;
+
+  if (!_MENU.items)
+    _MENU.items = []
+    
   return _MENU;
 }
 

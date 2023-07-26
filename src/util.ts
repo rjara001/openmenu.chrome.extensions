@@ -1,5 +1,5 @@
 import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, _BOX_ID, _HTML_BOX, _STYLE_AS_STRING } from "./constants";
-import { getMenu, getShadowRoot, setShadowRoot } from "./globals/index";
+import { getInputSelected, getMenu, getShadowRoot, setShadowRoot } from "./globals/index";
 // import { removeLastItemByCategory } from "../html/util.html";
 import { localSaveValue, localUpdateValue } from "../src/store";
 import { addEllipsis, barMessage, hideBalloon, resizeIframe } from "./box.util";
@@ -8,14 +8,14 @@ import { startDragging } from "./move";
 
 function customFindIndex<T>(array: T[], callback: (element: T) => boolean): number {
     for (let i = 0; i < array.length; i++) {
-      if (callback(array[i])) {
-        return i;
-      }
+        if (callback(array[i])) {
+            return i;
+        }
     }
     return -1;
-  }
-  
-export function removeLastItemByCategory(arr:any[], category:string) {
+}
+
+export function removeLastItemByCategory(arr: any[], category: string) {
     var index = arr.findIndex(function (item) {
         return item.category === category;
     });
@@ -27,7 +27,7 @@ export function removeLastItemByCategory(arr:any[], category:string) {
     return arr;
 }
 
-const removeHTMLElements = (htmlString:string) => {
+const removeHTMLElements = (htmlString: string) => {
 
     // Create a temporary container element
     var tempContainer = document.createElement('div');
@@ -94,7 +94,7 @@ function createReadAllOption() {
     return link;
 }
 
-function findLastOccurrence(arr:any[], key:string, value:string) {
+function findLastOccurrence(arr: any[], key: string, value: string) {
     return arr.reduceRight((acc, obj) => {
         if ((obj[key] === value) && !acc) {
             return obj;
@@ -103,8 +103,8 @@ function findLastOccurrence(arr:any[], key:string, value:string) {
     }, null);
 }
 
-function innerJoin2(inputs:any[], values:any[], key1:string, key2:string) {
-    var result:any[] = [];
+function innerJoin2(inputs: any[], values: any[], key1: string, key2: string) {
+    var result: any[] = [];
     var currentUrl = window.location.href;
 
     for (var i = 0; i < inputs.length; i++) {
@@ -120,8 +120,8 @@ function innerJoin2(inputs:any[], values:any[], key1:string, key2:string) {
     return result;
 }
 
-function innerJoin(inputs:HTMLElement[], values:any[], key:string) {
-    var result:any[] = [];
+function innerJoin(inputs: HTMLElement[], values: any[], key: string) {
+    var result: any[] = [];
 
     for (var i = 0; i < inputs.length; i++) {
         var obj1 = inputs[i];
@@ -136,17 +136,17 @@ function innerJoin(inputs:HTMLElement[], values:any[], key:string) {
     return result;
 }
 
-function chkval(value:string | undefined) {
+function chkval(value: string | undefined) {
     if (value === undefined)
         return '';
     return value;
 }
-function getPosition(input:any) {
+function getPosition(input: any) {
     let inputOffset = $(input).offset();
     return `t:${chkval(inputOffset?.top.toString())};l:${chkval(inputOffset?.left.toString())}}`;
 }
 
-function _addAction(input:any, category:string) {
+function _addAction(input: any, category: string) {
     let newValue = removeHTMLElements((input.val() || '').trim());
 
     if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
@@ -161,7 +161,7 @@ function _addAction(input:any, category:string) {
     }
 }
 
-export function AddAction(input:any, category:string) {
+export function AddAction(input: any, category: string) {
     const value = input.val();
     const position = getPosition(input);
     const xpath = getFullXPath(input);
@@ -179,7 +179,7 @@ export function AddAction(input:any, category:string) {
 
 }
 
-function getHost(url:string) {
+function getHost(url: string) {
     if (url) {
         const parsedURL = new URL(url);
         return parsedURL.host;
@@ -198,9 +198,9 @@ export function FullfillAction() {
     const inputTexts = $(INPUT_TEXTS).toArray();
 
     const inputSaved = getMenu().items.filter(_ => getHost(_.page) === currentHost);
-    var inputs:any[] = [];
+    var inputs: any[] = [];
     inputTexts.forEach(element => {
-        inputs.push({element, xpath: getFullXPath(element)});
+        inputs.push({ element, xpath: getFullXPath(element) });
     });
 
     //  inputs = inputTexts.map((index:number, element) => ({ ...$(element), xpath: getFullXPath(element) }));
@@ -214,7 +214,7 @@ export function FullfillAction() {
     });
 }
 
-export const getUniqueCategories = (htmlMenu:any[]) => {
+export const getUniqueCategories = (htmlMenu: any[]) => {
     return htmlMenu.reduce(function (acc, item) {
         if (!acc.includes(item.category)) {
             acc.push(item.category);
@@ -228,9 +228,9 @@ export function getInputSaved() {
         {
             const inputTexts = $(INPUT_TEXTS).toArray();
 
-            var inputs:any[] = [];
+            var inputs: any[] = [];
             inputTexts.forEach(element => {
-                inputs.push({element, xpath: getFullXPath(element)});
+                inputs.push({ element, xpath: getFullXPath(element) });
             });
             var joinedArray = innerJoin(inputs, getMenu().items, 'xpath');
 
@@ -259,25 +259,27 @@ export function ReadAllAction() {
     });
 }
 
-function CreateSVG() {
-    // Create the SVG element
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('width', '20');
-    svg.setAttribute('height', '20');
-    svg.setAttribute('id', 'my-svg');
-    // svg.classList.add('svg')
-    const $svg = $(svg);
+// function CreateSVG() {
+//     // Create the SVG element
+//     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+//     svg.setAttribute('width', '20');
+//     svg.setAttribute('height', '20');
+//     svg.setAttribute('id', 'my-svg');
+//     // svg.classList.add('svg')
+//     const $svg = $(svg);
 
-    $svg.html(PLUS_SVG);
+//     $svg.html(PLUS_SVG);
 
-    return $svg.get(0);
+//     return $svg.get(0);
 
-}
+// }
 
-export function typeIntoElement(element:any, text:string) {
+export function typeIntoElement(element: any, text: string) {
     // Set focus on the element
     element.focus();
 
+    // Create and dispatch a delete event to clear existing text
+    element.value = '';
     // Iterate over each character in the text
     for (let i = 0; i < text.length; i++) {
         // Create a new KeyboardEvent for each character
@@ -307,7 +309,7 @@ export function typeIntoElement(element:any, text:string) {
     }
 }
 
-function getFullXPath(element:any) {
+function getFullXPath(element: any) {
     var xpath = '';
     var $element = $(element);
 
@@ -373,7 +375,10 @@ export const load = () => {
     window.addEventListener('message', function (event) {
         // Log the message received from the iframe
         // console.log('Message received from iframe:', event.data);
-        
+        if (event.data.action && event.data.action === 'add') {
+            AddAction(getInputSelected(), '');
+        }
+
         if (event.data.go)
             go(event.data.go.text, event.data.go.action);
 

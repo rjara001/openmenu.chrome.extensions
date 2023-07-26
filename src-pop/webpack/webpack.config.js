@@ -2,6 +2,7 @@ const path = require('path');
 module.exports = {
    entry: {
       pop: path.resolve(__dirname, "..", "index.settings.ts")
+      , tabs: path.resolve(__dirname, "..", "tabs.ts")
    },
    devtool: 'source-map',
    output: {

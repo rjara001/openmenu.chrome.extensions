@@ -1,5 +1,5 @@
 import { getMenu } from "./globals/index";
-import { renderTable } from "./tables";
+import { localUpdateValueItems } from "./store";
 import { getUniqueCategories } from "./util";
 
 // Function to delete an item
@@ -8,13 +8,12 @@ export function deleteItem(index:number, tableData:any) {
     if (tableData && tableData.length > 0) {
         tableData.splice(index, 1); // Remove the item from the array
 
-        chrome.storage.local.set({ 'menu': getMenu() }, function () {
-            console.log('Item deleted successfully!');
-            renderTable(tableData);
+        localUpdateValueItems(getMenu().items);
 
-            // remainderScroll(index);
-            // location.reload();
-        });
+        // chrome.storage.local.set({ 'menu': getMenu() }, function () {
+        //     console.log('Item deleted successfully!');
+        //     renderTable(tableData);
+        // });
     }
 }
 
@@ -64,10 +63,12 @@ export function importData() {
                 var csvData = event?.target?.result as string;
                 var menuData = parseCSV(csvData);
 
-                chrome.storage.local.set({ 'menu': getMenu() }, function () {
-                    console.log('Data imported successfully!');
-                    location.reload();
-                });
+                localUpdateValueItems(menuData);
+                location.reload();
+                // chrome.storage.local.set({ 'menu': getMenu() }, function () {
+                //     console.log('Data imported successfully!');
+                //     location.reload();
+                // });
             };
             reader.readAsText(file);
         }
@@ -82,11 +83,11 @@ function parseCSV(csvData:string) {
         var line = lines[i].trim();
         if (line) {
             var values = line.split(',');
-            var category = values[0].trim();
-            var text = values[1].trim();
-            var date = values[2].trim();
-            var position = values[3].trim();
-            var xpath = values[4].trim();
+            var category = values[0]?.trim();
+            var text = values[1]?.trim();
+            var date = values[2]?.trim();
+            var position = values[3]?.trim();
+            var xpath = values[4]?.trim();
             var item = {
                 category: category,
                 text: text,

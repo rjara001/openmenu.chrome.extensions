@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("./globals/index");
-const settings_util_1 = require("./settings.util");
-const tables_1 = require("./tables");
+import { getMenu, setMenu } from "./globals/index";
+import { displaySuggestions, exportData, getHost, getSuggestions, importData } from "./settings.util";
+import { renderTable, renderTablePages } from "./tables";
 // Variables to store the current row and data
 let currentRow;
 let currentData;
@@ -12,11 +10,11 @@ if (chrome.storage) {
     chrome.storage.local.get('menu', function (result) {
         if (result.menu) {
             if (Array.isArray(result.menu)) // old fashion
-                (0, index_1.getMenu)().items = result.menu;
+                getMenu().items = result.menu;
             else
-                (0, index_1.setMenu)(result.menu);
-            (0, tables_1.renderTable)((0, index_1.getMenu)().items);
-            (0, tables_1.renderTablePages)((0, index_1.getMenu)().settings.pages);
+                setMenu(result.menu);
+            renderTable(getMenu().items);
+            renderTablePages(getMenu().settings.pages);
         }
     });
 }
@@ -60,11 +58,11 @@ setCagtegorySelectedButton === null || setCagtegorySelectedButton === void 0 ? v
     // Iterate through checkboxes and find selected rows
     checkboxes.forEach((checkbox, index) => {
         if (checkboxes[index].checked) {
-            (0, index_1.getMenu)().items[index].category = category === null || category === void 0 ? void 0 : category.value;
+            getMenu().items[index].category = category === null || category === void 0 ? void 0 : category.value;
         }
     });
-    chrome.storage.local.set({ 'menu': (0, index_1.getMenu)() }, function () {
-        (0, tables_1.renderTable)((0, index_1.getMenu)().items);
+    chrome.storage.local.set({ 'menu': getMenu() }, function () {
+        renderTable(getMenu().items);
     });
 });
 // #### set-category-selected
@@ -77,11 +75,11 @@ disablePage === null || disablePage === void 0 ? void 0 : disablePage.addEventLi
     // Iterate through checkboxes and find selected rows
     checkboxes.forEach((checkbox, index) => {
         if (checkboxes[index].checked) {
-            (0, index_1.getMenu)().settings.pages.push({ host: (0, settings_util_1.getHost)(url.value), date: (new Date()).toISOString() });
+            getMenu().settings.pages.push({ host: getHost(url.value), date: (new Date()).toISOString() });
         }
     });
-    chrome.storage.local.set({ 'menu': (0, index_1.getMenu)() }, function () {
-        (0, tables_1.renderTablePages)((0, index_1.getMenu)().settings.pages);
+    chrome.storage.local.set({ 'menu': getMenu() }, function () {
+        renderTablePages(getMenu().settings.pages);
     });
 });
 // Add event listener to the "Save" button
@@ -95,12 +93,12 @@ function deleteRowsSelected(tableSelected) {
     checkboxes.forEach((checkbox, index) => {
         const reverseIndex = checkboxes.length - index - 1;
         if (checkboxes[reverseIndex].checked) {
-            (0, index_1.getMenu)().items.splice(reverseIndex, 1); // Remove the item from the array
+            getMenu().items.splice(reverseIndex, 1); // Remove the item from the array
         }
     });
-    chrome.storage.local.set({ 'menu': (0, index_1.getMenu)() }, function () {
+    chrome.storage.local.set({ 'menu': getMenu() }, function () {
         console.log('Items deleted successfully!');
-        (0, tables_1.renderTable)((0, index_1.getMenu)().items);
+        renderTable(getMenu().items);
         // remainderScroll(index);
     });
 }
@@ -127,9 +125,9 @@ function saveData(event) {
     nameCell.innerHTML = currentData.name;
     textCell.innerHTML = currentData.text;
     // Update the value in the tableData array
-    (0, index_1.getMenu)().items[currentDataIndex] = currentData;
+    getMenu().items[currentDataIndex] = currentData;
     // Perform the necessary saving logic using chrome.storage.local.set()
-    chrome.storage.local.set({ 'menu': (0, index_1.getMenu)() }, function () {
+    chrome.storage.local.set({ 'menu': getMenu() }, function () {
         // console.log('Data saved successfully!');
         // renderTable(tableData);
         // remainderScroll(currentDataIndex);
@@ -138,17 +136,17 @@ function saveData(event) {
 // Export button click event
 var exportButton = document.getElementById('exportButton');
 if (exportButton)
-    exportButton.addEventListener('click', settings_util_1.exportData);
+    exportButton.addEventListener('click', exportData);
 // Import button click event
 var importButton = document.getElementById('importButton');
 if (importButton)
-    importButton.addEventListener('click', settings_util_1.importData);
+    importButton.addEventListener('click', importData);
 if (category)
     category.addEventListener("input", function () {
         var query = category.value;
-        var matches = (0, settings_util_1.getSuggestions)(query);
+        var matches = getSuggestions(query);
         if (setCagtegorySelectedButton)
             setCagtegorySelectedButton.textContent = "Set Category '{text}' Items Selected".replace('{text}', query);
-        (0, settings_util_1.displaySuggestions)(matches);
+        displaySuggestions(matches);
     });
 //# sourceMappingURL=index.settings.js.map
