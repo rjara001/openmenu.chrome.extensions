@@ -3,9 +3,9 @@ import { getActiveAutoSave, getActiveExtension, getInputSelected, getMenu, getSh
 import { startDragging } from "./move";
 import { AddAction, ClearAction, FullfillAction, ReadAllAction, getInputSaved, typeIntoElement } from "./util";
 
-let shadowRoot:any = undefined;
+let shadowRoot: any = undefined;
 
-export function doClose(event:any) {
+export function doClose(event: any) {
     if (isMenuOpened() && clickOutOfBox(event.target))
         closeMenu();
 }
@@ -13,17 +13,30 @@ export function doClose(event:any) {
 export function loadEventosOnInputs() {
     const inputTexts = $(INPUT_TEXTS).toArray();
 
+    if (inputTexts.length > 0)
+        attachEventsOnAllInputs(inputTexts);
+    else
+        setTimeout(() => {
+            // Sometimes the inputs values arent loaded on time
+            const inputTexts = $(INPUT_TEXTS).toArray();
+
+            attachEventsOnAllInputs(inputTexts);
+
+        }, 2000);
+}
+
+function attachEventsOnAllInputs(inputTexts: HTMLElement[]) {
     inputTexts.forEach(_ => {
         _.addEventListener('click', (e) => showMenu(e));
         _.addEventListener('blur', (e) => autoSave(e));
     });
 
-    var joinedArray = getI  nputSaved().map(_=>(_.xpath));
+    var joinedArray = getInputSaved().map(_ => (_.xpath));
 
     sendMessageToIframe('load', { items: getMenu().items, url: window.location.href, joined: joinedArray, activeAutoSaved: getActiveAutoSave() });
 }
 
-function autoSave(e:any) {
+function autoSave(e: any) {
     if (getActiveAutoSave())
         AddAction($(e.target), 'AutoSave');
 }
@@ -45,7 +58,7 @@ function isMenuOpened() {
         return __open_menu.style.display === 'block';
 }
 
-function clickOutOfBox(obj:any) {
+function clickOutOfBox(obj: any) {
 
     if (obj == null)
         return true;
@@ -73,7 +86,7 @@ function clickOutOfBox(obj:any) {
 //     }
 // }
 
-export function go(item:any, option:string) {
+export function go(item: any, option: string) {
     // const __open_menu = shadowRoot.getElementById(_OPENMENU_MENU_ID);
     item = (item || '').trim();
     const isAdd = option === 'add'
@@ -96,9 +109,9 @@ export function go(item:any, option:string) {
                 AddAction(getInputSelected(), '');
                 break;
             default:
-                {   
+                {
                     let inputTextSelected = getInputSelected()[0];
-           
+
                     typeIntoElement(inputTextSelected, item);
                 }
         }
@@ -115,7 +128,7 @@ export function go(item:any, option:string) {
 //         bubbles: true,
 //         detail: { additionalData: "" }, // You can add any additional data here
 //       });
-      
+
 //     // React 15
 //     // event.simulated = true;
 //     // React 16
@@ -126,7 +139,7 @@ export function go(item:any, option:string) {
 //     element.dispatchEvent(event);
 // }
 
-function showMenu(e:any) {
+function showMenu(e: any) {
     const __open_menu = getShadowRoot().getElementById('balloon');
 
     setInputSelected($(e.target));
@@ -141,7 +154,7 @@ function showMenu(e:any) {
 
 }
 
-export function sendMessageToIframe(action:string, payload:any) {
+export function sendMessageToIframe(action: string, payload: any) {
     var iframe = getShadowRoot().getElementById('imenu');
     const domain = URL_IFRAME.split('/')[0] + '//' + URL_IFRAME.split('/')[2];
 

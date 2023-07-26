@@ -94,6 +94,15 @@ function createReadAllOption() {
     return link;
 }
 
+// function findLastOccurrence(arr, key, value) {
+//     return arr.reduceRight((acc, obj) => {
+//         if ((obj[key] === value) && !acc) {
+//             return obj;
+//         }
+//         return acc;
+//     }, null);
+// }
+
 function findLastOccurrence(arr: any[], key: string, value: string) {
     return arr.reduceRight((acc, obj) => {
         if ((obj[key] === value) && !acc) {
@@ -103,32 +112,49 @@ function findLastOccurrence(arr: any[], key: string, value: string) {
     }, null);
 }
 
-function innerJoin2(inputs: any[], values: any[], key1: string, key2: string) {
+// function innerJoin2(inputs: any[], values: any[], key1: string, key2: string) {
+//     var result: any[] = [];
+//     var currentUrl = window.location.href;
+
+//     for (var i = 0; i < inputs.length; i++) {
+//         var obj1 = inputs[i];
+//         var obj2 = findLastOccurrence(values, key1, obj1[key1]);
+
+//         if (obj2) {
+//             var mergedObj = { ...obj1, ...obj2 };
+//             result.push(mergedObj);
+//         }
+//     }
+
+//     return result;
+// }
+
+// function innerJoin(inputs, values, key) {
+//     var result = [];
+
+//     for (var i = 0; i < inputs.length; i++) {
+//         var obj1 = inputs[i];
+//         var obj2 = findLastOccurrence(values, key, obj1[key]);
+
+//         if (obj2) {
+//             var mergedObj = { ...obj1, ...obj2 };
+//             result.push(mergedObj);
+//         }
+//     }
+
+//     return result;
+// }
+
+function innerJoin(inputs: any[], itemsMenu: any[], key: string) {
     var result: any[] = [];
-    var currentUrl = window.location.href;
 
     for (var i = 0; i < inputs.length; i++) {
-        var obj1 = inputs[i];
-        var obj2 = findLastOccurrence(values, key1, obj1[key1]);
+        var inputElement = inputs[i];
+
+        var obj2 = findLastOccurrence(itemsMenu, key, inputElement[key]);
 
         if (obj2) {
-            var mergedObj = { ...obj1, ...obj2 };
-            result.push(mergedObj);
-        }
-    }
-
-    return result;
-}
-
-function innerJoin(inputs: HTMLElement[], values: any[], key: string) {
-    var result: any[] = [];
-
-    for (var i = 0; i < inputs.length; i++) {
-        var obj1 = inputs[i];
-        var obj2 = findLastOccurrence(values, key, 'obj1[key].toString()');
-
-        if (obj2) {
-            var mergedObj = { ...obj1, ...obj2 };
+            var mergedObj = { ...inputElement, ...obj2 };
             result.push(mergedObj);
         }
     }
@@ -203,14 +229,10 @@ export function FullfillAction() {
         inputs.push({ element, xpath: getFullXPath(element) });
     });
 
-    //  inputs = inputTexts.map((index:number, element) => ({ ...$(element), xpath: getFullXPath(element) }));
-
     var joinedArray = innerJoin(inputs, getMenu().items, 'xpath');
 
-    // var joinedArray = innerJoin($(inputTexts).map((index, element) => ({ ...$(element), position: getPosition(element), xpath:getFullXPath(element) })), _MENU, 'position', 'xpath');
-
     joinedArray.forEach(_ => {
-        $(_).val(_.text);
+        typeIntoElement(_.element, _.text);
     });
 }
 
@@ -246,7 +268,7 @@ export function ClearAction() {
     var joinedArray = getInputSaved();
 
     joinedArray.forEach(_ => {
-        $(_).val('');
+        $(_.element).val('');
     })
 
 }
@@ -366,11 +388,7 @@ export const load = () => {
         hideBalloon();
     });
 
-    var iframe = getShadowRoot().getElementById('imenu');
-
-    iframe.addEventListener('load', () => {
-        loadEventosOnInputs();
-    });
+    loadALLInputs();
 
     window.addEventListener('message', function (event) {
         // Log the message received from the iframe
@@ -399,4 +417,12 @@ export const load = () => {
 
     hideBalloon();
 
+}
+
+function loadALLInputs() {
+    var iframe = getShadowRoot().getElementById('imenu');
+
+    iframe.addEventListener('load', () => {
+        loadEventosOnInputs();
+    });
 }

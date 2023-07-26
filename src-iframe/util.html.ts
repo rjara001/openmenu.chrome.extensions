@@ -90,7 +90,12 @@ export function loadCategories() {
 
     let menuList = document.getElementsByClassName('items')[0] as HTMLElement;
     let fulfill = document.getElementById('fulfill') as HTMLInputElement;
-  
+    let clear = document.getElementById('clear') as HTMLInputElement;
+    
+    clear.addEventListener('click', (e) => {
+        go('clear', 'clear');
+    });
+
     fulfill.addEventListener('click', (e) => {
         go('fulfill', 'fulfill');
     });
@@ -240,72 +245,3 @@ export const getUniqueCategories = (htmlMenu: any[]) => {
         return acc;
     }, []);
 }
-
-// function hostExist() {
-//     const currentHost = getHost(_URL);
-
-//     return _MENU.filter(_ => getHost(_.page) === currentHost).length > 0;
-// }
-
-// function createFulfillOption() {
-//     debugger;
-//     const link = document.createElement('div');
-//     link.classList.add('optionmenu', 'item', 'pr5');
-//     link.textContent = 'AutoFill';
-
-//     var joinedArray = _JOINED_ARRAY;
-//     if (joinedArray.length > 0) {
-//         link.textContent += '(' + joinedArray.length + ')';
-//         link.classList.add('fulfill');
-//     }
-//     else {
-//         link.classList.add('disabled');
-//         link.title = 'Fulfill will be activated when you have data saved for these input texts'
-//     }
-//     link.addEventListener('click', function () {
-//         debugger;
-//         go(link.innerText, 'fulfill');
-//     });
-
-//     return link;
-// }
-
-
-// function groupAll() {
-//     const div = document.createElement('div');
-//     div.classList.add('submenu');
-//     return div;
-// }
-
-// function createAddOption() {
-//     const link = document.createElement('div');
-//     link.classList.add('optionmenu', 'item');
-
-//     link.innerText = 'Add'
-//     // link.appendChild(CreateSVG());
-
-//     link.addEventListener('click', function () {
-//         go(link.innerText, 'add');
-//     });
-
-//     return link;
-// }
-
-// function createSeparator() {
-//     const div = document.createElement('div');
-
-//     div.textContent = ' ';
-
-//     return div;
-// }
-// function createClearOption() {
-//     const link = document.createElement('div');
-//     link.classList.add('optionmenu', 'item');
-//     link.textContent = 'Clear';
-
-//     link.addEventListener('click', function () {
-//         go(link.innerText, 'clear');
-//     });
-
-//     return link;
-// }

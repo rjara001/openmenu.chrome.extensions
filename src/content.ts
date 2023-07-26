@@ -72,6 +72,10 @@ document.addEventListener('click', function (e) {
 });
 
 window.addEventListener('load', function (e) {
-    waitForMENUisLoaded(load);
+    // waitForMENUisLoaded(load);
     //loadEventosOnInputs();
 });
+
+$(document).ready(function () {
+    waitForMENUisLoaded(load);
+ });
