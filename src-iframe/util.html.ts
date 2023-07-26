@@ -74,12 +74,12 @@ function newMenuCategory(category: string, menuList: HTMLElement) {
 }
 
 export function _addAction(obj: any) {
-    let newValue = removeHTMLElements((obj.payload.value || '').trim());
 
-    if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
-        let _item = getMenu().find((_: any) => _.text === newValue);
+    if (obj.payload.text.length > 0 && obj.payload.text.length < LIMIT_LEN_TEXT) {
+        let _item = getMenu().find((_: any) => _.text === obj.payload.text);
 
-        const newitem = { category: obj.payload.category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: obj.payload.position, xpath: obj.payload.xpath };
+        const newitem = obj.payload;
+
         if (!_item) {
             newMenuItem(newitem, document.getElementsByClassName('items')[0] as HTMLElement, '');
         }

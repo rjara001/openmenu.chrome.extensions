@@ -1,4 +1,5 @@
 import { deleteItem } from "./settings.util";
+import { getValueClean } from "./util";
 
 export function renderTablePages(tableData:any) {
     if (tableData && tableData.length > 0) {
@@ -52,18 +53,18 @@ export function renderTable(tableData:any) {
                     var textCell = row.insertCell(3);
                     var dateCell = row.insertCell(4);
                     var originCell = row.insertCell(5);
-                    var positionCell = row.insertCell(6);
+                    var typeCell = row.insertCell(6);
                     var xpathCell = row.insertCell(7);
                     var deleteCell = row.insertCell(8); // New cell for delete button
 
                     checkCell.innerHTML = "<input type='checkbox'>";
-                    nameCell.innerHTML = tableData[i].name === undefined ? '-' : tableData[i].name;
-                    categoryCell.innerHTML = tableData[i].category === undefined ? '-' : tableData[i].category;
-                    textCell.innerHTML = tableData[i].text == undefined ? tableData[i].title : tableData[i].text;
-                    dateCell.innerHTML = tableData[i].date;
-                    originCell.innerHTML = tableData[i].page;
-                    positionCell.innerHTML = tableData[i].position;
-                    xpathCell.innerHTML = tableData[i].xpath;
+                    nameCell.innerHTML = getValueClean(tableData[i].name);
+                    categoryCell.innerHTML = getValueClean(tableData[i].category);
+                    textCell.innerHTML = getValueClean(tableData[i].text);
+                    dateCell.innerHTML = getValueClean(tableData[i].date);
+                    originCell.innerHTML = getValueClean(tableData[i].page);
+                    typeCell.innerHTML = getValueClean(tableData[i].type);
+                    xpathCell.innerHTML = getValueClean(tableData[i].xpath);
 
                     const deleteButton = document.createElement('button');
                     deleteButton.className = 'delete-btn';

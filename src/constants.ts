@@ -9,7 +9,7 @@ export const _MENU_DEFAULT: MenuItem = { items: [] }
 export const LIMIT_LEN = 100;
 export const LIMIT_LEN_TEXT = 500;
 export const PLUS_SVG = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">    <path d="M8 12H16" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />    <path d="M12 16V8" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>'
-export const INPUT_TEXTS = 'input[type="datetime"], input[type="time"], input[type="tel"], input[type="search"], input[type="url"], input[type="text"], input[type="email"], input[type="number"], input[type="date"], textarea';
+export const INPUT_TEXTS = 'input[type="password"], input[type="datetime"], input[type="time"], input[type="tel"], input[type="search"], input[type="url"], input[type="text"], input[type="email"], input[type="number"], input[type="date"], textarea';
 export const _BOX_ID = '__open_menu_id';
 
 export const URL_IFRAME = chrome.runtime.getURL('html/index.html');

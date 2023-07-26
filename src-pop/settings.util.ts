@@ -28,11 +28,11 @@ export function getHost(url:string) {
 export function exportData() {
     var tableData = getMenu().items;
     if (tableData && tableData.length > 0) {
-        var csvContent = 'Category,Text,Date,Position,Xpath\n';
+        var csvContent = 'Category,Text,Date,Type,Xpath\n';
 
         for (var i = 0; i < tableData.length; i++) {
             var row = tableData[i];
-            var csvRow = `${row.category},${row.text || row.title},${row.date},${row.position},${row.xpath}\n`;
+            var csvRow = `${row.category},${row.text || row.title},${row.date},${row.type},${row.xpath}\n`;
             csvContent += csvRow;
         }
 
@@ -86,13 +86,13 @@ function parseCSV(csvData:string) {
             var category = values[0]?.trim();
             var text = values[1]?.trim();
             var date = values[2]?.trim();
-            var position = values[3]?.trim();
+            var type = values[3]?.trim();
             var xpath = values[4]?.trim();
             var item = {
                 category: category,
                 text: text,
                 date: date,
-                position: position,
+                type: type,
                 xpath: xpath
             };
             menuData.push(item);

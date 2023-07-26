@@ -6,15 +6,6 @@ import { addEllipsis, barMessage, hideBalloon, resizeIframe } from "./box.util";
 import { go, loadEventosOnInputs, sendMessageToIframe } from "./index.util";
 import { startDragging } from "./move";
 
-function customFindIndex<T>(array: T[], callback: (element: T) => boolean): number {
-    for (let i = 0; i < array.length; i++) {
-        if (callback(array[i])) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 export function removeLastItemByCategory(arr: any[], category: string) {
     var index = arr.findIndex(function (item) {
         return item.category === category;
@@ -57,9 +48,6 @@ const getCurrentURL = () => {
     return url;
 
 }
-const showOptions = () => {
-
-}
 
 function createFulfillOption() {
     const link = document.createElement('div');
@@ -94,15 +82,6 @@ function createReadAllOption() {
     return link;
 }
 
-// function findLastOccurrence(arr, key, value) {
-//     return arr.reduceRight((acc, obj) => {
-//         if ((obj[key] === value) && !acc) {
-//             return obj;
-//         }
-//         return acc;
-//     }, null);
-// }
-
 function findLastOccurrence(arr: any[], key: string, value: string) {
     return arr.reduceRight((acc, obj) => {
         if ((obj[key] === value) && !acc) {
@@ -112,38 +91,6 @@ function findLastOccurrence(arr: any[], key: string, value: string) {
     }, null);
 }
 
-// function innerJoin2(inputs: any[], values: any[], key1: string, key2: string) {
-//     var result: any[] = [];
-//     var currentUrl = window.location.href;
-
-//     for (var i = 0; i < inputs.length; i++) {
-//         var obj1 = inputs[i];
-//         var obj2 = findLastOccurrence(values, key1, obj1[key1]);
-
-//         if (obj2) {
-//             var mergedObj = { ...obj1, ...obj2 };
-//             result.push(mergedObj);
-//         }
-//     }
-
-//     return result;
-// }
-
-// function innerJoin(inputs, values, key) {
-//     var result = [];
-
-//     for (var i = 0; i < inputs.length; i++) {
-//         var obj1 = inputs[i];
-//         var obj2 = findLastOccurrence(values, key, obj1[key]);
-
-//         if (obj2) {
-//             var mergedObj = { ...obj1, ...obj2 };
-//             result.push(mergedObj);
-//         }
-//     }
-
-//     return result;
-// }
 
 function innerJoin(inputs: any[], itemsMenu: any[], key: string) {
     var result: any[] = [];
@@ -167,18 +114,14 @@ function chkval(value: string | undefined) {
         return '';
     return value;
 }
-function getPosition(input: any) {
-    let inputOffset = $(input).offset();
-    return `t:${chkval(inputOffset?.top.toString())};l:${chkval(inputOffset?.left.toString())}}`;
-}
 
-function _addAction(input: any, category: string) {
-    let newValue = removeHTMLElements((input.val() || '').trim());
+function _actionAdd(input: any, category: string) {
+    
+    const newitem = extractDataFromInput(category, input);
 
-    if (newValue.length > 0 && newValue.length < LIMIT_LEN_TEXT) {
-        let _item = getMenu().items.find(_ => _.text === newValue);
+    if (newitem.text.length > 0 && newitem.text.length < LIMIT_LEN_TEXT) {
+        let _item = getMenu().items.find(_ => _.text === newitem.text);
 
-        const newitem = { category, text: newValue, page: getCurrentURL(), date: (new Date()).toISOString(), position: getPosition(input), xpath: getFullXPath(input) };
         if (_item)
             localUpdateValue(newitem);
         else {
@@ -187,20 +130,29 @@ function _addAction(input: any, category: string) {
     }
 }
 
-export function AddAction(input: any, category: string) {
-    const value = input.val();
-    const position = getPosition(input);
-    const xpath = getFullXPath(input);
+function extractDataFromInput(category: string, input: JQuery) {
 
-    sendMessageToIframe('add', { value, position, xpath, category });
+    return {
+        category,
+        text: removeHTMLElements((input.val() || '').toString().trim()),
+        page: getCurrentURL(),
+        date: (new Date()).toISOString(),
+        type: input.prop("type"),
+        xpath: getFullXPath(input)
+    };
+}
+
+export function actionAdd(input: JQuery, category: string) {
+
+    sendMessageToIframe('add', extractDataFromInput(category, input));
 
     const lenMenu = getMenu().items.length;
     if (lenMenu < LIMIT_LEN) {
-        _addAction(input, category);
+        _actionAdd(input, category);
     }
     else if (category === 'autosave') {
         removeLastItemByCategory(getMenu().items, 'autosave');
-        _addAction(input, category);
+        _actionAdd(input, category);
     }
 
 }
@@ -277,7 +229,7 @@ export function ReadAllAction() {
     const inputTexts = $(INPUT_TEXTS).toArray();
 
     inputTexts.forEach(_ => {
-        AddAction($(_), '');
+        actionAdd($(_), '');
     });
 }
 
@@ -394,7 +346,7 @@ export const load = () => {
         // Log the message received from the iframe
         // console.log('Message received from iframe:', event.data);
         if (event.data.action && event.data.action === 'add') {
-            AddAction(getInputSelected(), '');
+            actionAdd(getInputSelected(), '');
         }
 
         if (event.data.go)

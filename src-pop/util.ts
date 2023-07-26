@@ -6,3 +6,7 @@ export const getUniqueCategories = (htmlMenu:any[]) => {
         return acc;
     }, []);
 }
+
+export const getValueClean = (value:string) => {
+    return value === undefined ? '-' : value;
+}

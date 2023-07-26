@@ -1,7 +1,7 @@
 import { INPUT_TEXTS, NAME_EXTENSION, URL_IFRAME, _OPENMENU_MENU_ID } from "./constants";
 import { getActiveAutoSave, getActiveExtension, getInputSelected, getMenu, getShadowRoot, setInputSelected } from "./globals/index";
 import { startDragging } from "./move";
-import { AddAction, ClearAction, FullfillAction, ReadAllAction, getInputSaved, typeIntoElement } from "./util";
+import { actionAdd, ClearAction, FullfillAction, ReadAllAction, getInputSaved, typeIntoElement } from "./util";
 
 let shadowRoot: any = undefined;
 
@@ -38,7 +38,7 @@ function attachEventsOnAllInputs(inputTexts: HTMLElement[]) {
 
 function autoSave(e: any) {
     if (getActiveAutoSave())
-        AddAction($(e.target), 'AutoSave');
+        actionAdd($(e.target), 'AutoSave');
 }
 
 function closeMenu() {
@@ -106,7 +106,7 @@ export function go(item: any, option: string) {
                 ReadAllAction();
                 break;
             case isAdd:
-                AddAction(getInputSelected(), '');
+                actionAdd(getInputSelected(), '');
                 break;
             default:
                 {
