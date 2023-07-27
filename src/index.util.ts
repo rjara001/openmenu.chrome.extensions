@@ -1,4 +1,4 @@
-import { INPUT_TEXTS, NAME_EXTENSION, URL_IFRAME, _OPENMENU_MENU_ID } from "./constants";
+import { ID_IMG, INPUT_TEXTS, NAME_EXTENSION, SRC_IMG, URL_IFRAME, _OPENMENU_MENU_ID } from "./constants";
 import { getActiveAutoSave, getActiveExtension, getInputSelected, getMenu, getShadowRoot, setInputSelected } from "./globals/index";
 import { startDragging } from "./move";
 import { actionAdd, ClearAction, FullfillAction, ReadAllAction, getInputSaved, typeIntoElement } from "./util";
@@ -139,16 +139,29 @@ export function go(item: any, option: string) {
 //     element.dispatchEvent(event);
 // }
 
+function putMenuOnInput(e: any) {
+
+    let _img = getShadowRoot().getElementById('img');
+    
+    $(_img).css('left', (e.clientX + 20) + 'px');
+    $(_img).css('top', (e.clientY + 20) + 'px');
+    $(_img).css('display', 'block');
+
+}
+
 function showMenu(e: any) {
+
     const __open_menu = getShadowRoot().getElementById('balloon');
 
     setInputSelected($(e.target));
+
+    putMenuOnInput(e);
 
     __open_menu.style.top = (e.clientY + 20) + 'px';
     __open_menu.style.left = (e.clientX + 20) + 'px';
 
     if (getActiveExtension()) {
-        __open_menu.style.display = 'block';
+        // __open_menu.style.display = 'block';
         sendMessageToIframe('showmenu', {});
     }
 

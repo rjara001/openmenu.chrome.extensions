@@ -13,6 +13,12 @@ export const INPUT_TEXTS = 'input[type="password"], input[type="datetime"], inpu
 export const _BOX_ID = '__open_menu_id';
 
 export const URL_IFRAME = chrome.runtime.getURL('html/index.html');
+export const SRC_IMG = chrome.runtime.getURL('icons/icon16.png');
+export const ID_IMG = _BOX_ID + '_img';
+
+export const _HTML_IMG = `
+<img src='${SRC_IMG}' id='${ID_IMG}' class='img-menu'></img>
+`
 
 export const _HTML_BOX = `
 <div class="balloon-header">
@@ -51,5 +57,12 @@ export const _STYLE_AS_STRING = `
   .balloon label {
     display: block;
     margin-bottom: 5px;
+  }
+  .img-menu {
+    width:20px;
+  }
+  .div-img-menu {
+    position:absolute;
+    display: none;
   }
  `
