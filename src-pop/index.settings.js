@@ -8,6 +8,7 @@ let currentDataIndex;
 var category = document.getElementById("category");
 if (chrome.storage) {
     chrome.storage.local.get('menu', function (result) {
+        result.menu = result.menu || _MENU_DEFAULT;
         if (result.menu) {
             if (Array.isArray(result.menu)) // old fashion
                 getMenu().items = result.menu;
@@ -155,6 +156,7 @@ if (exportButton)
 var importButton = document.getElementById('importButton');
 if (importButton)
     importButton.addEventListener('click', importData);
+import { _MENU_DEFAULT } from "./constants";
 if (category)
     category.addEventListener("input", function () {
         var query = category.value;

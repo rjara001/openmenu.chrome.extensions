@@ -2,9 +2,7 @@ import { _MENU_DEFAULT } from "../constants";
 import { MenuItem } from "../types/MenuItem";
 
 let _inputSelected: any = undefined;
-let _activeExtension = false;
-let _activeAutoSave: boolean = false;
-let _MENU: MenuItem = { items: [], settings: { pages: [] } };
+let _MENU: MenuItem = _MENU_DEFAULT;
 let _URL: string = '';
 let _JOINED_ARRAY: any[] = [];
 let _variables_loaded: boolean = false;
@@ -34,22 +32,6 @@ export function setInputSelected(value: any): void {
   _inputSelected = value;
 }
 
-export function getActiveExtension(): boolean {
-  return _activeExtension;
-}
-
-export function setActiveExtension(value: boolean): void {
-  _activeExtension = value;
-}
-
-export function getActiveAutoSave(): boolean {
-  return _activeAutoSave;
-}
-
-export function setActiveAutoSave(value: boolean): void {
-  _activeAutoSave = value;
-}
-
 export function getMenu(): MenuItem {
   if (_MENU === undefined)
     _MENU = _MENU_DEFAULT;
@@ -61,7 +43,13 @@ export function getMenu(): MenuItem {
 }
 
 export function setMenu(value: MenuItem): void {
-  _MENU = value;
+  if (Array.isArray(value)) // old fashion
+  getMenu().items = value;
+else
+  if (!value)
+  _MENU = _MENU_DEFAULT;
+  else
+_MENU = value;
 }
 
 export function getURL(): string {

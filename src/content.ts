@@ -1,4 +1,5 @@
-import { getVariablesLoaded, setActiveAutoSave, setActiveExtension, setMenu, setVariablesLoaded } from "./globals/index";
+import { _MENU_DEFAULT } from "./constants";
+import { getMenu, getVariablesLoaded, setMenu, setVariablesLoaded } from "./globals/index";
 import { doClose } from "./index.util";
 import { load } from "./util";
 
@@ -14,12 +15,6 @@ function waitForMENUisLoaded(callback: ()=>void) {
     }
 }
 
-chrome.storage.local.get("menu", function (result) {
-    // If toggle value is present in storage, use it
-    // Otherwise, use the default value 
-    setActiveAutoSave(result.menu.settings.activeAutoSave !== undefined ? result.menu.settings.activeAutoSave : true);
-
-});
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.type === "autoSave") {
         chrome.runtime.sendMessage(request, function (response) {
@@ -28,16 +23,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         return true; // Keep the message channel open for the response
     }
 });
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    setActiveAutoSave(message.autoSave);
-});
-
-chrome.storage.local.get("menu", function (result) {
-    // If toggle value is present in storage, use it
-    // Otherwise, use the default value 
-    setActiveExtension(result.menu.settings.activeMenu !== undefined ? result.menu.settings.activeMenu : true);
-
-});
+// chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+//     setActiveAutoSave(message.autoSave);
+// });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.type === "menuActive") {
@@ -48,34 +36,20 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 });
 
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    setActiveExtension(message.menuActive);
-});
+// chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+//     setActiveExtension(message.menuActive);
+// });
 
 chrome.storage.local.get('menu', function (result) {
-    if (result.menu) {
-        if (Array.isArray(result.menu)) // old fashion
-            setMenu({ items: [...result.menu], settings: {pages:[]} });
-        else
-            setMenu(result.menu);
-        ///const list = JSON.parse(result.menu);
-        // _MENU = [..._MENU, items: ...result.menu];
+    setMenu(result.menu);
+   
+    $(document).ready(function () {
+        load();
+     });
 
-        setVariablesLoaded(true);
-    }
 });
 
 document.addEventListener('click', function (e) {
-
     doClose(e);
-
 });
 
-window.addEventListener('load', function (e) {
-    // waitForMENUisLoaded(load);
-    //loadEventosOnInputs();
-});
-
-$(document).ready(function () {
-    waitForMENUisLoaded(load);
- });

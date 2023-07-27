@@ -9,6 +9,8 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: Arial, Helvetica, sans-serif;
+	color: darkblue;
+	font-weight: bold;
 }
 
 .scroll {
@@ -28,11 +30,10 @@ body {
 
 .list .item .disabled {
 	cursor: not-allowed;
-	color: #C6C6C6;
+
 }
 
 .list .fulfill {
-	color: blue;
 	font-weight: 400;
 }
 
@@ -41,7 +42,6 @@ body {
 	background-color: #fff;
 	z-index: 9999;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	font-family: Roboto, Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	font-size: 0.875rem;
 	line-height: 1.43;
@@ -110,7 +110,6 @@ body {
 }
 
 .list .item {
-	color: rgb(144, 202, 249);
 	text-decoration: underline rgba(144, 202, 249, 0.4);
 	position: relative;
 	-webkit-tap-highlight-color: transparent;

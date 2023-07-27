@@ -78,6 +78,10 @@ export function getMenu(): MenuItem {
 }
 
 export function setMenu(value: MenuItem): void {
+  // _MENU = value;
+  if (Array.isArray(value)) // old fashion
+    getMenu().items = value;
+  else
   _MENU = value;
 }
 
