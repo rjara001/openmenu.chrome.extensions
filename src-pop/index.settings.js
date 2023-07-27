@@ -1,4 +1,4 @@
-import { getMenu, setMenu } from "./globals/index";
+import { getMenu, setActiveAutoSave, setActiveMenu, setMenu } from "./globals/index";
 import { displaySuggestions, exportData, getHost, getSuggestions, importData } from "./settings.util";
 import { renderTable, renderTablePages } from "./tables";
 // Variables to store the current row and data
@@ -13,6 +13,20 @@ if (chrome.storage) {
                 getMenu().items = result.menu;
             else
                 setMenu(result.menu);
+            if (result.menu.settings.activeMenu === undefined)
+                setActiveMenu(true);
+            if (result.menu.settings.activeAutoSave === undefined)
+                setActiveAutoSave(true);
+            var activeMenuInput = document.getElementById('menu-active');
+            activeMenuInput.checked = result.menu.settings.activeMenu;
+            activeMenuInput.addEventListener('change', (e) => {
+                setActiveMenu(e.target.checked);
+            });
+            var activeSaveInput = document.getElementById('auto-save');
+            activeSaveInput.checked = result.menu.settings.activeAutoSave;
+            activeSaveInput.addEventListener('change', (e) => {
+                setActiveAutoSave(e.target.checked);
+            });
             renderTable(getMenu().items);
             renderTablePages(getMenu().settings.pages);
         }

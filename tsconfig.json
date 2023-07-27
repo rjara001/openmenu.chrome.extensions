@@ -24,7 +24,8 @@
     ]
   },
   "exclude": [
-    "./dist/src/**/*", // This is what fixed it!
-    "./dist/iframe/**/*" // This is what fixed it!
+    "./dist/src/**/*",
+    "./dist/iframe/**/*",
+    "./dist/pop/**/*"
   ]
 }

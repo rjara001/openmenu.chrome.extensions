@@ -150,7 +150,7 @@ export function actionAdd(input: JQuery, category: string) {
     if (lenMenu < LIMIT_LEN) {
         _actionAdd(input, category);
     }
-    else if (category === 'autosave') {
+    else if (category.toLowerCase() === 'autosave') {
         removeLastItemByCategory(getMenu().items, 'autosave');
         _actionAdd(input, category);
     }

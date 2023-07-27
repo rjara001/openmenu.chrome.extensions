@@ -6,4 +6,7 @@ export const getUniqueCategories = (htmlMenu) => {
         return acc;
     }, []);
 };
+export const getValueClean = (value) => {
+    return value === undefined ? '-' : value;
+};
 //# sourceMappingURL=util.js.map

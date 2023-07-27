@@ -5,6 +5,7 @@
 *.d.js
 src/**/*.js
 src-iframe/**/*.js
+src-pop/**/*.js
 dist/
 *.tsbuildinfo
 tsconfig.tsbuildinfo

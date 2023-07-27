@@ -51,16 +51,16 @@ export function renderTable(tableData:any) {
                     var categoryCell = row.insertCell(1);
                     var nameCell = row.insertCell(2);
                     var textCell = row.insertCell(3);
-                    var dateCell = row.insertCell(4);
-                    var originCell = row.insertCell(5);
-                    var typeCell = row.insertCell(6);
+                    var typeCell = row.insertCell(4);
+                    var dateCell = row.insertCell(5);
+                    var originCell = row.insertCell(6);
                     var xpathCell = row.insertCell(7);
                     var deleteCell = row.insertCell(8); // New cell for delete button
 
                     checkCell.innerHTML = "<input type='checkbox'>";
                     nameCell.innerHTML = getValueClean(tableData[i].name);
                     categoryCell.innerHTML = getValueClean(tableData[i].category);
-                    textCell.innerHTML = getValueClean(tableData[i].text);
+                    textCell.innerHTML = (tableData[i].type==='password')?'xxxxxxxx': getValueClean(tableData[i].text);
                     dateCell.innerHTML = getValueClean(tableData[i].date);
                     originCell.innerHTML = getValueClean(tableData[i].page);
                     typeCell.innerHTML = getValueClean(tableData[i].type);
