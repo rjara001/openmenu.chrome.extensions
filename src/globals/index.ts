@@ -7,6 +7,14 @@ let _URL: string = '';
 let _JOINED_ARRAY: any[] = [];
 let _variables_loaded: boolean = false;
 let _shadowRoot: any;
+let _closeTemporary: boolean = false;
+
+export function getCloseTemporary() : boolean {
+  return _closeTemporary;
+}
+export function setCloseTemporary(value: boolean) {
+  _closeTemporary = value;
+}
 
 export function getShadowRoot(): any {
   return _shadowRoot;

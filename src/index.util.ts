@@ -1,5 +1,5 @@
 import { INPUT_TEXTS, NAME_EXTENSION, URL_IFRAME, _OPENMENU_MENU_ID } from "./constants";
-import { getInputSelected, getMenu, getShadowRoot, setInputSelected } from "./globals/index";
+import { getCloseTemporary, getInputSelected, getMenu, getShadowRoot, setInputSelected } from "./globals/index";
 import { startDragging } from "./move";
 import { actionAdd, ClearAction, FullfillAction, ReadAllAction, getInputSaved, typeIntoElement } from "./util";
 
@@ -119,7 +119,7 @@ function showMenu(e: any) {
     __open_menu.style.top = (e.clientY + 20) + 'px';
     __open_menu.style.left = (e.clientX + 20) + 'px';
 
-    if (getMenu().settings.activeMenu) {
+    if (getMenu().settings.activeMenu && !getCloseTemporary()) {
         __open_menu.style.display = 'block';
         sendMessageToIframe('showmenu', {});
     }

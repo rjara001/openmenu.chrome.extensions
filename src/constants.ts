@@ -17,7 +17,9 @@ export const URL_IFRAME = chrome.runtime.getURL('html/index.html');
 export const _HTML_BOX = `
 <div class="balloon-header">
       <h3>Menu Extend</h3>
-      <span class="close-btn">&times;</span>
+      <div>
+      <span class="minimize-btn">-</span>
+      <span class="close-btn">&times;</span></div>
     </div>
     <iframe id='imenu' src='${URL_IFRAME}' style="border-width: 0px;width:100%"></iframe>
     <div class="status-bar"></div>
@@ -47,6 +49,12 @@ export const _STYLE_AS_STRING = `
   }
   .balloon-header .close-btn {
     cursor: pointer;
+    font-size: 21px;
+    padding: 0px 4px;
+  }
+  .minimize-btn {
+    cursor: pointer;
+    font-size: 21px;
   }
   .balloon label {
     display: block;

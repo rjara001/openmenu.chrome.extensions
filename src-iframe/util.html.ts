@@ -4,38 +4,6 @@
 import { getJoinedArray, getMenu } from './globals/index';
 import { localRemoveValue } from './store'
 import { LIMIT_LEN_TEXT } from './constants'
-import { getActiveAutoSave } from './globals/index';
-
-const getCurrentURL = () => {
-    var url = window.location.href;
-    var index = url.indexOf('?');
-
-    if (index !== -1) {
-        var part = url.substring(0, index);
-        return part;
-    }
-
-    return url;
-
-}
-
-const removeHTMLElements = (htmlString: string) => {
-
-    // Create a temporary container element
-    var tempContainer = document.createElement('div');
-    tempContainer.innerHTML = htmlString;
-
-    // Remove the desired element
-    var elementToRemove = tempContainer.querySelector('p'); // Select the element to remove
-    if (elementToRemove) {
-        elementToRemove.parentNode?.removeChild(elementToRemove);
-    }
-
-    // Get the modified HTML string
-    var modifiedHtmlString = tempContainer.innerText;
-
-    return modifiedHtmlString;
-}
 
 function cleanChildElement(menuList: HTMLElement) {
     while (menuList.firstChild) {
@@ -193,7 +161,8 @@ function addEllipsis(text: string, maxLength: number) {
 }
 
 export function toText(item: any) {
-    let textElipsed = addEllipsis(item.text, 25);
+
+    let textElipsed = item.type==='password'?'xxxxxxxx (password)':addEllipsis(item.text, 25);
     let nameElipsed = addEllipsis(item.name !== undefined ? item.name : '', 15);
 
     if (nameElipsed.length > 0)

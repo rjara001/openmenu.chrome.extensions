@@ -1,5 +1,5 @@
 import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, _BOX_ID, _HTML_BOX, _STYLE_AS_STRING } from "./constants";
-import { getInputSelected, getMenu, getShadowRoot, setShadowRoot } from "./globals/index";
+import { getInputSelected, getMenu, getShadowRoot, setCloseTemporary, setShadowRoot } from "./globals/index";
 // import { removeLastItemByCategory } from "../html/util.html";
 import { localSaveValue, localUpdateValue } from "../src/store";
 import { addEllipsis, barMessage, hideBalloon, resizeIframe } from "./box.util";
@@ -331,10 +331,16 @@ export const load = () => {
 
     // // Example close button functionality
     var closeButton = balloon.querySelector(".close-btn");
+    var minimizeButton = balloon.querySelector(".minimize-btn");
 
     var header = balloon.querySelector(".balloon-header");
 
     header?.addEventListener('mousedown', startDragging);
+
+    minimizeButton?.addEventListener('click', ()=> {
+        hideBalloon();
+        setCloseTemporary(true);
+    });
 
     closeButton?.addEventListener("click", function () {
         hideBalloon();
