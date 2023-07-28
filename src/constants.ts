@@ -16,6 +16,7 @@ export const URL_IFRAME = chrome.runtime.getURL('html/index.html');
 
 export const _HTML_BOX = `
 <div class="balloon-header">
+  <div></div>
       <h3>Menu Extend</h3>
       <div>
       <span class="minimize-btn">-</span>

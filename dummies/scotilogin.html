@@ -1,0 +1,46 @@
+<div class="ContLogin">
+    <div class="titulo">Ingreso Personas</div>
+    <span class="ErrorLogin">Por favor, verifique los campos indicados en rojo.</span>
+    <form autocomplete="off" action="/cgi-bin/transac/login-scotiaweb" method="POST">
+        <input type="hidden" name="rut">
+        <input type="hidden" name="usu">
+        <input type="hidden" name="pin">
+        <input type="hidden" name="TRANS" value="vt_logon">
+        <div class="formGroup relative" id="passBox">
+            <input title="rut" placeholder="RUT" type="text" maxlength="12" id="Validate_rut" class="Validate_rut Solo_rut validateRut" name="Validate_rut" onkeypress="return soloLetras(event)" autocomplete="off">
+            <!--login-pass-->
+                <!--<input id="pass" title="clave" maxlength="12" placeholder="Clave" type="password" class="input" />
+                <div class="ojo_ver"></div>-->
+                <!--<div class="cont_eyes">
+                <div class="eye onof" id="sd"></div>-->
+                <input id="pass" title="clave" maxlength="15" name="pass" placeholder="Clave" type="password" class="input" autocomplete="off">
+                <!--</div>-->
+            <!--fin de pass-->
+            <div class="blockIn">
+                <div class="mensaje-error"></div>
+            </div>
+        </div>
+        <span class="olvido"></span>
+        <input type="submit" class="btnRed agregar_Ancho login_pass" value="Ingresar a Scotiaweb">
+        <button id="activaButton" type="button" class="btnCeleste agregar_Ancho" style="height: 60px; padding-right: 60px; padding-top: 5px; display: block;">
+            <i class="icon-tip"><svg width="44" height="36" viewBox="0 0 44 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M27.4589 23.4439C30.4491 21.3059 32.4328 18.3671 32.4328 14.6202C32.4328 10.9455 30.4723 7.54986 27.2899 5.7125C24.1075 3.87513 20.1866 3.87513 17.0042 5.7125C13.8218 7.54986 11.8613 10.9455 11.8613 14.6202C11.8613 18.3598 13.8744 21.3132 16.8352 23.4365C17.7242 24.2373 17.5699 25.8243 17.5699 25.8243V31.9075C17.5699 31.9075 18.0915 35.1622 22.1397 35.1622C26.1879 35.1622 26.7095 31.9075 26.7095 31.9075V25.8316C26.7095 25.8316 26.5699 24.2447 27.4589 23.4439Z" fill="#FFD42F"></path>
+                <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="11" y="4" width="22" height="32">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M27.4589 23.4439C30.4491 21.3059 32.4328 18.3671 32.4328 14.6202C32.4328 10.9455 30.4723 7.54986 27.2899 5.7125C24.1075 3.87513 20.1866 3.87513 17.0042 5.7125C13.8218 7.54986 11.8613 10.9455 11.8613 14.6202C11.8613 18.3598 13.8744 21.3132 16.8352 23.4365C17.7242 24.2373 17.5699 25.8243 17.5699 25.8243V31.9075C17.5699 31.9075 18.0915 35.1622 22.1397 35.1622C26.1879 35.1622 26.7095 31.9075 26.7095 31.9075V25.8316C26.7095 25.8316 26.5699 24.2447 27.4589 23.4439Z" fill="white"></path>
+                </mask>
+                <g mask="url(#mask0)">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5562 27.8228C18.1842 29.0208 20.148 29.6762 22.1692 29.6962C24.188 29.6747 26.1489 29.0193 27.7749 27.8228V38.1085H16.5562V27.8228Z" fill="#FB6330"></path>
+                </g>
+                <path d="M36.0253 0.734863L32.9102 3.85731" stroke="#FFBA8E" stroke-width="1.46939" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M36.0253 26.0741L32.9102 22.9517" stroke="#FFBA8E" stroke-width="1.46939" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M38.5306 13.592H35.5918" stroke="#FFD42F" stroke-width="1.46939" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M7.97461 26.0741L11.0897 22.9517" stroke="#FFBA8E" stroke-width="1.46939" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M7.97461 0.734863L11.0897 3.85731" stroke="#FFBA8E" stroke-width="1.46939" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.73486 13.592H7.67364" stroke="#FFD42F" stroke-width="1.46939" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg></i>
+            Activar claves de acceso
+        </button>
+        
+        <div class="cliente"><a style="font-weight: bold; color: black !important" onclick="{taggueoRecuperarClave();}" href="https://www.scotiabank.cl/mfe-recover-password-web-cl/?_ga=2.222109272.1958903822.1615573888-1906789449.1604064987" target="_blank">Recuperar clave</a></div>
+    </form>
+</div>
