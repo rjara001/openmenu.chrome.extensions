@@ -14,9 +14,15 @@ export const _BOX_ID = '__open_menu_id';
 
 export const URL_IFRAME = chrome.runtime.getURL('html/index.html');
 
+export const SRC_IMG = chrome.runtime.getURL('icons/icon16.png');
+export const ID_IMG = _BOX_ID + '_img';
+
+export const _HTML_IMG = `
+<img src='${SRC_IMG}' id='${ID_IMG}' class='img-menu'></img>
+`
+
 export const _HTML_BOX = `
 <div class="balloon-header">
-  <div></div>
       <h3>Menu Extend</h3>
       <div>
       <span class="minimize-btn">-</span>

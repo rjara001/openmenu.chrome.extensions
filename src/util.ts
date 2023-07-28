@@ -305,6 +305,10 @@ function getFullXPath(element: any) {
     return xpath;
 }
 
+const showIconRecording = () => {
+
+}
+
 export const load = () => {
 
     var container = document.createElement("div");
@@ -339,6 +343,7 @@ export const load = () => {
 
     minimizeButton?.addEventListener('click', ()=> {
         hideBalloon();
+        showIconRecording();
         setCloseTemporary(true);
     });
 
