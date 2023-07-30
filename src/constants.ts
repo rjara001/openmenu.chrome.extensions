@@ -23,6 +23,7 @@ export const _HTML_IMG = `
 
 export const _HTML_BOX = `
 <div class="balloon-header">
+      <img src='${SRC_IMG}' class='img-menu'></img>
       <h3>Menu Extend</h3>
       <div>
       <span class="minimize-btn">-</span>
@@ -74,6 +75,6 @@ export const _STYLE_AS_STRING = `
     position:absolute;
     display: none;
     top:10px;
-    right:10px
+    left:10px
   }
  `

@@ -1,4 +1,4 @@
-import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, _BOX_ID, _HTML_BOX, _HTML_IMG, _STYLE_AS_STRING } from "./constants";
+import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, _BOX_ID, _HTML_BOX, _HTML_IMG, _OPENMENU_MENU_ID, _STYLE_AS_STRING } from "./constants";
 import { getInputSelected, getMenu, getShadowRoot, setCloseTemporary, setShadowRoot } from "./globals/index";
 // import { removeLastItemByCategory } from "../html/util.html";
 import { localSaveValue, localUpdateValue } from "../src/store";
@@ -306,7 +306,18 @@ function getFullXPath(element: any) {
 }
 
 const showIconRecording = () => {
-    
+
+    const divImg =  getShadowRoot().querySelector('.div-img-menu') as HTMLElement;
+    $(divImg).css('display', 'block');
+
+    $(divImg).on('click', function() {
+        // Your event handling code here
+        const box = $(getShadowRoot().getElementById('balloon'));
+
+        box.css('display', 'block');
+        box.style.left = '10px';
+        box.style.top = '10px';
+      });
 }
 
 
