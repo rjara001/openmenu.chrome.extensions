@@ -52,6 +52,7 @@ export const _STYLE_AS_STRING = `
     background-color: #999;
     justify-content: space-between;
     align-items: center;
+    padding-left: 4px;
   }
   .balloon-header h3 {
     margin: 0;
@@ -70,7 +71,7 @@ export const _STYLE_AS_STRING = `
     margin-bottom: 5px;
   }
   .img-menu {
-    width:20px;
+    width:25px;
   }
   .header-move {
     cursor:move;
@@ -81,7 +82,7 @@ export const _STYLE_AS_STRING = `
     position:absolute;
     display: none;
     top:10px;
-    left:10px
+    left:10px;
     z-index:9999
   }
   .img-arrow {
