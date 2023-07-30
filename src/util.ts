@@ -1,5 +1,5 @@
-import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, _BOX_ID, _HTML_BOX, _HTML_IMG, _OPENMENU_MENU_ID, _STYLE_AS_STRING } from "./constants";
-import { getInputSelected, getMenu, getShadowRoot, setCloseTemporary, setShadowRoot } from "./globals/index";
+import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, SRC_IMG_MINIMIZE, SRC_IMG_MAXIMIZE, _BOX_ID, _HTML_BOX, _HTML_IMG, _OPENMENU_MENU_ID, _STYLE_AS_STRING } from "./constants";
+import { getCloseTemporary, getInputSelected, getMenu, getShadowRoot, setCloseTemporary, setShadowRoot } from "./globals/index";
 // import { removeLastItemByCategory } from "../html/util.html";
 import { localSaveValue, localUpdateValue } from "../src/store";
 import { addEllipsis, barMessage, hideBalloon, resizeIframe } from "./box.util";
@@ -304,19 +304,30 @@ function getFullXPath(element: any) {
 
     return xpath;
 }
+const hideIconRecording = () => {
+    const divRecorderImg = getShadowRoot().querySelector('.div-img-menu') as HTMLElement;
+    $(divRecorderImg).css('display', 'none');
+
+    const arrowImg = $(getShadowRoot().querySelector('#img-arrow'));
+    arrowImg.attr('src',SRC_IMG_MINIMIZE);
+}
 
 const showIconRecording = () => {
 
-    const divImg =  getShadowRoot().querySelector('.div-img-menu') as HTMLElement;
-    $(divImg).css('display', 'block');
+    const divRecorderImg = getShadowRoot().querySelector('.div-img-menu') as HTMLElement;
+    $(divRecorderImg).css('display', 'block');
 
-    $(divImg).on('click', function() {
-        // Your event handling code here
+    const arrowImg = $(getShadowRoot().querySelector('#img-arrow'));
+
+    arrowImg.attr('src', SRC_IMG_MAXIMIZE);
+
+    $(divRecorderImg).on('click', function() {
+        
         const box = $(getShadowRoot().getElementById('balloon'));
 
         box.css('display', 'block');
-        box.style.left = '10px';
-        box.style.top = '10px';
+        box.css('left', '10px');
+        box.css('top', '10px');
       });
 }
 
@@ -361,9 +372,17 @@ export const load = () => {
     header?.addEventListener('mousedown', startDragging);
 
     minimizeButton?.addEventListener('click', ()=> {
-        hideBalloon();
+        if (getCloseTemporary()===false)
+  {      hideBalloon();
         showIconRecording();
         setCloseTemporary(true);
+    }
+    else
+    {
+        hideBalloon();
+        hideIconRecording();
+        setCloseTemporary(false);
+    }
     });
 
     closeButton?.addEventListener("click", function () {

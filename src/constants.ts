@@ -15,6 +15,8 @@ export const _BOX_ID = '__open_menu_id';
 export const URL_IFRAME = chrome.runtime.getURL('html/index.html');
 
 export const SRC_IMG = chrome.runtime.getURL('icons/recording.png');
+ export const SRC_IMG_MAXIMIZE = chrome.runtime.getURL('icons/maximize.png');
+ export const SRC_IMG_MINIMIZE = chrome.runtime.getURL('icons/minimize.png');
 export const ID_IMG = _BOX_ID + '_img';
 
 export const _HTML_IMG = `
@@ -24,9 +26,9 @@ export const _HTML_IMG = `
 export const _HTML_BOX = `
 <div class="balloon-header">
       <img src='${SRC_IMG}' class='img-menu'></img>
-      <h3>Menu Extend</h3>
+      <h3 class='header-move'>Menu Extend</h3>
       <div>
-      <span class="minimize-btn">-</span>
+      <span class="minimize-btn"><img id='img-arrow' src='${SRC_IMG_MINIMIZE}' class='img-arrow'></img></span>
       <span class="close-btn">&times;</span></div>
     </div>
     <iframe id='imenu' src='${URL_IFRAME}' style="border-width: 0px;width:100%"></iframe>
@@ -47,7 +49,6 @@ export const _STYLE_AS_STRING = `
   }
   .balloon-header {
     display: flex;
-    cursor:move;
     background-color: #999;
     justify-content: space-between;
     align-items: center;
@@ -71,10 +72,19 @@ export const _STYLE_AS_STRING = `
   .img-menu {
     width:20px;
   }
+  .header-move {
+    cursor:move;
+    flex:1;
+    text-align:center;
+  }
   .div-img-menu {
     position:absolute;
     display: none;
     top:10px;
     left:10px
+    z-index:9999
+  }
+  .img-arrow {
+    width:10px;
   }
  `
