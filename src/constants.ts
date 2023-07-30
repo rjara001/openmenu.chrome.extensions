@@ -14,7 +14,7 @@ export const _BOX_ID = '__open_menu_id';
 
 export const URL_IFRAME = chrome.runtime.getURL('html/index.html');
 
-export const SRC_IMG = chrome.runtime.getURL('icons/icon16.png');
+export const SRC_IMG = chrome.runtime.getURL('icons/recording.png');
 export const ID_IMG = _BOX_ID + '_img';
 
 export const _HTML_IMG = `
@@ -66,5 +66,14 @@ export const _STYLE_AS_STRING = `
   .balloon label {
     display: block;
     margin-bottom: 5px;
+  }
+  .img-menu {
+    width:20px;
+  }
+  .div-img-menu {
+    position:absolute;
+    display: none;
+    top:10px;
+    right:10px
   }
  `

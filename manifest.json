@@ -25,7 +25,8 @@
                 "html/styles.css",
                 "dist/iframe/index.html.js",
                 "html/index.html",
-                "dist/iframe/util.html.js"
+                "dist/iframe/util.html.js",
+                "icons/recording.png"
             ],
             "matches": [
                 "<all_urls>"

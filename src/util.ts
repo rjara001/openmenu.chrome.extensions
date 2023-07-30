@@ -1,4 +1,4 @@
-import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, _BOX_ID, _HTML_BOX, _STYLE_AS_STRING } from "./constants";
+import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, _BOX_ID, _HTML_BOX, _HTML_IMG, _STYLE_AS_STRING } from "./constants";
 import { getInputSelected, getMenu, getShadowRoot, setCloseTemporary, setShadowRoot } from "./globals/index";
 // import { removeLastItemByCategory } from "../html/util.html";
 import { localSaveValue, localUpdateValue } from "../src/store";
@@ -306,8 +306,9 @@ function getFullXPath(element: any) {
 }
 
 const showIconRecording = () => {
-
+    
 }
+
 
 export const load = () => {
 
@@ -318,6 +319,13 @@ export const load = () => {
     document.body.appendChild(container);
 
     setShadowRoot(container.attachShadow({ mode: 'open' }));
+
+    let divImg = document.createElement("div");
+    divImg.id = "img";
+    divImg.classList.add("div-img-menu");
+    divImg.innerHTML = _HTML_IMG;
+    
+    getShadowRoot().appendChild(divImg);
 
     // Create a new HTML element
     let balloon = document.createElement("div");
