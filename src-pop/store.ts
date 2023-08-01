@@ -12,7 +12,8 @@ export function localSaveValueSettings(key:string, value:any) {
 
 export function localUpdateValueItems(items:any[]) {
     // only new items
-    getMenu().items = items.filter(item=>getMenu().items.filter(i=>i.text===item.text).length===0);
+
+    getMenu().items = items;
             
     chrome.storage.local.set({ 'menu': getMenu() }, function() {
         

@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "version": "0.40",
+    "version": "0.41",
     "short_name": "Menu",
     "name": "Menu Extend",
     "description": "Save input text values for easy retrieval, eliminating rewriting. Quickly access and reuse saved values.",
@@ -44,7 +44,9 @@
             ],
             "js": [
                 "jquery/jquery.min.js",
-                "src/content.js"
+                "src/content.js",
+                "pop/pop.js",
+                "pop/tabs.js"
             ],
             "css": [],
             "all_frames": true

@@ -8,5 +8,5 @@ export const getUniqueCategories = (htmlMenu:any[]) => {
 }
 
 export const getValueClean = (value:string) => {
-    return value === undefined ? '-' : value;
+    return (value === undefined || value === 'undefined') ? '-' : value;
 }

@@ -50,8 +50,8 @@ export function renderTable(tableData:any) {
                     var checkCell = row.insertCell(0);
                     var categoryCell = row.insertCell(1);
                     var nameCell = row.insertCell(2);
-                    var textCell = row.insertCell(3);
-                    var typeCell = row.insertCell(4);
+                    var typeCell = row.insertCell(3);
+                    var textCell = row.insertCell(4);
                     var dateCell = row.insertCell(5);
                     var originCell = row.insertCell(6);
                     var xpathCell = row.insertCell(7);

@@ -3,13 +3,13 @@ import { localUpdateValueItems } from "./store";
 import { getUniqueCategories } from "./util";
 
 const HEADERS = {
-    category: 0
-    , name: 1
-    , text: 2
-    , type: 3
-    , date: 4
-    , origin: 5
-    , xpath: 6
+    category: -1
+    , name: -1
+    , text: -1
+    , type: -1
+    , date: -1
+    , origin: -1
+    , xpath: -1
 
 }
 
@@ -19,8 +19,8 @@ export function deleteItem(index: number, tableData: any) {
     if (tableData && tableData.length > 0) {
         tableData.splice(index, 1); // Remove the item from the array
 
-        localUpdateValueItems(getMenu().items);
-
+        localUpdateValueItems(tableData);
+        location.reload();
         // chrome.storage.local.set({ 'menu': getMenu() }, function () {
         //     console.log('Item deleted successfully!');
         //     renderTable(tableData);
@@ -74,12 +74,11 @@ export function importData() {
                 var csvData = event?.target?.result as string;
                 var menuData = parseCSV(csvData);
 
-                localUpdateValueItems(menuData);
+                const itemsUnique = menuData.filter(item=>getMenu().items.filter(i=>i.text===item.text).length===0);
+
+                localUpdateValueItems(itemsUnique);
                 location.reload();
-                // chrome.storage.local.set({ 'menu': getMenu() }, function () {
-                //     console.log('Data imported successfully!');
-                //     location.reload();
-                // });
+
             };
             reader.readAsText(file);
         }
