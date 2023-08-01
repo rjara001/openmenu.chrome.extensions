@@ -2,8 +2,19 @@ import { getMenu } from "./globals/index";
 import { localUpdateValueItems } from "./store";
 import { getUniqueCategories } from "./util";
 
+const HEADERS = {
+    category: 0
+    , name: 1
+    , text: 2
+    , type: 3
+    , date: 4
+    , origin: 5
+    , xpath: 6
+
+}
+
 // Function to delete an item
-export function deleteItem(index:number, tableData:any) {
+export function deleteItem(index: number, tableData: any) {
 
     if (tableData && tableData.length > 0) {
         tableData.splice(index, 1); // Remove the item from the array
@@ -17,7 +28,7 @@ export function deleteItem(index:number, tableData:any) {
     }
 }
 
-export function getHost(url:string) {
+export function getHost(url: string) {
     if (url) {
         const parsedURL = new URL(url);
         return parsedURL.host;
@@ -75,19 +86,36 @@ export function importData() {
     });
 }
 // Function to parse CSV data
-function parseCSV(csvData:string) {
+function parseCSV(csvData: string) {
     var lines = csvData.split('\n');
     var menuData: any[] = [];
+
+    if (lines.length > 0) {
+        let headers = lines[0].split(',');
+
+        for (let index = 0; index < headers.length; index++) {
+            const element = headers[index];
+
+            switch (element.toLocaleLowerCase()) {
+                case 'category': { HEADERS.category = index; } break;
+                case 'text': { HEADERS.text = index; } break;
+                case 'date': { HEADERS.date = index; } break;
+                case 'type': { HEADERS.type = index; } break;
+                case 'xpath': { HEADERS.xpath = index; } break;
+            }
+        }
+
+    }
 
     for (var i = 1; i < lines.length; i++) {
         var line = lines[i].trim();
         if (line) {
             var values = line.split(',');
-            var category = values[0]?.trim();
-            var text = values[1]?.trim();
-            var date = values[2]?.trim();
-            var type = values[3]?.trim();
-            var xpath = values[4]?.trim();
+            var category = values[HEADERS.category]?.trim();
+            var text = values[HEADERS.text]?.trim();
+            var date = values[HEADERS.date]?.trim();
+            var type = values[HEADERS.type]?.trim();
+            var xpath = values[HEADERS.xpath]?.trim();
             var item = {
                 category: category,
                 text: text,
@@ -117,7 +145,7 @@ export function getSuggestions(query: string) {
     return matches;
 }
 
-export function displaySuggestions(matches:any[]) {
+export function displaySuggestions(matches: any[]) {
     var suggestionsList = document.getElementById("suggestionsList");
     if (suggestionsList) {
         suggestionsList.innerHTML = ""; // Clear previous suggestions

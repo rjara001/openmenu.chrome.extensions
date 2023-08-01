@@ -8,29 +8,23 @@ let currentDataIndex;
 var category = document.getElementById("category");
 if (chrome.storage) {
     chrome.storage.local.get('menu', function (result) {
-        result.menu = result.menu || _MENU_DEFAULT;
-        if (result.menu) {
-            if (Array.isArray(result.menu)) // old fashion
-                getMenu().items = result.menu;
-            else
-                setMenu(result.menu);
-            if (result.menu.settings.activeMenu === undefined)
-                setActiveMenu(true);
-            if (result.menu.settings.activeAutoSave === undefined)
-                setActiveAutoSave(true);
-            var activeMenuInput = document.getElementById('menu-active');
-            activeMenuInput.checked = result.menu.settings.activeMenu;
-            activeMenuInput.addEventListener('change', (e) => {
-                setActiveMenu(e.target.checked);
-            });
-            var activeSaveInput = document.getElementById('auto-save');
-            activeSaveInput.checked = result.menu.settings.activeAutoSave;
-            activeSaveInput.addEventListener('change', (e) => {
-                setActiveAutoSave(e.target.checked);
-            });
-            renderTable(getMenu().items);
-            renderTablePages(getMenu().settings.pages);
-        }
+        setMenu(result.menu);
+        if (getMenu().settings.activeMenu === undefined)
+            setActiveMenu(true);
+        if (getMenu().settings.activeAutoSave === undefined)
+            setActiveAutoSave(true);
+        var activeMenuInput = document.getElementById('menu-active');
+        activeMenuInput.checked = getMenu().settings.activeMenu;
+        activeMenuInput.addEventListener('change', (e) => {
+            setActiveMenu(e.target.checked);
+        });
+        var activeSaveInput = document.getElementById('auto-save');
+        activeSaveInput.checked = getMenu().settings.activeAutoSave;
+        activeSaveInput.addEventListener('change', (e) => {
+            setActiveAutoSave(e.target.checked);
+        });
+        renderTable(getMenu().items);
+        renderTablePages(getMenu().settings.pages);
     });
 }
 // // Event delegation for delete button click
@@ -156,7 +150,6 @@ if (exportButton)
 var importButton = document.getElementById('importButton');
 if (importButton)
     importButton.addEventListener('click', importData);
-import { _MENU_DEFAULT } from "./constants";
 if (category)
     category.addEventListener("input", function () {
         var query = category.value;
