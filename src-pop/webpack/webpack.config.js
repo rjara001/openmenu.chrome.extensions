@@ -1,6 +1,4 @@
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
 module.exports = {
    entry: {
       pop: path.resolve(__dirname, "..", "index.settings.ts")
@@ -27,10 +25,5 @@ module.exports = {
             exclude: /node_modules/,
          },
       ],
-   },
-   plugins: [
-      new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: ['src/*', 'src-iframe/*', 'src-pop/*'], // Clean the 'dist' directory before each build
-    }),
-    ],
+   }
 };
