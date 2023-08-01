@@ -2,7 +2,7 @@
   "scripts": {
     "script-build": "node build_scripts/move-files-to-dist.js",
     "script-clean": "node build_scripts/clean-directory.js  --trace-deprecation",
-    "clean" :  "find src src-iframe src-pop -type f \\( ! -name \"*.ts\" -a ! -name \"*.config.js\" -a ! -name \"*.json\" -o -name \"*.d.ts\" \\) -delete",
+    "clean": "find src src-iframe src-pop -type f \\( ! -name \"*.ts\" -a ! -name \"*.config.js\" -a ! -name \"*.json\" -o -name \"*.d.ts\" \\) -delete",
     "build": "tsc --build tsconfig.json",
     "webpack-pop": "webpack --config src-pop/webpack/webpack.config.js",
     "webpack-main": "webpack --config src/webpack/webpack.config.js",
@@ -13,8 +13,8 @@
     "prod-main": "npm run webpack-main -- --mode production",
     "prod-pop": "npm run webpack-pop -- --mode production",
     "prod-iframe": "npm run webpack-iframe -- --mode production",
-    "dev": "npm run dev-main && npm run dev-iframe && npm run dev-pop",
-    "prod": "npm run prod-main && npm run prod-iframe && npm run prod-pop"
+    "dev": "npm run dev-main && npm run dev-iframe && npm run dev-pop && npm run clean && npm run script-build",
+    "prod": "npm run prod-main && npm run prod-iframe && npm run prod-pop && npm run clean && npm run script-build"
   },
   "devDependencies": {
     "@types/chrome": "0.0.241",
@@ -30,7 +30,6 @@
   "dependencies": {
     "clean-webpack-plugin": "4.0.0",
     "glob": "10.3.3",
-    "npm-run-all": "4.1.5",
-    "rimraf": "5.0.1"
+    "npm-run-all": "4.1.5"
   }
 }
