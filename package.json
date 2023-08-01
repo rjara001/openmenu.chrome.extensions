@@ -1,7 +1,11 @@
 {
   "scripts": {
-    "script-build": "node build_script.js",
-    "build": "tsc --build tsconfig.json && npm run script-build",
+    "script-build": "node build_scripts/move-files-to-dist.js",
+    "script-clean": "node build_scripts/clean-directory.js  --trace-deprecation",
+    "build": "webpack --clean",
+    "rimraf": "./node_modules/rimraf/bin.js",
+    "clean" :  "find src src-iframe src-pop -type f \\( ! -name \"*.ts\" -o -name \"config.js\" -o -name \"*.d.ts\" \\) -delete",
+    "build-ts": "tsc --build tsconfig.json",
     "webpack-pop": "webpack --config src-pop/webpack/webpack.config.js",
     "webpack-main": "webpack --config src/webpack/webpack.config.js",
     "webpack-iframe": "webpack --config src-iframe/webpack/webpack.config.js",
@@ -26,7 +30,9 @@
     "webpack-cli": "5.1.4"
   },
   "dependencies": {
+    "clean-webpack-plugin": "4.0.0",
     "glob": "10.3.3",
-    "npm-run-all": "4.1.5"
+    "npm-run-all": "4.1.5",
+    "rimraf": "5.0.1"
   }
 }

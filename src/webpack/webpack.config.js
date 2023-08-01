@@ -1,4 +1,5 @@
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
    entry: {
@@ -11,15 +12,32 @@ module.exports = {
       filename: "[name].js",
    },
    resolve: {
-      extensions: [".ts", ".js"],
+      extensions: [
+         '.ts',
+         '.tsx',
+         '.js',
+         '.jsx',
+         '.json'
+     ],
    },
+   
    module: {
       rules: [
          {
             test: /\.tsx?$/,
-            loader: "ts-loader",
+            use: [{
+               loader: 'ts-loader',
+               options: {
+                   configFile: "../tsconfig.json"
+               }
+           }],
             exclude: /node_modules/,
          },
       ],
-   }
+   },
+   plugins: [
+      new CleanWebpackPlugin({
+         cleanOnceBeforeBuildPatterns: ['src/*', 'src-iframe/*', 'src-pop/*'], // Clean the 'dist' directory before each build
+       }),
+    ],
 };
