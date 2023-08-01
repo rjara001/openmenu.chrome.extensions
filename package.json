@@ -4,7 +4,7 @@
     "script-clean": "node build_scripts/clean-directory.js  --trace-deprecation",
     "build": "webpack --clean",
     "rimraf": "./node_modules/rimraf/bin.js",
-    "clean" :  "find src src-iframe src-pop -type f \\( ! -name \"*.ts\" -o -name \"config.js\" -o -name \"*.d.ts\" \\) -delete",
+    "clean" :  "find src src-iframe src-pop -type f \\( ! -name \"*.ts\" -o ! -name \"*.config.js\" -o -name \"*.d.ts\" -o ! -name \"*.json\" \\) -delete",
     "build-ts": "tsc --build tsconfig.json",
     "webpack-pop": "webpack --config src-pop/webpack/webpack.config.js",
     "webpack-main": "webpack --config src/webpack/webpack.config.js",
