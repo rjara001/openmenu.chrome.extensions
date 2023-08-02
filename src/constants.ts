@@ -1,6 +1,6 @@
 import { MenuItem } from "./types/MenuItem.js";
 
-export const NAME_EXTENSION = 'Menu Extend';
+export const NAME_EXTENSION = 'AutoSave & Recovery';
 export const _OPENMENU_MENU_ID = '__open_menu_id';
 
 // const _STYLE_AS_STRING = '#__open_menu_id{display: none;position: fixed;top: 0;width: 300px;background-color: #fff;z-index: 9999;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);font-family: Roboto, Helvetica, Arial, sans-serif;font-weight: 400;font-size: 14px;line-height: 1.43;letter-spacing: 0.01071em}#__open_menu_id select{appearance: none;border: none;background: transparent;font-size: 18px;padding: 10px;width: 100%;cursor: pointer;outline: none}#__open_menu_id select option{font-weight: bold}#__open_menu_id select option:first-child{color: #999;font-weight: normal}#__open_menu_id select::-ms-expand{display: none}#__open_menu_id select option:before{content: "";display: none}#__open_menu_id ul{list-style-type: none;padding-inline-start: 10px}#__open_menu_id .closeBtn{font-size: 15px;color: #180606;background: none;border: none;cursor: pointer}#__open_menu_id .closeBtn:hover{color: #ccc}#__open_menu_id .header{cursor:move; background-color: #999;height: 20px;justify-content: space-between;display: flex}#__open_menu_id .item{color: rgb(144, 202, 249);text-decoration: underline rgba(144, 202, 249, 0.4);position: relative;-webkit-tap-highlight-color: transparent;background-color: transparent;outline: 0px;border: 0px;margin: 0px;border-radius: 0px;padding: 0px;cursor: pointer;user-select: none;vertical-align: middle;appearance: none;display: inline-block;font-size:12px}#__open_menu_id .remove{align-self: center;display: inline-block;width: 10%;font-size: 11px}#__open_menu_id .remove:hover{color: #ccc;cursor: pointer}#__open_menu_id .category{color: rgb(144, 202, 249);cursor: pointer}#__open_menu_id .item{text-align: left;width: 100%}#__open_menu_id .itemline{display: flex}#__open_menu_id .submenu{display: flex} #__open_menu_id .subheader{background-color: floralwhite;text-align: left;width: 100%} #__open_menu_id .svg{padding-left:2px} #__open_menu_id .optionmenu{font-size:12px} #__open_menu_id .pr5{padding-right:5px} #__open_menu_id .disabled{cursor: not-allowed;color: #C6C6C6;} #__open_menu_id .fulfill{color: blue;font-weight: 400;}'
@@ -26,7 +26,7 @@ export const _HTML_IMG = `
 export const _HTML_BOX = `
 <div class="balloon-header">
       <img src='${SRC_IMG}' class='img-menu'></img>
-      <h3 class='header-move'>Menu Extend</h3>
+      <h3 class='header-move'>AutoSave & Recovery</h3>
       <div>
       <span class="minimize-btn"><img id='img-arrow' src='${SRC_IMG_MINIMIZE}' class='img-arrow'></img></span>
       <span class="close-btn">&times;</span></div>

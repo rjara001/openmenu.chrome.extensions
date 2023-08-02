@@ -14,7 +14,8 @@
     "prod-pop": "npm run webpack-pop -- --mode production",
     "prod-iframe": "npm run webpack-iframe -- --mode production",
     "dev": "npm run dev-main && npm run dev-iframe && npm run dev-pop && npm run clean && npm run script-build",
-    "prod": "npm run prod-main && npm run prod-iframe && npm run prod-pop && npm run clean && npm run script-build"
+    "prod": "npm run prod-main && npm run prod-iframe && npm run prod-pop && npm run clean && npm run script-build",
+    "publish": "npm run script-clean && npm run prod"
   },
   "devDependencies": {
     "@types/chrome": "0.0.241",

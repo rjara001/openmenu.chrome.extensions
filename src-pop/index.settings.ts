@@ -213,6 +213,6 @@ if (category)
 
     if (setCagtegorySelectedButton)
       setCagtegorySelectedButton.textContent = "Set Category '{text}' Items Selected".replace('{text}', query);
-    displaySuggestions(matches);
+    displaySuggestions(matches, category);
   });
 

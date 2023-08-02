@@ -144,7 +144,7 @@ export function getSuggestions(query: string) {
     return matches;
 }
 
-export function displaySuggestions(matches: any[]) {
+export function displaySuggestions(matches: any[], input: HTMLInputElement) {
     var suggestionsList = document.getElementById("suggestionsList");
     if (suggestionsList) {
         suggestionsList.innerHTML = ""; // Clear previous suggestions
@@ -155,7 +155,7 @@ export function displaySuggestions(matches: any[]) {
             var listItem = document.createElement("li");
             listItem.innerText = suggestion;
             listItem.addEventListener("click", function () {
-                // category.value = this.innerText;
+                input.value = this.innerText;
                 if (suggestionsList) {
                     suggestionsList.innerHTML = ""; // Hide suggestions
                     suggestionsList.style.display = 'none';
