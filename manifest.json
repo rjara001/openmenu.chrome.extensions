@@ -27,7 +27,10 @@
                 "iframe/util.html.js",
                 "icons/recording.png",
                 "icons/minimize.png",
-                "icons/maximize.png"
+                "icons/minimize-white.png",
+                "icons/maximize-white.png",
+                "icons/maximize.png",
+                "icons/close.png"
             ],
             "matches": [
                 "<all_urls>"

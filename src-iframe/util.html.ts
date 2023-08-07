@@ -1,7 +1,7 @@
 
 
 
-import { getJoinedArray, getMenu } from './globals/index';
+import { getJoinedArray, getMenu, getURL } from './globals/index';
 import { localRemoveValue } from './store'
 import { LIMIT_LEN_TEXT } from './constants'
 
@@ -11,12 +11,21 @@ function cleanChildElement(menuList: HTMLElement) {
     }
 }
 export function showMenusItems(category: string, menuList: HTMLElement) {
-    getMenu().filter((_: any) => _.category === category).forEach((_: any) => {
+
+    getMenu().items.filter((_: any) => _.category === category).forEach((_: any) => {
 
         newMenuItem(_, menuList, '');
     });
+    let maxHeight = (menuList.parentNode?.parentNode as HTMLElement).offsetHeight;
+    window.parent.postMessage({ maxHeight: maxHeight }, "*");
 }
-
+function getHost(url: string) {
+    if (url) {
+        const parsedURL = new URL(url);
+        return parsedURL.host;
+    }
+    return false;
+}
 function newMenuCategory(category: string, menuList: HTMLElement) {
 
     const menuItem = document.createElement('div');
@@ -44,7 +53,7 @@ function newMenuCategory(category: string, menuList: HTMLElement) {
 export function _addAction(obj: any) {
 
     if (obj.payload.text.length > 0 && obj.payload.text.length < LIMIT_LEN_TEXT) {
-        let _item = getMenu().find((_: any) => _.text === obj.payload.text);
+        let _item = getMenu().items.find((_: any) => _.text === obj.payload.text);
 
         const newitem = obj.payload;
 
@@ -55,11 +64,24 @@ export function _addAction(obj: any) {
 }
 
 export function loadCategories() {
-
+    // debugger;
     let menuList = document.getElementsByClassName('items')[0] as HTMLElement;
     let fulfill = document.getElementById('fulfill') as HTMLInputElement;
     let clear = document.getElementById('clear') as HTMLInputElement;
-    
+    let settings = document.getElementsByClassName('settings')[0] as HTMLElement;
+    let disabledPage = document.getElementsByClassName('left-section')[0] as HTMLElement;
+
+    settings.addEventListener('click', (e) => {
+        chrome.tabs.create({ url: "pop_v1.html" });
+    });
+
+    disabledPage.addEventListener('click', (e) => {
+        // getMenu().settings.pages.push({ host: getHost(getURL()), date: (new Date()).toISOString() });
+        
+        window.parent.postMessage({ addPage}, "*");
+
+    });
+
     clear.addEventListener('click', (e) => {
         go('clear', 'clear');
     });
@@ -72,14 +94,14 @@ export function loadCategories() {
 
     var joinedArray = getJoinedArray();
     if (joinedArray.length > 0) {
-        fulfill.textContent += '(' + joinedArray.length + ')';
+        fulfill.innerHTML = 'Fulfill&nbsp;(' + joinedArray.length + ')';
         fulfill.classList.add('fulfill');
     } else {
         fulfill.classList.add('disabled');
         fulfill.title = 'Fulfill will be activated when you have data saved for these input texts'
     }
 
-    let categories = getUniqueCategories(getMenu());
+    let categories = getUniqueCategories(getMenu().items);
     const categoriesFiltered = categories.filter((_: string) => _ !== undefined);
 
     categoriesFiltered.forEach((item: string) => {
@@ -88,9 +110,6 @@ export function loadCategories() {
     });
     // if (categoriesFiltered.length === 0)
     showMenusItems('', menuList);
-
-    let maxHeight = (menuList.parentNode?.parentNode as HTMLElement).offsetHeight;
-    window.parent.postMessage({ maxHeight: maxHeight }, "*");
 }
 
 function newMenuItem(item: any, menuList: HTMLElement, type: string) {
@@ -162,7 +181,7 @@ function addEllipsis(text: string, maxLength: number) {
 
 export function toText(item: any) {
 
-    let textElipsed = item.type==='password'?'xxxxxxxx (password)':addEllipsis(item.text, 25);
+    let textElipsed = item.type === 'password' ? 'xxxxxxxx (password)' : addEllipsis(item.text, 25);
     let nameElipsed = addEllipsis(item.name !== undefined ? item.name : '', 15);
 
     if (nameElipsed.length > 0)

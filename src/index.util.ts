@@ -1,9 +1,7 @@
 import { INPUT_TEXTS, NAME_EXTENSION, URL_IFRAME, _OPENMENU_MENU_ID } from "./constants";
-import { getCloseTemporary, getInputSelected, getMenu, getShadowRoot, setInputSelected } from "./globals/index";
+import { getCloseTemporary, getInputSelected, getMenu, getShadowRoot, getURL, setInputSelected } from "./globals/index";
 import { startDragging } from "./move";
 import { actionAdd, ClearAction, FullfillAction, ReadAllAction, getInputSaved, typeIntoElement } from "./util";
-
-let shadowRoot: any = undefined;
 
 export function doClose(event: any) {
     if (isMenuOpened() && clickOutOfBox(event.target))
@@ -33,7 +31,7 @@ function attachEventsOnAllInputs(inputTexts: HTMLElement[]) {
 
     var joinedArray = getInputSaved().map(_ => (_.xpath));
 
-    sendMessageToIframe('load', { items: getMenu().items, url: window.location.href, joined: joinedArray, activeAutoSaved: getMenu().settings.activeAutoSave });
+    sendMessageToIframe('load', { menu: getMenu(), url: window.location.href, joined: joinedArray });
 }
 
 function autoSave(e: any) {
@@ -42,7 +40,7 @@ function autoSave(e: any) {
 }
 
 function closeMenu() {
-    if (!shadowRoot) return;
+    if (!getShadowRoot()) return;
 
     const __open_menu = getShadowRoot().getElementById('balloon');
 
@@ -51,7 +49,7 @@ function closeMenu() {
 }
 
 function isMenuOpened() {
-    if (!shadowRoot) return;
+    if (!getShadowRoot()) return;
 
     const __open_menu = getShadowRoot().getElementById('balloon');
     if (__open_menu)
@@ -63,7 +61,7 @@ function clickOutOfBox(obj: any) {
     if (obj == null)
         return true;
 
-    if (obj.shadowRoot !== undefined && obj.shadowRoot !== null)
+    if (getShadowRoot() === undefined || getShadowRoot() === null)
         return false;
 
     if (obj.nodeName === 'INPUT' && obj.type === 'password')
@@ -79,37 +77,43 @@ function clickOutOfBox(obj: any) {
 }
 
 export function go(item: any, option: string) {
-    // const __open_menu = shadowRoot.getElementById(_OPENMENU_MENU_ID);
+    // const __open_menu = getShadowRoot().getElementById(_OPENMENU_MENU_ID);
     item = (item || '').trim();
     const isAdd = option === 'add'
     const isFulfill = option === 'fulfill'
     const isReadAll = option === 'readall'
     const clearAll = option === 'clear'
 
-    if (getInputSelected() !== undefined) {
-        switch (true) {
-            case clearAll:
-                ClearAction();
-                break;
-            case isFulfill:
-                FullfillAction();
-                break;
-            case isReadAll:
-                ReadAllAction();
-                break;
-            case isAdd:
+    switch (true) {
+        case clearAll:
+            ClearAction();
+            break;
+        case isFulfill:
+            FullfillAction();
+            break;
+        case isReadAll:
+            ReadAllAction();
+            break;
+        case isAdd:
+
+            if (getInputSelected() !== undefined)
                 actionAdd(getInputSelected(), '');
-                break;
-            default:
-                {
+            break;
+        default:
+            {
+                if (getInputSelected() !== undefined) {
                     let inputTextSelected = getInputSelected()[0];
 
                     typeIntoElement(inputTextSelected, item);
                 }
-        }
+            }
+
     }
 }
 
+function isPageAllowed() {
+    return getMenu().settings.pages.filter(_=>_ === getURL()).length === 0;
+}
 
 function showMenu(e: any) {
     const __open_menu = getShadowRoot().getElementById('balloon');
@@ -119,11 +123,12 @@ function showMenu(e: any) {
     __open_menu.style.top = (e.clientY + 20) + 'px';
     __open_menu.style.left = (e.clientX + 20) + 'px';
 
-    if (getMenu().settings.activeMenu && !getCloseTemporary()) {
+    if (getMenu().settings.activeMenu 
+        && isPageAllowed()
+        && !getCloseTemporary()) {
         __open_menu.style.display = 'block';
         sendMessageToIframe('showmenu', {});
     }
-
 }
 
 export function sendMessageToIframe(action: string, payload: any) {

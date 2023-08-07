@@ -9,60 +9,37 @@ let currentDataIndex: any;
 
 var category = document.getElementById("category") as HTMLInputElement;
 
-if (chrome.storage) {
-  chrome.storage.local.get('menu', function (result) {
-    setMenu(result.menu);
-    
+$(document).ready(() => {
+  if (chrome.storage) {
+    chrome.storage.local.get('menu', function (result) {
+      setMenu(result.menu);
+
       if (getMenu().settings.activeMenu === undefined)
         setActiveMenu(true);
       if (getMenu().settings.activeAutoSave === undefined)
         setActiveAutoSave(true);
 
       var activeMenuInput = document.getElementById('menu-active') as HTMLInputElement;
-      activeMenuInput.checked = getMenu().settings.activeMenu;
-      activeMenuInput.addEventListener('change', (e: any)=>{
-        setActiveMenu(e.target.checked);
-      });
+      if (activeMenuInput) {
+        activeMenuInput.checked = getMenu().settings.activeMenu;
+        activeMenuInput.addEventListener('change', (e: any) => {
+          setActiveMenu(e.target.checked);
+        });
 
-      var activeSaveInput = document.getElementById('auto-save') as HTMLInputElement;
-      activeSaveInput.checked = getMenu().settings.activeAutoSave;
-      activeSaveInput.addEventListener('change', (e: any)=>{
-        setActiveAutoSave(e.target.checked);
-      });
+        var activeSaveInput = document.getElementById('auto-save') as HTMLInputElement;
+        activeSaveInput.checked = getMenu().settings.activeAutoSave;
+        activeSaveInput.addEventListener('change', (e: any) => {
+          setActiveAutoSave(e.target.checked);
+        });
 
-      renderTable(getMenu().items);
-      renderTablePages(getMenu().settings.pages);
-    
-  });
+        renderTable(getMenu().items);
+        renderTablePages(getMenu().settings.pages);
+      }
 
-}
+    });
 
-// // Event delegation for delete button click
-// document.addEventListener('click', function (event) {
-//   if (event.target.classList.contains('delete-btn')) {
-//     var index = event.target.getAttribute('data-index');
-//     event.preventDefault();
-//     deleteItem(index, tableData);
-//   }
-// });
-
-function remainderScroll(index: number) {
-  const tableBody = document.querySelector('tbody');
-  const tableContainer = document.querySelector('.table-container') as HTMLElement;
-
-  // After refreshing the table, scroll to the appropriate position
-  const updatedRows = tableBody?.children;
-  if (updatedRows) {
-    const targetRow = updatedRows[Math.min(index, updatedRows.length - 1)]; // Get the target row
-
-    if (targetRow) {
-      const rect = targetRow.getBoundingClientRect();
-      const scrollTop = rect.top + window.pageYOffset - tableContainer?.offsetTop;
-      if (tableContainer)
-        tableContainer.scrollTop = scrollTop;
-    }
   }
-}
+});
 
 
 // #### delete-selected

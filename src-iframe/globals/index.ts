@@ -16,7 +16,7 @@ export function getMenu(): any {
 }
 
 export function setMenu(value: any) {
-    _MENU = value;
+    _MENU = value;  
 }
 
 export function getURL(): string {

@@ -49,39 +49,6 @@ const getCurrentURL = () => {
 
 }
 
-function createFulfillOption() {
-    const link = document.createElement('div');
-    link.classList.add('optionmenu', 'item', 'pr5');
-    link.textContent = 'AutoFill';
-
-    var joinedArray = getInputSaved();
-    if (joinedArray.length > 0) {
-        link.textContent += '(' + joinedArray.length + ')';
-        link.classList.add('fulfill');
-    }
-    else {
-        link.classList.add('disabled');
-        link.title = 'Fulfill will be activated when you have data saved for these input texts'
-    }
-    link.addEventListener('click', function () {
-        go(link.innerText, 'fulfill');
-    });
-
-    return link;
-}
-
-function createReadAllOption() {
-    const link = document.createElement('div');
-    link.classList.add('optionmenu', 'item', 'pr5');
-    link.textContent = 'AutoAdd';
-
-    link.addEventListener('click', function () {
-        go(link.innerText, 'readall');
-    });
-
-    return link;
-}
-
 function findLastOccurrence(arr: any[], key: string, value: string) {
     return arr.reduceRight((acc, obj) => {
         if ((obj[key] === value) && !acc) {
@@ -116,7 +83,7 @@ function chkval(value: string | undefined) {
 }
 
 function _actionAdd(input: any, category: string) {
-    
+
     const newitem = extractDataFromInput(category, input);
 
     if (newitem.text.length > 0 && newitem.text.length < LIMIT_LEN_TEXT) {
@@ -233,21 +200,6 @@ export function ReadAllAction() {
     });
 }
 
-// function CreateSVG() {
-//     // Create the SVG element
-//     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-//     svg.setAttribute('width', '20');
-//     svg.setAttribute('height', '20');
-//     svg.setAttribute('id', 'my-svg');
-//     // svg.classList.add('svg')
-//     const $svg = $(svg);
-
-//     $svg.html(PLUS_SVG);
-
-//     return $svg.get(0);
-
-// }
-
 export function typeIntoElement(element: any, text: string) {
     // Set focus on the element
     element.focus();
@@ -304,12 +256,13 @@ function getFullXPath(element: any) {
 
     return xpath;
 }
+
 const hideIconRecording = () => {
     const divRecorderImg = getShadowRoot().querySelector('.div-img-menu') as HTMLElement;
     $(divRecorderImg).css('display', 'none');
 
     const arrowImg = $(getShadowRoot().querySelector('#img-arrow'));
-    arrowImg.attr('src',SRC_IMG_MINIMIZE);
+    arrowImg.attr('src', SRC_IMG_MINIMIZE);
 }
 
 const showIconRecording = () => {
@@ -321,14 +274,16 @@ const showIconRecording = () => {
 
     arrowImg.attr('src', SRC_IMG_MAXIMIZE);
 
-    $(divRecorderImg).on('click', function() {
-        
-        const box = $(getShadowRoot().getElementById('balloon'));
+    $(divRecorderImg).on('click', function () {
+
+        const box = $(getShadowRoot().getElementById('balloon')) as JQuery;
 
         box.css('display', 'block');
         box.css('left', '10px');
         box.css('top', '10px');
-      });
+
+        sendMessageToIframe('resize', {});
+    });
 }
 
 
@@ -346,7 +301,7 @@ export const load = () => {
     divImg.id = "img";
     divImg.classList.add("div-img-menu");
     divImg.innerHTML = _HTML_IMG;
-    
+
     getShadowRoot().appendChild(divImg);
 
     // Create a new HTML element
@@ -371,18 +326,8 @@ export const load = () => {
 
     header?.addEventListener('mousedown', startDragging);
 
-    minimizeButton?.addEventListener('click', ()=> {
-        if (getCloseTemporary()===false)
-  {      hideBalloon();
-        showIconRecording();
-        setCloseTemporary(true);
-    }
-    else
-    {
-        hideBalloon();
-        hideIconRecording();
-        setCloseTemporary(false);
-    }
+    minimizeButton?.addEventListener('click', () => {
+        setMinimizeIcons();
     });
 
     closeButton?.addEventListener("click", function () {
@@ -417,7 +362,19 @@ export const load = () => {
     });
 
     hideBalloon();
+}
 
+function setMinimizeIcons() {
+    if (getCloseTemporary() === false) {
+        hideBalloon();
+        showIconRecording();
+        setCloseTemporary(true);
+    }
+    else {
+        hideBalloon();
+        hideIconRecording();
+        setCloseTemporary(false);
+    }
 }
 
 function loadALLInputs() {

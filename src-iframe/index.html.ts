@@ -4,11 +4,6 @@ import { getActiveAutoSave, getMenu, setActiveAutoSave, setJoinedArray, setMenu,
 import { _addAction, loadCategories, toText, removeLastItemByCategory, showMenusItems } from "./util.html";
 import { LIMIT_LEN } from './constants'
 
-// function cleanChildElement(menuList:HTMLElement) {
-//     while (menuList.firstChild) {
-//         menuList.removeChild(menuList.firstChild);
-//     }
-// }
 
 $(document).ready(function () {
     window.addEventListener('message', function (event) {
@@ -37,7 +32,7 @@ $(document).ready(function () {
             case 'load':
                 {
                     // debugger;
-                    setMenu(event.data.payload.items);
+                    setMenu(event.data.payload.menu);
                     setURL(event.data.payload.url);
                     setActiveAutoSave(event.data.payload.activeAutoSaved);
                     setJoinedArray(event.data.payload.joined);
@@ -52,13 +47,13 @@ $(document).ready(function () {
                     if (!getMenu())
                         return;
 
-                    const lenMenu = getMenu().length;
+                    const lenMenu = getMenu().items.length;
 
                     if (lenMenu < LIMIT_LEN) {
                         _addAction(event.data);
                     }
                     else if (category === 'autosave') {
-                        removeLastItemByCategory(getMenu(), 'autosave');
+                        removeLastItemByCategory(getMenu().items, 'autosave');
                         // _addAction(input);
                     }
                 }
