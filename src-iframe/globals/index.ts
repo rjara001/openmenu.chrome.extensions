@@ -12,7 +12,7 @@ export function setActiveAutoSave(value: boolean): void {
 }
 
 export function getMenu(): any {
-    _MENU = {... _MENU, items:_MENU.items.filter((_:any)=> _ !==undefined)}
+    _MENU = {... _MENU, items:_MENU.items.filter((_:any)=> _ !==null)}
     return _MENU;
 }
 
