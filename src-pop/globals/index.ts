@@ -74,6 +74,7 @@ export function getMenu(): MenuItem {
   if (!_MENU.settings)
     _MENU.settings = _MENU_DEFAULT.settings;
 
+    _MENU = {... _MENU, items:_MENU.items.filter((_:any)=> _ !==undefined)}
   return _MENU;
 }
 

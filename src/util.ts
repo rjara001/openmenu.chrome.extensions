@@ -1,5 +1,5 @@
 import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, SRC_IMG_MINIMIZE, SRC_IMG_MAXIMIZE, _BOX_ID, _HTML_BOX, _HTML_IMG, _OPENMENU_MENU_ID, _STYLE_AS_STRING } from "./constants";
-import { getCloseTemporary, getInputSelected, getMenu, getShadowRoot, setCloseTemporary, setShadowRoot } from "./globals/index";
+import { getCloseTemporary, getInputSelected, getMenu, getShadowRoot, setCloseTemporary, setMenu, setShadowRoot } from "./globals/index";
 // import { removeLastItemByCategory } from "../html/util.html";
 import { localSaveValue, localUpdateValue } from "../src/store";
 import { addEllipsis, barMessage, hideBalloon, resizeIframe } from "./box.util";
@@ -51,9 +51,10 @@ const getCurrentURL = () => {
 
 function findLastOccurrence(arr: any[], key: string, value: string) {
     return arr.reduceRight((acc, obj) => {
-        if ((obj[key] === value) && !acc) {
-            return obj;
-        }
+        if (obj && obj.hasOwnProperty(key))
+            if ((obj[key] === value) && !acc) {
+                return obj;
+            }
         return acc;
     }, null);
 }
@@ -135,7 +136,7 @@ function getHost(url: string) {
 function hostExist() {
     const currentHost = window.location.host;
 
-    return getMenu().items.filter(_ => getHost(_.page) === currentHost).length > 0;
+    return getMenu().items.filter(_ => getHost(_?.page) === currentHost).length > 0;
 }
 export function FullfillAction() {
     const currentHost = window.location.host;
@@ -156,12 +157,17 @@ export function FullfillAction() {
 }
 
 export const getUniqueCategories = (htmlMenu: any[]) => {
-    return htmlMenu.reduce(function (acc, item) {
-        if (!acc.includes(item.category)) {
-            acc.push(item.category);
-        }
-        return acc;
-    }, []);
+    try {
+        return htmlMenu.reduce(function (acc, item) {
+            if (!acc.includes(item.category)) {
+                acc.push(item.category);
+            }
+            return acc;
+        }, []);
+            
+    } catch (error) {
+        console.log('error');   
+    }
 }
 
 export function getInputSaved() {
@@ -342,6 +348,14 @@ export const load = () => {
         if (event.data.action && event.data.action === 'add') {
             actionAdd(getInputSelected(), '');
         }
+        if (event.data.action === 'addPage')
+            {
+                getMenu().settings.pages.push(getHost(getCurrentURL()));
+
+                setMenu(getMenu());
+
+                localSaveValue(getMenu());
+            }
 
         if (event.data.go)
             go(event.data.go.text, event.data.go.action);

@@ -12,7 +12,7 @@ function cleanChildElement(menuList: HTMLElement) {
 }
 export function showMenusItems(category: string, menuList: HTMLElement) {
 
-    getMenu().items.filter((_: any) => _.category === category).forEach((_: any) => {
+    getMenu().items.filter((_: any) => _?.category === category).forEach((_: any) => {
 
         newMenuItem(_, menuList, '');
     });
@@ -77,8 +77,8 @@ export function loadCategories() {
 
     disabledPage.addEventListener('click', (e) => {
         // getMenu().settings.pages.push({ host: getHost(getURL()), date: (new Date()).toISOString() });
-        
-        window.parent.postMessage({ addPage}, "*");
+
+        window.parent.postMessage({ action: 'addPage' }, "*");
 
     });
 
@@ -226,10 +226,13 @@ function clean(menuList: HTMLElement) {
 // }
 
 export const getUniqueCategories = (htmlMenu: any[]) => {
+
     return htmlMenu.reduce(function (acc, item) {
-        if (item.category != undefined && item.category.length > 0 && !acc.includes(item.category)) {
-            acc.push(item.category);
-        }
+            if (item && item.category != undefined && item.category.length > 0 && !acc.includes(item.category)) {
+                acc.push(item.category);
+            }
+
         return acc;
     }, []);
+
 }

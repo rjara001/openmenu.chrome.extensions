@@ -169,6 +169,7 @@ body {
 .footer {
 	padding-top: 25px;
 	color: #fff;
+	font-size: 10px;
 }
 
 .status-bar {
@@ -179,9 +180,14 @@ body {
 	font-weight: 300;
 }
 .right-section{
-	display: inline-flexbox;
-}.left-section{
+	display: inline-flex;
+}
+.left-section > div {
+	padding-left: 8px;
+}
+.left-section{
 	cursor: pointer;
+	display: inline-flex;
 }
 .settings {
 	cursor: pointer;
