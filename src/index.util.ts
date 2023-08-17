@@ -8,6 +8,13 @@ export function doClose(event: any) {
         closeMenu();
 }
 
+function enableToShowMenu() {
+    let host = getHost(getCurrentURL()) as string;
+    let listPagesRestricted = getMenu().settings.pages;
+
+    return listPagesRestricted.filter(_=>_.host === host).length>0;
+}
+
 export function loadEventosOnInputs() {
     const inputTexts = $(INPUT_TEXTS).toArray();
 
@@ -18,12 +25,14 @@ export function loadEventosOnInputs() {
             // Sometimes the inputs values arent loaded on time
             const inputTexts = $(INPUT_TEXTS).toArray();
 
-            attachEventsOnAllInputs(inputTexts);
+            if (enableToShowMenu())
+                attachEventsOnAllInputs(inputTexts);
 
         }, 2000);
 }
 
 function attachEventsOnAllInputs(inputTexts: HTMLElement[]) {
+    
     inputTexts.forEach(_ => {
         _.addEventListener('click', (e) => showMenu(e));
         _.addEventListener('blur', (e) => autoSave(e));
@@ -138,3 +147,11 @@ export function sendMessageToIframe(action: string, payload: any) {
     // if (!isMenuOpened())
     iframe.contentWindow.postMessage({ action, payload }, domain);
 }
+function getCurrentURL(): any {
+    throw new Error("Function not implemented.");
+}
+
+function getHost(arg0: any): string {
+    throw new Error("Function not implemented.");
+}
+

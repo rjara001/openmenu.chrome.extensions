@@ -47,11 +47,11 @@ const deleteSelectedButton = document.getElementById('delete-selected');
 const deleteSelectedButtonPages = document.getElementById('delete-selected-pages');
 
 deleteSelectedButtonPages?.addEventListener('click', () => {
-  deleteRowsSelected('#pages tbody input[type="checkbox"]');
+  deleteRowsSelected('#pages tbody input[type="checkbox"]', getMenu().settings.pages);
 });
 
 deleteSelectedButton?.addEventListener('click', () => {
-  deleteRowsSelected('#data tbody input[type="checkbox"]');
+  deleteRowsSelected('#data tbody input[type="checkbox"]', getMenu().items);
 });
 
 // #### delete-selected
@@ -109,7 +109,7 @@ var saveButton = document.querySelector('save');
 if (saveButton)
   saveButton.addEventListener('click', saveData);
 
-function deleteRowsSelected(tableSelected: string) {
+function deleteRowsSelected(tableSelected: string, list:any[]) {
   const checkboxes = document.querySelectorAll<HTMLInputElement>(tableSelected);
 
   // const selectedRows = [];
@@ -117,7 +117,7 @@ function deleteRowsSelected(tableSelected: string) {
   checkboxes.forEach((checkbox, index) => {
     const reverseIndex = checkboxes.length - index - 1;
     if (checkboxes[reverseIndex].checked) {
-      getMenu().items.splice(reverseIndex, 1); // Remove the item from the array
+      list.splice(reverseIndex, 1); // Remove the item from the array
     }
   });
 

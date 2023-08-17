@@ -102,7 +102,7 @@ export function loadCategories() {
     }
 
     let categories = getUniqueCategories(getMenu().items);
-    const categoriesFiltered = categories.filter((_: string) => _ !== undefined);
+    const categoriesFiltered = categories.filter((_: string) => _ !== null);
 
     categoriesFiltered.forEach((item: string) => {
 

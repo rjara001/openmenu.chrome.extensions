@@ -5,6 +5,7 @@ import { localSaveValue, localUpdateValue } from "../src/store";
 import { addEllipsis, barMessage, hideBalloon, resizeIframe } from "./box.util";
 import { go, loadEventosOnInputs, sendMessageToIframe } from "./index.util";
 import { startDragging } from "./move";
+import { PageRestricted } from "./types/PageRestricted";
 
 export function removeLastItemByCategory(arr: any[], category: string) {
     var index = arr.findIndex(function (item) {
@@ -87,13 +88,14 @@ function _actionAdd(input: any, category: string) {
 
     const newitem = extractDataFromInput(category, input);
 
-    if (newitem.text.length > 0 && newitem.text.length < LIMIT_LEN_TEXT) {
+    if (newitem.text && newitem.text.length > 0 && newitem.text.length < LIMIT_LEN_TEXT) {
         let _item = getMenu().items.find(_ => _.text === newitem.text);
 
         if (_item)
             localUpdateValue(newitem);
         else {
             localSaveValue(newitem);
+            sendMessageToIframe('add', extractDataFromInput(category, input));
         }
     }
 }
@@ -111,8 +113,6 @@ function extractDataFromInput(category: string, input: JQuery) {
 }
 
 export function actionAdd(input: JQuery, category: string) {
-
-    sendMessageToIframe('add', extractDataFromInput(category, input));
 
     const lenMenu = getMenu().items.length;
     if (lenMenu < LIMIT_LEN) {
@@ -164,9 +164,9 @@ export const getUniqueCategories = (htmlMenu: any[]) => {
             }
             return acc;
         }, []);
-            
+
     } catch (error) {
-        console.log('error');   
+        console.log('error');
     }
 }
 
@@ -348,14 +348,15 @@ export const load = () => {
         if (event.data.action && event.data.action === 'add') {
             actionAdd(getInputSelected(), '');
         }
-        if (event.data.action === 'addPage')
-            {
-                getMenu().settings.pages.push(getHost(getCurrentURL()));
+        if (event.data.action === 'addPage') {
+            let host = getHost(getCurrentURL()) as string;
 
-                setMenu(getMenu());
+            getMenu().settings.pages.push(new PageRestricted(host));
 
-                localSaveValue(getMenu());
-            }
+            setMenu(getMenu());
+
+            localSaveValue(getMenu());
+        }
 
         if (event.data.go)
             go(event.data.go.text, event.data.go.action);

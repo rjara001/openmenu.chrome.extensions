@@ -9,10 +9,13 @@ export function localSaveValue(item:any) {
 }
 
 export function localUpdateValue(item:any) {
-    getMenu().items = getMenu().items.filter(_=>_.text !== item.text);
+    let _items = getMenu().items;
+    _items = _items.filter(_=>_.text !== item.text);
+
+    getMenu().items = _items;
 
     getMenu().items.push(item);
-            
+
     chrome.storage.local.set({ 'menu': getMenu() }, function() {
         
     });

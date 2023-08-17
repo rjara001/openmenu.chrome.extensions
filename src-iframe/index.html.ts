@@ -4,8 +4,8 @@ import { getActiveAutoSave, getMenu, setActiveAutoSave, setJoinedArray, setMenu,
 import { _addAction, loadCategories, toText, removeLastItemByCategory, showMenusItems } from "./util.html";
 import { LIMIT_LEN } from './constants'
 
-
 $(document).ready(function () {
+
     window.addEventListener('message', function (event) {
         switch (event.data.action) {
             case 'showmenu': {
