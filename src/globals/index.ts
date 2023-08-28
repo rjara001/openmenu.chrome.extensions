@@ -62,13 +62,13 @@ else
 _MENU = value;
 }
 
-export function getURL(): string {
-  return _URL;
-}
+// export function getURL(): string {
+//   return _URL;
+// }
 
-export function setURL(value: string): void {
-  _URL = value;
-}
+// export function setURL(value: string): void {
+//   _URL = value;
+// }
 
 export function getJoinedData(): any[] {
   return _JOINED_ARRAY;

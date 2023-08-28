@@ -1,7 +1,7 @@
 import { INPUT_TEXTS, NAME_EXTENSION, URL_IFRAME, _OPENMENU_MENU_ID } from "./constants";
-import { getCloseTemporary, getInputSelected, getMenu, getShadowRoot, getURL, setInputSelected } from "./globals/index";
+import { getCloseTemporary, getInputSelected, getMenu, getShadowRoot, setInputSelected } from "./globals/index";
 import { startDragging } from "./move";
-import { actionAdd, ClearAction, FullfillAction, ReadAllAction, getInputSaved, typeIntoElement } from "./util";
+import { actionAdd, ClearAction, FullfillAction, ReadAllAction, getInputSaved, typeIntoElement, getCurrentURL, getHost } from "./util";
 
 export function doClose(event: any) {
     if (isMenuOpened() && clickOutOfBox(event.target))
@@ -121,7 +121,10 @@ export function go(item: any, option: string) {
 }
 
 function isPageAllowed() {
-    return getMenu().settings.pages.filter(_=>_ === getURL()).length === 0;
+    let _settings = getMenu().settings.pages;
+    let _host = getHost(getCurrentURL());
+
+    return _settings.filter(_=>_.host === _host).length === 0;
 }
 
 function showMenu(e: any) {
@@ -147,11 +150,3 @@ export function sendMessageToIframe(action: string, payload: any) {
     // if (!isMenuOpened())
     iframe.contentWindow.postMessage({ action, payload }, domain);
 }
-function getCurrentURL(): any {
-    throw new Error("Function not implemented.");
-}
-
-function getHost(arg0: any): string {
-    throw new Error("Function not implemented.");
-}
-

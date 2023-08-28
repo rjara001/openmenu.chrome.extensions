@@ -9,8 +9,17 @@ export function localSaveValueSettings(key:string, value:any) {
         
     });
 }
+export function localUpdateValueSettings(items:any[]) {
+    // only new items
 
-export function localUpdateValueItems(items:any[]) {
+    getMenu().settings.pages = items;
+            
+    chrome.storage.local.set({ 'menu': getMenu() }, function() {
+        
+    });
+}
+
+export function localUpdateValueMenuItems(items:any[]) {
     // only new items
 
     getMenu().items = items;

@@ -37,7 +37,7 @@ const removeHTMLElements = (htmlString: string) => {
     return modifiedHtmlString;
 }
 
-const getCurrentURL = () => {
+export const getCurrentURL = () => {
     var url = window.location.href;
     var index = url.indexOf('?');
 
@@ -125,7 +125,7 @@ export function actionAdd(input: JQuery, category: string) {
 
 }
 
-function getHost(url: string) {
+export function getHost(url: string) {
     if (url) {
         const parsedURL = new URL(url);
         return parsedURL.host;

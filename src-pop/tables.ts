@@ -1,4 +1,5 @@
 import { deleteItem } from "./settings.util";
+import { localSaveValueSettings, localUpdateValueMenuItems, localUpdateValueSettings } from "./store";
 import { getValueClean } from "./util";
 
 export function renderTablePages(tableData:any) {
@@ -28,6 +29,9 @@ export function renderTablePages(tableData:any) {
                         // Add your logic for the onclick event here
                         const index = parseInt(this.getAttribute('data-index') as string);
                         deleteItem(index, tableData);
+                        localUpdateValueSettings(tableData);
+                        location.reload();
+                 
                     });
 
                     deleteCell.appendChild(deleteButton);
@@ -74,6 +78,8 @@ export function renderTable(tableData:any) {
                         // Add your logic for the onclick event here
                         const index = parseInt(this.getAttribute('data-index') as string);
                         deleteItem(index, tableData);
+                        localUpdateValueMenuItems(tableData);
+                        location.reload();
                     });
 
                     deleteCell.appendChild(deleteButton);

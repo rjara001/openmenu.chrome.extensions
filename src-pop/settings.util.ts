@@ -1,5 +1,5 @@
 import { getMenu } from "./globals/index";
-import { localUpdateValueItems } from "./store";
+import { localUpdateValueMenuItems } from "./store";
 import { getUniqueCategories } from "./util";
 
 const HEADERS = {
@@ -18,13 +18,6 @@ export function deleteItem(index: number, tableData: any) {
 
     if (tableData && tableData.length > 0) {
         tableData.splice(index, 1); // Remove the item from the array
-
-        localUpdateValueItems(tableData);
-        location.reload();
-        // chrome.storage.local.set({ 'menu': getMenu() }, function () {
-        //     console.log('Item deleted successfully!');
-        //     renderTable(tableData);
-        // });
     }
 }
 
@@ -76,7 +69,7 @@ export function importData() {
 
                 const itemsUnique = menuData.filter(item=>getMenu().items.filter(i=>i.text===item.text).length===0);
 
-                localUpdateValueItems(itemsUnique);
+                localUpdateValueMenuItems(itemsUnique);
                 location.reload();
 
             };
