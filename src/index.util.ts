@@ -12,7 +12,7 @@ function enableToShowMenu() {
     let host = getHost(getCurrentURL()) as string;
     let listPagesRestricted = getMenu().settings.pages;
 
-    return listPagesRestricted.filter(_=>_.host === host).length>0;
+    return listPagesRestricted.filter(_ => _.host === host).length > 0;
 }
 
 export function loadEventosOnInputs() {
@@ -32,7 +32,7 @@ export function loadEventosOnInputs() {
 }
 
 function attachEventsOnAllInputs(inputTexts: HTMLElement[]) {
-    
+
     inputTexts.forEach(_ => {
         _.addEventListener('click', (e) => showMenu(e));
         _.addEventListener('blur', (e) => autoSave(e));
@@ -124,20 +124,21 @@ function isPageAllowed() {
     let _settings = getMenu().settings.pages;
     let _host = getHost(getCurrentURL());
 
-    return _settings.filter(_=>_.host === _host).length === 0;
+    return _settings.filter(_ => _.host === _host).length === 0;
 }
 
 function showMenu(e: any) {
     const __open_menu = getShadowRoot().getElementById('balloon');
 
-    setInputSelected($(e.target));
-
-    __open_menu.style.top = (e.clientY + 20) + 'px';
-    __open_menu.style.left = (e.clientX + 20) + 'px';
-
-    if (getMenu().settings.activeMenu 
+    if (getMenu().settings.activeMenu
         && isPageAllowed()
         && !getCloseTemporary()) {
+
+        setInputSelected($(e.target));
+
+        __open_menu.style.top = (e.clientY + 20) + 'px';
+        __open_menu.style.left = (e.clientX + 20) + 'px';
+
         __open_menu.style.display = 'block';
         sendMessageToIframe('showmenu', {});
     }

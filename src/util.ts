@@ -2,7 +2,7 @@ import { INPUT_TEXTS, LIMIT_LEN, LIMIT_LEN_TEXT, PLUS_SVG, SRC_IMG_MINIMIZE, SRC
 import { getCloseTemporary, getInputSelected, getMenu, getShadowRoot, setCloseTemporary, setMenu, setShadowRoot } from "./globals/index";
 // import { removeLastItemByCategory } from "../html/util.html";
 import { localSaveValue, localUpdateValue } from "../src/store";
-import { addEllipsis, barMessage, hideBalloon, resizeIframe } from "./box.util";
+import { addEllipsis, barMessage, hideBalloon, minimizeIframe, resizeIframe } from "./box.util";
 import { go, loadEventosOnInputs, sendMessageToIframe } from "./index.util";
 import { startDragging } from "./move";
 import { PageRestricted } from "./types/PageRestricted";
@@ -379,15 +379,30 @@ export const load = () => {
     hideBalloon();
 }
 
+function minimize() {
+    minimizeIframe(true);
+    
+    const __open_menu = getShadowRoot().getElementById('balloon');
+    
+    __open_menu.style.top = '0px';
+    __open_menu.style.left = '0px';
+}
+
+function restoreSize() {
+    minimizeIframe(false);
+}
+
 function setMinimizeIcons() {
     if (getCloseTemporary() === false) {
-        hideBalloon();
-        showIconRecording();
+        minimize();
+        // hideBalloon();
+        // showIconRecording();
         setCloseTemporary(true);
     }
     else {
-        hideBalloon();
-        hideIconRecording();
+        restoreSize();
+        // hideBalloon();
+        // hideIconRecording();
         setCloseTemporary(false);
     }
 }

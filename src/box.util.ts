@@ -20,6 +20,10 @@ export function resizeIframe(size:string) {
     iframe.style.height = `${size}px`;
 }
 
+export function minimizeIframe(hidden:boolean) {
+    var iframe = getShadowRoot().getElementById('imenu');
+    iframe.style.display = hidden?'none':'block';
+}
 
 export function hideBalloon() {
     let balloon = getShadowRoot().getElementById("balloon");
