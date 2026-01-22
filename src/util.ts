@@ -340,6 +340,25 @@ export const load = () => {
         hideBalloon();
     });
 
+    const settingsBtn = balloon.querySelector(".settings");
+    settingsBtn?.addEventListener('click', (e) => {
+        chrome.runtime.sendMessage({
+            action: "openSettings",
+            popUrl: `../pop_v1.html?from=${encodeURIComponent(location.href)}`
+        });
+    });
+
+    // const disabledPageBtn = balloon.querySelector(".left-section");
+    // disabledPageBtn?.addEventListener('click', (e) => {
+    //     const currentUrl = getCurrentURL();
+
+    //     chrome.runtime.sendMessage({
+    //     action: "openSettings",
+    //     currentUrl
+    //     });
+
+    // });
+
     loadALLInputs();
 
     window.addEventListener('message', function (event) {

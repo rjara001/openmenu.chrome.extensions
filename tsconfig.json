@@ -14,7 +14,7 @@
     "composite": true,
     "allowJs": false,
     "strict": true,
-    "module": "ES2015",
+    "module": "ES2020",
     "target": "ES6",
     "esModuleInterop": true,
     "sourceMap": true,
@@ -24,8 +24,7 @@
     ]
   },
   "exclude": [
-    "./dist/src/**/*",
-    "./dist/iframe/**/*",
-    "./dist/pop/**/*"
+    "dist",
+    "node_modules"
   ]
 }

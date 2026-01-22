@@ -68,19 +68,7 @@ export function loadCategories() {
     let menuList = document.getElementsByClassName('items')[0] as HTMLElement;
     let fulfill = document.getElementById('fulfill') as HTMLInputElement;
     let clear = document.getElementById('clear') as HTMLInputElement;
-    let settings = document.getElementsByClassName('settings')[0] as HTMLElement;
-    let disabledPage = document.getElementsByClassName('left-section')[0] as HTMLElement;
 
-    settings.addEventListener('click', (e) => {
-        chrome.tabs.create({ url: "pop_v1.html" });
-    });
-
-    disabledPage.addEventListener('click', (e) => {
-        // getMenu().settings.pages.push({ host: getHost(getURL()), date: (new Date()).toISOString() });
-
-        window.parent.postMessage({ action: 'addPage' }, "*");
-
-    });
 
     clear.addEventListener('click', (e) => {
         go('clear', 'clear');
@@ -228,9 +216,9 @@ function clean(menuList: HTMLElement) {
 export const getUniqueCategories = (htmlMenu: any[]) => {
 
     return htmlMenu.reduce(function (acc, item) {
-            if (item && item.category != undefined && item.category.length > 0 && !acc.includes(item.category)) {
-                acc.push(item.category);
-            }
+        if (item && item.category != undefined && item.category.length > 0 && !acc.includes(item.category)) {
+            acc.push(item.category);
+        }
 
         return acc;
     }, []);

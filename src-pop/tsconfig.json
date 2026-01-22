@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist/pop",
+    "outDir": "../.tsc_build/pop",
     "rootDir": "../src-pop"
   },
   "include": [
