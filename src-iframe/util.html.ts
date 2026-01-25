@@ -120,6 +120,9 @@ function newMenuItem(item: any, menuList: HTMLElement, type: string) {
         // remove(menuItem);
         menuItem.remove();
         localRemoveValue(item);
+
+        let maxHeight = (menuList.parentNode?.parentNode as HTMLElement).offsetHeight;
+        window.parent.postMessage({ maxHeight: maxHeight }, "*");
     });
 
     const link = document.createElement('div');

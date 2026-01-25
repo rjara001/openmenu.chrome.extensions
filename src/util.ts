@@ -108,6 +108,7 @@ function extractDataFromInput(category: string, input: JQuery) {
         page: getCurrentURL(),
         date: (new Date()).toISOString(),
         type: input.prop("type"),
+        name: input.prop("name"),
         xpath: getFullXPath(input)
     };
 }

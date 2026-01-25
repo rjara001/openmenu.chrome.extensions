@@ -59,6 +59,9 @@ export const _HTML_BOX = `
 
   <div class="footer">
     <div class="status-bar">
+      <div class="left-section">
+        <div class="settings">Settings</div>
+      </div>
       <div class="right-section">
         <div>[Autosave]</div>
       </div>
