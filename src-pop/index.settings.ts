@@ -9,6 +9,28 @@ let currentDataIndex: any;
 
 var category = document.getElementById("category") as HTMLInputElement;
 
+
+const switchToTab = (tabId: string) => {
+  // Remove 'active' class from all buttons and hide all tab contents
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach((btn) => btn.classList.remove('active'));
+  tabContents.forEach((content: any) => (content.style.display = 'none'));
+
+  // Add 'active' class to the clicked button and display the corresponding tab content
+  const button = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+  button?.classList.add('active');
+
+  if (tabId) {
+    let elem = document.getElementById(tabId);
+
+    if (elem !== null && elem !== undefined) {
+      elem.style.display = 'block';
+    }
+  }
+}
+
 $(document).ready(() => {
   if (chrome.storage) {
     chrome.storage.local.get('menu', function (result) {
@@ -18,6 +40,45 @@ $(document).ready(() => {
         setActiveMenu(true);
       if (getMenu().settings.activeAutoSave === undefined)
         setActiveAutoSave(true);
+
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const fromUrl = urlParams.get('from');
+
+      if (fromUrl) {
+        switchToTab('tab2');
+
+        const host = getHost(fromUrl);
+        // Check if already disabled
+        const isAlreadyDisabled = getMenu().settings.pages.some((p: any) => p.host === host);
+
+        if (!isAlreadyDisabled) {
+          const confirmDiv = document.createElement('div');
+          confirmDiv.innerHTML = `
+                        <div style="background: #e3f2fd; padding: 15px; margin-bottom: 20px; border-radius: 4px; border: 1px solid #90caf9;">
+                            <p style="margin-top: 0; margin-bottom: 15px;">Do you want to disable the popup in this page <strong>${host}</strong>?</p>
+                            <button id="confirm-disable-yes" style="background: #2196f3; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-right: 10px;">Yes, disable</button>
+                            <button id="confirm-disable-no" style="background: white; border: 1px solid #ccc; padding: 8px 16px; border-radius: 4px; cursor: pointer;">No</button>
+                        </div>
+                    `;
+
+          const tab2Content = document.getElementById('tab2');
+          tab2Content?.insertBefore(confirmDiv, tab2Content.firstChild);
+
+          document.getElementById('confirm-disable-yes')?.addEventListener('click', () => {
+            getMenu().settings.pages.push({ host: host, date: (new Date()).toISOString() });
+            chrome.storage.local.set({ 'menu': getMenu() }, function () {
+              renderTablePages(getMenu().settings.pages);
+              confirmDiv.remove();
+            });
+          });
+
+          document.getElementById('confirm-disable-no')?.addEventListener('click', () => {
+            confirmDiv.remove();
+          });
+        }
+      }
+
 
       var activeMenuInput = document.getElementById('menu-active') as HTMLInputElement;
       if (activeMenuInput) {
@@ -109,7 +170,7 @@ var saveButton = document.querySelector('save');
 if (saveButton)
   saveButton.addEventListener('click', saveData);
 
-function deleteRowsSelected(tableSelected: string, list:any[]) {
+function deleteRowsSelected(tableSelected: string, list: any[]) {
   const checkboxes = document.querySelectorAll<HTMLInputElement>(tableSelected);
 
   // const selectedRows = [];
